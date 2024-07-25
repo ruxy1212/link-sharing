@@ -84,22 +84,6 @@ const CustomizeLinks: React.FC = () => {
         }
     }, [usersLinks]);
 
-    useEffect(() => {
-        if (!tablet) {
-            setIsOpen(false);
-            return;
-        }
-
-        const tooltipRead = localStorage.getItem('linksTooltip');
-        if (tooltipRead)
-            return;
-        else if (usersLinks.length > 1)
-            setIsOpen(true);
-
-    }, [usersLinks, tablet]);
-
-    const [items, setItems] = useState(usersLinks);
-
     const onDragEnd = (result: any) => {
       if (!result.destination) {
         return;
@@ -110,12 +94,7 @@ const CustomizeLinks: React.FC = () => {
 
     };
 
-    useEffect(() => {
-      setItems(usersLinks);
-    }, [usersLinks]);
-
     return (
-        // <DndProvider backend={HTML5Backend}>
             <form className="w-full bg-white rounded-xl" onSubmit={handleSubmit}>
               <div className="p-6 md:p-10 flex gap-10 flex-col">
                 <div className="flex flex-col gap-2">
@@ -175,7 +154,6 @@ const CustomizeLinks: React.FC = () => {
                   </button>
               </div>
             </form>
-        // </DndProvider>
     );
 };
 

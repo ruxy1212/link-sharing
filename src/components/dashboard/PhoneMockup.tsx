@@ -16,16 +16,10 @@ const PhoneMockup: FC = () => {
         throw new Error('PhoneMockup must be used within a Context.Provider');
     }
 
-    const { usersLinks, uid } = context;
+    const { usersLinks, uid, dispatch } = context;
     const profileDocRef = doc(db, `${uid}/profileDetails`);
     const [profileDetails, loadingProfile] = useDocumentData(profileDocRef);
     const avatarRef = useRef<HTMLImageElement>(null);
-
-    const linkBoxes = useMemo(() => {
-        return usersLinks.map((link, i) => (
-            <PhoneLinkBox link={link} index={i} key={link.id} />
-        ));
-    }, [usersLinks]);
 
     useEffect(() => {
       if (loadingProfile) return;
@@ -47,11 +41,9 @@ const PhoneMockup: FC = () => {
       return;
     }
 
-    
     const [removed] = usersLinks.splice(result.source.index, 1);
-    usersLinks.splice(result.destination.index, 0, removed);
+    dispatch({ type: 're-order links', indices: {removed: removed, index: result.destination.index }});
   };
-
 
     return (
         <section className="w-full p-6 bg-dl-white rounded-xl flex justify-center items-center">
