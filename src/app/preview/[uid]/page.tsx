@@ -76,18 +76,20 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     const [profile, loadingProfile] = useDocumentData(profileRef);
 
     useEffect(() => {
-      const reference = ref(storage, `${uid}/usersAvatar`);
-      getDownloadURL(reference)
-          .then((url) => {
-              if (avatarRef.current) {
-                  avatarRef.current.src = url; console.log('ic seen');
-              }
-          })
-          .catch(() => {
-              if (avatarRef.current) {
-                  avatarRef.current.src = '/images/placeholder-image.png'; console.log('ic seenoo');
-              }
-          });
+      if(userId){
+        const reference = ref(storage, `${userId}/usersAvatar`);
+        getDownloadURL(reference)
+            .then((url) => {
+                if (avatarRef.current) {
+                    avatarRef.current.src = url; console.log('ic seen');
+                }
+            })
+            .catch(() => {
+                if (avatarRef.current) {
+                    avatarRef.current.src = '/images/placeholder-image.png'; console.log('ic seenoo');
+                }
+            });
+      }
   }, [uid]);
 
     useEffect(() => {
