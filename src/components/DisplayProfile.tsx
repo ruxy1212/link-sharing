@@ -1,13 +1,9 @@
 import { useContext, useMemo, useEffect, useRef } from 'react';
-import { Context } from '../../pages/_app';
-import NavBar from './NavBar';
-import { db, storage } from '../../firebase/Configuration'; 
+import { Context } from "@/hooks/context";
+import { db, storage } from '@/firebase/Configuration'; 
 import { doc } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
-import styles from '../../styles/preview/DisplayProfile.module.css';
-import linkStyles from '../../styles/account/PhoneLinkBox.module.css';
-import useMediaQuery from '../../hooks/useMediaQuery';
 
 interface Link {
     platform: string;
@@ -84,7 +80,7 @@ export default function Preview() {
 
     return (
         <main>
-            <header className={styles.header}>
+            <header className="header w-full h-[357px] pt-[24px] rounded-b-[32px] bg-[#633CFF] sm:pt-[16px] sm:bg-white">
                 {!loadingProfile && profile && (
                     <NavBar
                         userName={`${profile.firstName} ${profile.lastName}`}
@@ -92,19 +88,19 @@ export default function Preview() {
                         setOpenCopiedToClipboardMessage={setOpenCopiedToClipboardMessage}
                     />
                 )}
-                <section className={styles.profile}>
+                <section className="profile absolute top-[208px] left-0 right-0 m-auto bg-white shadow-[0px_0px_32px_0px_rgba(0,0,0,0.10)] w-[349px] min-h-[569px] rounded-[24px] pt-[48px] pb-0 flex flex-col items-center sm:p-0 sm:rounded-none sm:w-full sm:inset-initial sm:top-[138px] sm:left-0 sm:right-0 sm:shadow-none">
                     <img
-                        className={styles.avatar}
+                        className="avatar w-[104px] h-[104px] rounded-full border-[4px] border-[#633CFF] mb-[25px]"
                         ref={avatarRef}
                         alt='profile avatar'
                     />
-                    <h1 className={styles.title}>
+                    <h1 className="title text-[#333] font-sans text-2xl font-bold leading-[150%] mb-[8px]">
                         {!loadingProfile && profile && `${profile.firstName} ${profile.lastName}`}
                     </h1>
-                    <h2 className={styles.email}>
+                    <h2 className="email text-[#737373] font-sans text-base font-normal leading-[150%] mb-[56px]">
                         {!loadingProfile && profile && profile.email}
                     </h2>
-                    <div className={styles.links}>
+                    <div className="links w-[237px] flex flex-col gap-[20px]">
                         {showLinks}
                     </div>
                 </section>

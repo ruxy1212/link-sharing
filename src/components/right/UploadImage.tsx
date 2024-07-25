@@ -1,5 +1,4 @@
 import { useState, useRef, ChangeEvent } from 'react';
-// import styles from '../../../styles/account/profile-tab/UploadImage.module.css';
 
 export default function UploadImage() {
     const [imageUrl, setImageUrl] = useState<string>('');
