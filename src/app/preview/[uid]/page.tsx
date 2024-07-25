@@ -81,16 +81,16 @@ const Preview = ({ params }: { params: { uid: string } }) => {
         getDownloadURL(reference)
             .then((url) => {
                 if (avatarRef.current) {
-                    avatarRef.current.src = url; console.log('ic seen');
+                    avatarRef.current.src = url;
                 }
             })
             .catch(() => {
                 if (avatarRef.current) {
-                    avatarRef.current.src = '/images/placeholder-image.png'; console.log('ic seenoo');
+                    avatarRef.current.src = '/images/placeholder-image.png'; 
                 }
             });
       }
-  }, [uid, userId]);
+  }, [userId]);
 
     useEffect(() => {
         console.log('Setting up onAuthStateChanged listener');
@@ -123,7 +123,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     return (
         <>
             <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
-                {uid ? (
+                {userId ? (
                     <>
                         <NavBar isUser={isAuth} />
                         <main className="flex justify-center items-center">
