@@ -1,61 +1,18 @@
+"use client";
+
 import {useState, memo} from 'react';
 import Image from 'next/image';
-// import styles from '@../styles/authorization/Authorization.module.css';
-import LoginForm from "@/components/LoginForm";
-// import CreateAccountForm from '../components/authorization/CreateAccountForm';
-import LoginMessageDialog from '../components/authorization/LoginMessageDialog';
+import Link from 'next/link';
 
-const Authorization = () => {
-    const [loginOrCreateAccount, setLoginOrCreateAccount] = useState(true);
-
-    const changePage = () => {
-        setLoginOrCreateAccount(!loginOrCreateAccount);
-    }
+const Index = () => {
 
     return(
         <>
-            <main className={styles.container}>
-                <Image src={'/icons/logo-devlinks-large.svg'} 
-                    width='0' height='0'
-                    alt='dev links'
-                    className={styles.logo}/>
-
-                    {loginOrCreateAccount ? 
-                        <section className={styles.login}>
-                            <h1 className={styles.login_title}>
-                                Login
-                            </h1>
-                            <p className={styles.login_desc}>
-                                Add your details below to get back into the app
-                            </p>
-                            <LoginForm/>
-                            <p className={styles.message}>
-                                Don't have an account? &nbsp;
-                                <button onClick={changePage} className={styles.messageButton}> 
-                                    Create account
-                                </button>
-                            </p>                    
-                        </section>                
-                    : <section className={styles.createAccount}>
-                        <h1 className={styles.createAccount_title}>
-                            Create account
-                        </h1>
-                        <p className={styles.createAccount_desc}>
-                            Let’s get you started sharing your links!
-                        </p>
-                        <CreateAccountForm setLoginOrCreateAccount={setLoginOrCreateAccount}/>
-                        <p className={styles.message}>
-                            Already have an account? &nbsp;
-                            <button onClick={changePage} className={styles.messageButton}> 
-                                Login
-                            </button>
-                        </p>
-                    </section>}
-
+            <main className="min-h-screen w-full flex justify-center items-center bg-dl-white">
+              <Link href="/login" className="flex-shrink-0 rounded-[8px] py-3 px-7 bg-dl-purple text-dl-white text-[1rem] font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]">Login</Link>
             </main>    
-            <LoginMessageDialog/>      
         </>
     )
 }
 
-export default memo(Authorization)
+export default Index;
