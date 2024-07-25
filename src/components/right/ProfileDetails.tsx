@@ -53,6 +53,7 @@ export default function ProfileDetails() {
             });
 
             setOpenSaveChangesMessage(true);
+            setLoading(false);  
         } catch (error) {
             console.error(error);
         } finally {
