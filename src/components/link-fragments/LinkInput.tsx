@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useContext, ChangeEvent, FocusEvent, InvalidEvent } from 'react';
 import { Context } from "@/hooks/context";
 import Image from 'next/image';
-// import styles from '../../../styles/account/links-tab/LinkInput.module.css';
 
 interface LinkInputProps {
     initialState: string;
@@ -80,7 +79,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
 
     return (
         <fieldset className="flex flex-col gap-1">
-            <label className="text-[#333] font-[var(--font)] text-xs font-normal leading-[150%]">
+            <label className="text-dl-black-gray font-instrument text-xs font-normal leading-[150%]">
                 Link
             </label>
             <div className="relative">
@@ -89,7 +88,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
                     alt=''
                     className="icon absolute top-0 bottom-0 my-auto left-4 w-4 object-contain" />
                 <input type='url'
-                    className="w-full h-12 border border-[#D9D9D9] rounded-lg px-4 py-3 pl-[44px] text-[#333] font-[var(--font)] text-[1rem] font-normal leading-[150%] hover:border-[#633CFF] hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] focus:outline-none focus:border-[#633CFF] focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
+                    className="w-full h-12 border border-dl-light-gray rounded-lg px-4 py-3 pl-[44px] text-dl-black-gray font-instrument text-base font-normal leading-[150%] hover:border-dl-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] focus:outline-none focus:border-dl-purple focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
                     name={'url'}
                     value={url}
                     onChange={handleChange}
@@ -99,10 +98,10 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
                     pattern="https://.*"
                     ref={inputRef}
                     required />
-                <p className="h-[40px] hidden justify-center items-center text-[#FF3939] font-[var(--font)] text-[0.75rem] font-normal leading-[150%] absolute right-[16px] bg-white top-0 bottom-0 my-auto" ref={emptyMessageRef}>
+                <p className="h-[40px] hidden justify-center items-center text-dl-red font-instrument text-xs font-normal leading-[150%] absolute right-4 bg-white top-0 bottom-0 my-auto" ref={emptyMessageRef}>
                     Can&apos;t be empty
                 </p>
-                <p className="h-[40px] hidden justify-center items-center text-[#FF3939] font-[var(--font)] text-[0.75rem] font-normal leading-[150%] absolute right-[16px] bg-white top-0 bottom-0 my-auto" ref={invalidUrlMessageRef}>
+                <p className="h-[40px] hidden justify-center items-center text-dl-red font-instrument text-xs font-normal leading-[150%] absolute right-4 bg-white top-0 bottom-0 my-auto" ref={invalidUrlMessageRef}>
                     Please check the URL
                 </p>
             </div>

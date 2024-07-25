@@ -16,7 +16,7 @@ const Login = () => {
                   className="w-[182.5px] h-auto object-contain"
                 />
                 <section className="bg-dl-white rounded-xl flex flex-col gap-2 p-0 md:p-10 w-full">
-                    <h1 className="login_title text-dl-black-gray text-2xl font-sans font-bold leading-[150%] md:text-3xl">
+                    <h1 className="text-dl-black-gray text-2xl font-sans font-bold leading-[150%] md:text-3xl">
                         Login
                     </h1>
                     <p className="text-dl-dark-gray text-base font-sans font-normal leading-[150%] mb-8">

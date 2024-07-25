@@ -57,7 +57,7 @@ export default function LoginForm() {
         placeholder='Enter your password'
         ref={password}
       />
-      <button className="flex-shrink-0 rounded-[8px] h-[46px] bg-dl-purple text-dl-white text-[1rem] font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]">
+      <button className="flex-shrink-0 rounded-[8px] h-[46px] bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]">
         {loading ? <CircularProgress className="text-dl-light-purple" color="secondary" /> : 'Login'}
       </button>
       <p className="hidden text-dl-red text-base md:text-center font-sans font-normal leading-[150%]" ref={errorMessageRef}>

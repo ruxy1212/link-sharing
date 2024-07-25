@@ -7,7 +7,7 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import PhoneLinkBox from '../PhoneLinkBox';
 import Image from 'next/image';
 import { DragDropContext, Droppable, Draggable } from  "react-beautiful-dnd";
-import { StrictModeDroppable } from './StrictModeDroppable';
+import { StrictModeDroppable } from "@/components/StrictModeDroppable";
 
 const PhoneMockup: FC = () => {
     const context = useContext(Context);
@@ -55,20 +55,20 @@ const PhoneMockup: FC = () => {
                     className="w-80 h-auto object-contain" />
                 {loadingProfile ? null : (
                     <Image
-                        src=""
-                        className="border-[4px] border-[#633CFF] w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px]"
+                        src={""}
+                        className="border-[4px] border-dl-purple w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px]"
                         ref={avatarRef}
                         style={profileDetails?.avatar ? {} : { visibility: 'hidden' }}
                         alt="User Avatar"
                     />
                 )}
                 {loadingProfile ? null : profileDetails?.firstName && (
-                    <h1 className="text-[#333] font-[var(--font)] text-[1.125rem] font-semibold leading-[150%] w-[80%] text-center bg-white absolute left-0 right-0 mx-auto top-[176px]">
+                    <h1 className="text-dl-black-gray font-instrument text-[1.125rem] font-semibold leading-[150%] w-[80%] text-center bg-white absolute left-0 right-0 mx-auto top-[176px]">
                         {profileDetails.firstName}&nbsp;{profileDetails.lastName}
                     </h1>
                 )}
                 {loadingProfile ? null : profileDetails?.email && (
-                    <h2 className="text-[#737373] font-[var(--font)] text-[0.875rem] font-normal leading-[150%] w-[80%] text-center bg-white absolute left-0 right-0 mx-auto top-[206px]">{profileDetails.email}</h2>
+                    <h2 className="text-dl-dark-gray font-instrument text-sm font-normal leading-[150%] w-[80%] text-center bg-white absolute left-0 right-0 mx-auto top-[206px]">{profileDetails.email}</h2>
                 )}
                 <div className={`bg-dl-white w-[245px] h-[320px] absolute bottom-[57px] left-0 right-0 mx-auto ${usersLinks.length>0?'':'animate-pulse'}`}>
                   <DragDropContext onDragEnd={onDragEnd}>
@@ -77,7 +77,7 @@ const PhoneMockup: FC = () => {
                           <div
                             {...provided.droppableProps}
                             ref={provided.innerRef}
-                            className="flex flex-col gap-[20px]"
+                            className="flex flex-col gap-5"
                           >
                             {usersLinks.map((item, index) => (
                               <Draggable key={item.id} draggableId={item.id} index={index}>

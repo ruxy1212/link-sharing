@@ -1,16 +1,15 @@
 "use client";
 
 import { useMemo, useState, useContext, useEffect, useRef, FormEvent } from 'react';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { Context } from "@/hooks/context";
 import { v4 as uuid } from 'uuid';
-import CustomizeLink from './CustomizeLink';
+import CustomizeLink from './link-fragments/CustomizeLink';
 import { db } from "@/firebase/Configuration"
 import { doc, updateDoc } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from  "react-beautiful-dnd";
-import { StrictModeDroppable } from './StrictModeDroppable';
+import { StrictModeDroppable } from "@/components/StrictModeDroppable";
+import Image from 'next/image';
 
 interface Link {
     id: string;
@@ -98,13 +97,13 @@ const CustomizeLinks: React.FC = () => {
             <form className="w-full bg-white rounded-xl" onSubmit={handleSubmit}>
               <div className="p-6 md:p-10 flex gap-10 flex-col">
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-[#333] font-[var(--font)] text-[2rem] font-bold leading-[150%]">Customize your links</h1>
-                  <p className="text-[#737373] font-[var(--font)] text-[1rem] font-normal leading-[150%]">
+                  <h1 className="text-dl-black-gray font-instrument text-3xl font-bold leading-[150%]">Customize your links</h1>
+                  <p className="text-dl-dark-gray font-instrument text-base font-normal leading-[150%]">
                     Add/edit/remove links below and then share all your profiles with the world
                   </p>
                 </div>
                 <fieldset className="flex flex-col gap-6">
-                    <button type='button' className="block w-full rounded-lg bg-transparent border border-[#633CFF] text-[#633CFF] font-[var(--font)] text-base font-semibold leading-[150%] mx-auto py-3 px-7 cursor-pointer hover:bg-[#EFEBFF] disabled:bg-[#cccccc] disabled:text-[#666666] disabled:border disabled:border-transparent disabled:cursor-not-allowed" onClick={addLink} ref={addLinkButton}>
+                    <button type='button' className="block w-full rounded-lg bg-transparent border border-dl-purple text-dl-purple font-instrument text-base font-semibold leading-[150%] mx-auto py-3 px-7 cursor-pointer hover:bg-dl-light-purple disabled:bg-dl-light-gray disabled:text-dl-dark-gray disabled:border disabled:border-transparent disabled:cursor-not-allowed" onClick={addLink} ref={addLinkButton}>
                         + Add new link
                     </button>
                     {showLinks.length ? (
@@ -134,12 +133,12 @@ const CustomizeLinks: React.FC = () => {
                       </StrictModeDroppable>
                     </DragDropContext>
                     ) :
-                        <div className="w-full px-5 py-10 rounded-xl bg-[#FAFAFA] flex flex-col items-center justify-center gap-6">
-                            <img src={'/images/illustration-empty.svg'} alt="add link" className="w-[249px] object-contain" />
-                            <h1 className="text-[#333] text-center font-[var(--font)] text-[2rem] font-bold leading-[150%]">
+                        <div className="w-full px-5 py-10 rounded-xl bg-dl-white-gray flex flex-col items-center justify-center gap-6">
+                            <Image src={'/images/illustration-empty.svg'} alt="add link" className="w-[249px] object-contain" height={0} width={0} />
+                            <h1 className="text-dl-black-gray text-center font-instrument text-3xl font-bold leading-[150%]">
                                 Let&apos;s get you started
                             </h1>
-                            <p className="text-[#737373] text-center font-[var(--font)] text-[1rem] font-normal leading-[150%]">
+                            <p className="text-dl-dark-gray text-center font-instrument text-base font-normal leading-[150%]">
                                 Use the “Add new link” button to get started.
                                 Once you have more than one link, you can reorder and edit them.
                                 We’re here to help you share your profiles with everyone!
@@ -148,8 +147,8 @@ const CustomizeLinks: React.FC = () => {
                     }
                 </fieldset>
               </div>
-              <div className="w-full p-4 md:py-6 border-t bg-dl-white border-[#D9D9D9] md:px-10 flex justify-end items-center sticky bottom-0 rounded-b-xl" style={{ zIndex: '9999'}}>
-                  <button className="w-[91px] h-[46px] rounded-[8px] bg-[#633CFF] text-white font-[var(--font)] text-[1rem] font-semibold leading-[150%] cursor-pointer flex justify-center items-center hover:bg-[#BEADFF] hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]" type="submit">
+              <div className="w-full p-4 md:py-6 border-t bg-dl-white border-dl-light-gray md:px-10 flex justify-end items-center sticky bottom-0 rounded-b-xl" style={{ zIndex: '9999'}}>
+                  <button className="w-[91px] h-[46px] rounded-[8px] bg-dl-purple text-white font-instrument text-base font-semibold leading-[150%] cursor-pointer flex justify-center items-center hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]" type="submit">
                       {loading ? <CircularProgress className="text-dl-light-purple" color="secondary" size='33px' /> : 'Save'}
                   </button>
               </div>

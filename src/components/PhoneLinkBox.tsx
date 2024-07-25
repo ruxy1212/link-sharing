@@ -1,6 +1,7 @@
 import { useDrop, useDrag, DropTargetMonitor, DragSourceMonitor } from "react-dnd";
 import { useContext, useEffect, useRef, FC } from 'react';
 import { Context } from "@/hooks/context";
+import Image from "next/image";
 
 interface Link {
     id: string;
@@ -30,18 +31,16 @@ const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link }) => {
         if (arrowRef.current) {
             arrowRef.current.src = platformTitle === 'Frontend Mentor' ? '/icons/icon-arrow-right-dark.svg' : '/icons/icon-arrow-right.svg';
         }
-    }, [link]);
+    }, [link, platformTitle]);
 
     return (
         <div
-            className={`w-full h-[44px] rounded-[8px] flex items-center px-[16px] gap-[8px] font-sans text-[0.75rem] font-normal leading-[150%] relative cursor-grab no-underline ${'bg-dl-'+platform} ${platformTitle === 'Frontend Mentor'?'text-dl-black-gray border border-dl-dark-gray':'text-dl-white border-dl-'+platform}`}
+            className={`w-full h-[44px] rounded-lg flex items-center px-4 gap-2 font-sans text-xs font-normal leading-[150%] relative cursor-grab no-underline ${'bg-dl-'+platform} ${platformTitle === 'Frontend Mentor'?'text-dl-black-gray border border-dl-dark-gray':'text-dl-white border-dl-'+platform}`}
             ref={linkRef}
-            // data-handler-id={handlerId}
-            // style={isDragging ? { opacity: 0 } : { opacity: 1 }}
         >
-            <img className="w-[16px] object-contain" src={`/icons/icon-link-boxes/icon-${platform}-link-box.svg`} alt={`${platformTitle} icon`} />
+            <Image className="w-4 object-contain" height={0} width={0} src={`/icons/icon-link-boxes/icon-${platform}-link-box.svg`} alt={`${platformTitle} icon`} />
             {platformTitle}
-            <img className="absolute top-0 bottom-0 right-[16px] m-auto w-[16px] object-contain" ref={arrowRef} alt="arrow icon" />
+            <Image src={""} className="absolute top-0 bottom-0 right-4 m-auto w-4 object-contain" ref={arrowRef} alt="arrow icon" height={0} width={0} />
         </div>
     );
 };

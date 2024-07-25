@@ -90,7 +90,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                 }
             });
       }
-  }, [uid]);
+  }, [uid, userId]);
 
     useEffect(() => {
         console.log('Setting up onAuthStateChanged listener');
@@ -129,18 +129,18 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                         <main className="flex justify-center items-center">
                           <section className="relative -top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 md:py-12 md:px-14 flex flex-col items-center">
                             <Image
-                                className="avatar w-[104px] h-[104px] rounded-full border-[4px] border-[#633CFF] mb-[25px]"
+                                className="avatar w-[104px] h-[104px] rounded-full border-[4px] border-dl-purple mb-[25px]"
                                 ref={avatarRef}
                                 alt='profile avatar'
-                                src=""
+                                src={""} height={0} width={0}
                             />
-                            <h1 className="title text-[#333] font-sans text-2xl font-bold leading-[150%] mb-[8px]">
+                            <h1 className="title text-dl-black-gray font-sans text-2xl font-bold leading-[150%] mb-[8px]">
                                 {!loadingProfile && profile && `${profile.firstName} ${profile.lastName}`}
                             </h1>
-                            <h2 className="email text-[#737373] font-sans text-base font-normal leading-[150%] mb-[56px]">
+                            <h2 className="email text-dl-dark-gray font-sans text-base font-normal leading-[150%] mb-[56px]">
                                 {!loadingProfile && profile && profile.email}
                             </h2>
-                            <div className="links w-[237px] flex flex-col gap-[20px]">
+                            <div className="links w-[237px] flex flex-col gap-5">
                                 {showLinks}
                             </div>
                           </section>

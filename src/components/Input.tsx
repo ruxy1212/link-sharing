@@ -81,7 +81,7 @@ const Input = forwardRef<InputRef, InputProps>(({ label, type, icon, error, plac
 
     return (
         <fieldset className="flex flex-col gap-1 w-full">
-            <label className="text-dl-black-gray text-sm font-instrument font-normal leading-[150%] sm:text-[0.75rem]" ref={labelRef}>
+            <label className="text-dl-black-gray text-sm font-instrument font-normal leading-[150%] sm:text-xs" ref={labelRef}>
                 {label}
             </label>
             <div className="relative">
@@ -99,10 +99,10 @@ const Input = forwardRef<InputRef, InputProps>(({ label, type, icon, error, plac
                     width='0' height='0'
                     alt=''
                     className="icon absolute top-0 bottom-0 m-auto left-4 w-4 object-contain" />
-                <span className="hidden h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-[16px]" ref={errorMessageRef}>
+                <span className="hidden h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-4" ref={errorMessageRef}>
                     {error}
                 </span>
-                <span className="hidden h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-[16px]" ref={emptyMessageRef}>
+                <span className="hidden h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-4" ref={emptyMessageRef}>
                     Can&apos;t be empty
                 </span>
             </div>

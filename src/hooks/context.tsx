@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useState, useReducer, ReactNode } from 'react';
-import linksReducer from './linksReducer';
+import linksReducer from './linksManager';
 import { AppContextType, LinksState, LinksAction } from './types';
 
 export const Context = createContext<AppContextType | undefined>(undefined);

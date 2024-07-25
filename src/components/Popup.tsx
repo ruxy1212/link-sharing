@@ -43,7 +43,7 @@ export default function Popup() {
     }, [openLoginMessage, setOpenLoginMessage, router]);
 
     return (
-        <dialog className="hidden text-center w-52 rounded-xl bg-dl-black-gray shadow-[0px_0px_32px_0px_rgba(0,0,0,0.10)] py-3 px-6 text-[#FAFAFA] text-[1rem] font-sans font-semibold leading-[150%] fixed bottom-[-60px] left-0 right-0 m-auto transition-all" ref={dialogRef}>
+        <dialog className="hidden text-center w-52 rounded-xl bg-dl-black-gray shadow-[0px_0px_32px_0px_rgba(0,0,0,0.10)] py-3 px-6 text-dl-white-gray text-base font-sans font-semibold leading-[150%] fixed bottom-[-60px] left-0 right-0 m-auto transition-all" ref={dialogRef}>
             Please log in!
         </dialog>
     );

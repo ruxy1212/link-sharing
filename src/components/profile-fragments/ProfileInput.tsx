@@ -63,7 +63,7 @@ const Input: FC<InputProps> = ({ type, label, name, placeholder, ...rest }) => {
 
     return (
       <fieldset className="w-full flex justify-between items-center flex-wrap">
-          <label className="text-[#737373] font-instrument text-xs md:text-base font-normal leading-[150%] w-full md:w-1/2 lg:w-5/12" htmlFor={label}>
+          <label className="text-dl-dark-gray font-instrument text-xs md:text-base font-normal leading-[150%] w-full md:w-1/2 lg:w-5/12" htmlFor={label}>
               {label}
           </label>
           <div className="w-full md:w-1/2 lg:w-7/12 relative">
@@ -73,14 +73,14 @@ const Input: FC<InputProps> = ({ type, label, name, placeholder, ...rest }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   onInvalid={handleInvalid}
-                  className="w-full h-[48px] bg-white px-[16px] rounded-[8px] font-instrument text-[1rem] text-[#333333] border border-[#D9D9D9] leading-[150%] outline-none focus:border-[#633CFF] focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
+                  className="w-full h-[48px] bg-white px-4 rounded-[8px] font-instrument text-base text-dl-black-gray border border-dl-light-gray leading-[150%] outline-none focus:border-dl-purple focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
                   placeholder={placeholder}
                   id={label}
                   ref={inputRef}
                   name={name}
                   {...rest}
               />
-              <div className="hidden absolute h-[15px] top-0 bottom-0 my-auto right-[16px] text-[#FF3939] text-[0.75rem] font-instrument font-normal leading-[150%]" ref={errorMessageRef}>
+              <div className="hidden absolute h-[15px] top-0 bottom-0 my-auto right-4 text-dl-red text-xs font-instrument font-normal leading-[150%]" ref={errorMessageRef}>
                   Can&apos;t be empty
               </div>
           </div>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { db } from "@/firebase/Configuration";
 import { doc } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
+import CopiedToClipboardMessage from '@/components/Copier';
 
 export default function NavBar({isUser}:{isUser:boolean}) {
   const context = useContext(Context);
@@ -20,14 +21,14 @@ export default function NavBar({isUser}:{isUser:boolean}) {
     }
 
     const handleShare = () => {
-        const url = `${window.location.origin}/${uid}`;
+        const url = `${window.location.origin}/preview/${uid}`;
         navigator.clipboard.writeText(url);
         setOpenCopiedToClipboardMessage(true);
     }
 
     return (
-      <header className="w-full p-0 sm:p-4 md:px-6 md:py-4 lg:py-6 h-[346px] rounded-b-8 bg-dl-white md:bg-dl-purple">
-        <nav className="w-full bg-dl-white rounded-xl flex row-reverse justify-between items-center gap-6 p-4">
+      <header className="w-full p-0 sm:p-4 md:px-6 md:py-4 lg:py-6 h-[346px] rounded-b-3xl bg-dl-white md:bg-dl-purple">
+        <nav className="w-full bg-dl-white rounded-xl flex flex-row-reverse justify-between items-center gap-6 p-4">
             <button className="flex-shrink-0 rounded-lg py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple" onClick={handleShare}>
                 Share Link
             </button>
@@ -35,6 +36,7 @@ export default function NavBar({isUser}:{isUser:boolean}) {
                 Back to Editor
             </button>}
         </nav>
+        <CopiedToClipboardMessage/>
       </header>
     );
 }

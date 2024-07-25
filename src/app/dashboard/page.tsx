@@ -7,10 +7,12 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from "@/firebase/Configuration";
 import Alert from "@/components/Alert";
 import { CircularProgress } from '@mui/material';
-import TabsContainer from '@/components/tabs/TabsContainer';
+import TabsContainer from '@/components/TabsContainer';
+import { useRouter } from 'next/navigation';
 
 const Dashboard: React.FC = () => {
     const context = useContext(Context);
+    const router = useRouter();
 
     if (!context) {
         throw new Error('Account must be used within a Context.Provider');
@@ -27,6 +29,7 @@ const Dashboard: React.FC = () => {
                 setUid(currentUser.uid);
             } else {
                 console.log('No current user');
+                router.push('/login');
             }
         });
 
@@ -34,7 +37,7 @@ const Dashboard: React.FC = () => {
             console.log('Cleaning up onAuthStateChanged listener');
             unsubscribe();
         };
-    }, [setUid]);
+    }, [setUid, router]);
 
     useEffect(() => {
         console.log(`Current tab is now ${currentTab}`);

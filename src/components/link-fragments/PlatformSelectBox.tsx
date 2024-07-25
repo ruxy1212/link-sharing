@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext, useMemo, FC, MouseEvent } from 'react';
 import { Context } from "@/hooks/context";
 import platforms from '@/data';
-// import styles from '../../../styles/account/links-tab/PlatformSelectBox.module.css';
+import Image from 'next/image';
 
 // Define prop types
 interface PlatformSelectBoxProps {
@@ -43,8 +43,8 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({ initialState, zIndex, li
             const platformIcon = platform.toLowerCase().replace(' ', '').replace('.', '');
 
             return (
-                <div className={`platformMask popup_option text-[#333] py-3 font-[var(--font)] text-[1rem] font-normal leading-[150%] flex items-center gap-[12px] cursor-pointer hover:text-[#633CFF] ${i==platforms.length-1?'':'border-b border-b-dl-dark-gray'}`} data-option={platform} key={platform}>
-                    <span className="w-[16px] h-[16px] mask-size-[16px_16px] -webkit-mask-size-[16px_16px] mask-repeat-no-repeat -webkit-mask-repeat-no-repeat bg-[#737373]" style={{
+                <div className={`platformMask popup_option text-dl-black-gray py-3 font-instrument text-base font-normal leading-[150%] flex items-center gap-3 cursor-pointer hover:text-dl-purple ${i==platforms.length-1?'':'border-b border-b-dl-dark-gray'}`} data-option={platform} key={platform}>
+                    <span className="w-4 h-4 mask-size-[16px_16px] -webkit-mask-size-[16px_16px] mask-repeat-no-repeat -webkit-mask-repeat-no-repeat bg-dl-dark-gray" style={{
                         WebkitMaskImage: `url('/icons/select-icons/icon-${platformIcon}.svg')`,
                         maskImage: `url('/icons/select-icons/icon-${platformIcon}.svg')`
                     }}>
@@ -80,17 +80,17 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({ initialState, zIndex, li
 
     return (
         <fieldset className="flex flex-col gap-1" name={'platform'} data-platform={platform}>
-            <label className="text-[#333] font-[var(--font)] text-[0.75rem] font-normal leading-[150%]">
+            <label className="text-dl-black-gray font-instrument text-xs font-normal leading-[150%]">
                 Platform
             </label>
 
-            <div className="flex items-center gap-[12px] px-4 w-full h-12 rounded-lg bg-white border border-[#D9D9D9] text-[#333] font-[var(--font)] text-base font-normal leading-[150%] cursor-pointer relative hover:border-[#633CFF] hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]" onClick={handlePopup} ref={selectRef} style={{ zIndex }}>
-                <img src={platformIcon} className="w-4 h-4" />
+            <div className="flex items-center gap-3 px-4 w-full h-12 rounded-lg bg-white border border-dl-light-gray text-dl-black-gray font-instrument text-base font-normal leading-[150%] cursor-pointer relative hover:border-dl-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]" onClick={handlePopup} ref={selectRef} style={{ zIndex }}>
+                <Image height={20} width={20} alt="icon" src={platformIcon} className="w-4 h-4" />
                 {platform}
                 {open ? 
-                    <img src={'/icons/icon-chevron-up.svg'} className= "w-4 object-contain absolute top-0 bottom-0 my-auto right-[16px]" /> : 
-                    <img src={'/icons/icon-chevron-down.svg'} className= "w-4 object-contain absolute top-0 bottom-0 my-auto right-[16px]" />}
-                <div className="hidden w-full h-[245px] overflow-y-auto px-[16px] py-[12px] bg-white border border-[#D9D9D9] shadow-[0px_0px_32px_0px_rgba(0,0,0,0.10)] rounded-xl absolute top-[64px] left-0" onClick={handleOption} ref={popupRef}>
+                    <Image  alt="down" src={'/icons/icon-chevron-up.svg'} height={20} width={20} className= "w-4 object-contain absolute top-0 bottom-0 my-auto right-4" /> : 
+                    <Image  alt="up" src={'/icons/icon-chevron-down.svg'} height={20} width={20} className= "w-4 object-contain absolute top-0 bottom-0 my-auto right-4" />}
+                <div className="hidden w-full h-[245px] overflow-y-auto px-4 py-[12px] bg-white border border-dl-light-gray shadow-[0px_0px_32px_0px_rgba(0,0,0,0.10)] rounded-xl absolute top-[64px] left-0" onClick={handleOption} ref={popupRef}>
                     {allPlatforms}
                 </div>
             </div>

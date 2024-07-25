@@ -1,4 +1,4 @@
-import Input from './Input';
+import Input from './ProfileInput';
 import { useContext } from 'react';
 import { Context } from "@/hooks/context";
 import { db } from "@/firebase/Configuration";
@@ -18,7 +18,7 @@ export default function BasicDetails() {
 
 
     return(
-        <fieldset className="rounded-lg p-5 bg-[#FAFAFA] flex flex-col justify-center gap-3">
+        <fieldset className="rounded-lg p-5 bg-dl-white-gray flex flex-col justify-center gap-3">
             <Input type='text' label="First name*" name='firstName' placeholder='e.g. John' value={loadingProfile ? '' : profileDetails?.firstName} required/>
             <Input type='text' label="Last name*" name='lastName' placeholder='e.g. Appleseed' value={loadingProfile ? '' : profileDetails?.lastName} required/>
             <Input type='email' label="Email" name='email' placeholder='e.g. email@example.com' value={loadingProfile ? '' : profileDetails?.email} required/>
