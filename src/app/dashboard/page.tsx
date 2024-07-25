@@ -3,8 +3,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { Context } from '@/hooks/context';
 import NavBar from "@/layouts/navbar";
-import LinksTab from "@/components/tabs/LinksTab";
-import ProfileTab from "@/components/tabs/ProfileTab";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from "@/firebase/Configuration";
 import Alert from "@/components/Alert";

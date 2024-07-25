@@ -12,9 +12,7 @@ export type LinksAction =
   | { type: 'add link'; link: Link }
   | { type: 'remove link'; linkId: string }
   | { type: 'update link'; linkId: string; platform?: string; link?: string }
-  | { type: 're-order links' }
-  | { type: 'sort links'; indices: { removed: Link; index: number } }
-  | { type: 'pre-order links'; indices: { hoverLink: number; dropLink: number } };
+  | { type: 're-order links'; indices: { removed: Link; index: number } };
 
 export interface AppContextType {
   uid: string;

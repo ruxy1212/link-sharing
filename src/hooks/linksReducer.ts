@@ -37,11 +37,11 @@ const linksReducer = (usersLinks: LinksState = [], action: LinksAction): LinksSt
                 return 0;
           })
 
-        case 'sort links':
+        case 're-order links':
           const { removed, index } = action.indices;
-          const linksCopy = [...usersLinks];
-          linksCopy.splice(index, 0, removed);
-          return linksCopy;
+          const reorderedLinks = [...usersLinks];
+          reorderedLinks.splice(index, 0, removed);
+          return reorderedLinks;
 
           // dispatch({ type: 'sort links', removed: removed, index: result.destination.index });
 

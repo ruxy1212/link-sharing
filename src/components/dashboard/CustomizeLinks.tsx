@@ -105,15 +105,9 @@ const CustomizeLinks: React.FC = () => {
         return;
       }
 
-      // const updatedItems = Array.from(usersLinks);
       const [removed] = usersLinks.splice(result.source.index, 1);
-      dispatch({ type: 'sort links', removed: removed, index: result.destination.index });
-      // usersLinks.splice(result.destination.index, 0, removed);
+      dispatch({ type: 're-order links', indices: {removed: removed, index: result.destination.index }});
 
-      // setItems(updatedItems);
-      // console.log(updatedItems);
-      // usersLinks = updatedItems
-      // dispatch({ type: 're-order links' });
     };
 
     useEffect(() => {
