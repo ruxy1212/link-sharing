@@ -27,7 +27,7 @@ export default function NavBar({isUser}:{isUser:boolean}) {
     }
 
     return (
-      <header className="w-full p-0 sm:p-4 md:px-6 md:py-4 lg:py-6 h-[346px] rounded-b-3xl bg-dl-white md:bg-dl-purple">
+      <header className="w-full p-0 sm:p-4 md:px-6 md:py-4 lg:py-6 h-[346px] rounded-b-3xl bg-dl-white sm:bg-dl-purple">
         <nav className="w-full bg-dl-white rounded-xl flex flex-row-reverse justify-between items-center gap-6 p-4">
             <button className="flex-shrink-0 rounded-lg py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple" onClick={handleShare}>
                 Share Link

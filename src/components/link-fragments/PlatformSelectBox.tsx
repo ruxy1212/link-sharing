@@ -40,16 +40,16 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({ initialState, zIndex, li
 
     const allPlatforms = useMemo(() => {
         return platforms.map((platform, i) => {
-            const platformIcon = platform.toLowerCase().replace(' ', '').replace('.', '');
+            const platformIcon = platform[0].toLowerCase().replace(' ', '').replace('.', '');
 
             return (
-                <div className={`platformMask popup_option text-dl-black-gray py-3 font-instrument text-base font-normal leading-[150%] flex items-center gap-3 cursor-pointer hover:text-dl-purple ${i==platforms.length-1?'':'border-b border-b-dl-dark-gray'}`} data-option={platform} key={platform}>
+                <div className={`platformMask popup_option text-dl-black-gray py-3 font-instrument text-base font-normal leading-[150%] flex items-center gap-3 cursor-pointer hover:text-dl-purple ${i==platforms.length-1?'':'border-b border-b-dl-dark-gray'}`} data-option={platform[0]} key={platform[0]}>
                     <span className="w-4 h-4 mask-size-[16px_16px] -webkit-mask-size-[16px_16px] mask-repeat-no-repeat -webkit-mask-repeat-no-repeat bg-dl-dark-gray" style={{
                         WebkitMaskImage: `url('/icons/select-icons/icon-${platformIcon}.svg')`,
                         maskImage: `url('/icons/select-icons/icon-${platformIcon}.svg')`
                     }}>
                     </span>
-                    {platform}
+                    {platform[0]}
                 </div>
             )
         })

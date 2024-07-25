@@ -12,6 +12,8 @@ export const MyAppProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [openLoginMessage, setOpenLoginMessage] = useState<boolean>(false);  // a dialog box that appears that will give the user a message
     const [openSaveChangesMessage, setOpenSaveChangesMessage] = useState<boolean>(false);
     const [openCopiedToClipboardMessage, setOpenCopiedToClipboardMessage] = useState<boolean>(false);
+    const [openCustomPopup, setOpenCustomPopup] = useState<boolean>(false);
+    const [customPopupMessage, setCustomPopupMessage] = useState<string>('');
 
     const value: AppContextType = {
         uid,
@@ -20,6 +22,10 @@ export const MyAppProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         dispatch,
         openLoginMessage,
         setOpenLoginMessage,
+        openCustomPopup,
+        setOpenCustomPopup,
+        customPopupMessage,
+        setCustomPopupMessage,
         openSaveChangesMessage,
         setOpenSaveChangesMessage,
         openCopiedToClipboardMessage,

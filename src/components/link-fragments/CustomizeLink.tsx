@@ -52,7 +52,7 @@ const CustomizeLink: React.FC<CustomizeLinkProps> = ({ link, index }) => {
                 Remove
             </button>
             <PlaformSelectBox initialState={link.platform} zIndex={100 - index} linkId={link.id} />
-            <LinkInput initialState={link.link} linkId={link.id} />
+            <LinkInput initialState={link.link} linkId={link.id} platform={link.platform} />
         </fieldset>
     );
 }

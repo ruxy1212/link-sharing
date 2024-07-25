@@ -19,23 +19,15 @@ interface Link {
 }
 
 const CustomizeLinks: React.FC = () => {
-  const useMediaQuery = true;
     const context = useContext(Context);
 
     if (!context) {
         throw new Error('CustomizeLinks must be used within a Context.Provider');
     }
 
-    const { uid, usersLinks, dispatch, setOpenSaveChangesMessage } = context;
-    const tablet = true;
+    const { uid, usersLinks, dispatch, setOpenSaveChangesMessage, setCustomPopupMessage, setOpenCustomPopup } = context;
     const [loading, setLoading] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
     const addLinkButton = useRef<HTMLButtonElement>(null);
-
-    const handleClosePopup = () => {
-        setIsOpen(false);
-        localStorage.setItem('linksTooltip', 'true');
-    };
 
     const addLink = async () => {
         const newLink: Link = {
@@ -58,7 +50,9 @@ const CustomizeLinks: React.FC = () => {
                 return false;
         });
         if (!hasDuplicate) {
-            alert('You cannot have duplicate platform links');
+            // alert('You cannot have duplicate platform links');
+            setCustomPopupMessage('You cannot have duplicate platform links');
+            setOpenCustomPopup(true);
             return;
         }
 
@@ -147,7 +141,7 @@ const CustomizeLinks: React.FC = () => {
                     }
                 </fieldset>
               </div>
-              <div className="w-full p-4 md:py-6 border-t bg-dl-white border-dl-light-gray md:px-10 flex justify-end items-center sticky bottom-0 rounded-b-xl" style={{ zIndex: '9999'}}>
+              <div className="w-full p-4 md:py-6 border-t bg-dl-white border-dl-light-gray md:px-10 flex justify-end items-center bottom-0 rounded-b-xl" style={{ zIndex: '9999'}}>
                   <button className="w-[91px] h-[46px] rounded-[8px] bg-dl-purple text-white font-instrument text-base font-semibold leading-[150%] cursor-pointer flex justify-center items-center hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]" type="submit">
                       {loading ? <CircularProgress className="text-dl-light-purple" color="secondary" size='33px' /> : 'Save'}
                   </button>

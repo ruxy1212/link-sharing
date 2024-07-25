@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect, useContext, ChangeEvent, FocusEvent, InvalidEvent } from 'react';
 import { Context } from "@/hooks/context";
+import platforms from "@/data";
 import Image from 'next/image';
 
 interface LinkInputProps {
     initialState: string;
     linkId: string;
+    platform: string;
 }
 
-const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
+const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId, platform }) => {
     const context = useContext(Context);
 
     if (!context) {
@@ -20,13 +22,18 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
     const emptyMessageRef = useRef<HTMLParagraphElement>(null);
     const invalidUrlMessageRef = useRef<HTMLParagraphElement>(null);
 
-    const isValidUrl = (url: string): boolean => {
-        try {
-            new URL(url);
-            return true;
-        } catch (error) {
-            return false;
-        }
+    const isValidUrl = (url: string, platform: string): boolean => {
+      const [_, domain, usernameFormat] = platforms.find((p) => p[0] === platform) || [];
+      if (!domain || !usernameFormat) {
+        return false;
+      }
+    
+      try {
+        const urlObj = new URL(url); console.log('in',urlObj);
+        return urlObj.hostname.includes(domain) && urlObj.href.includes(usernameFormat);
+      } catch (error) {
+        return false;
+      }
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +43,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const isEmpty = e.target.validity.valueMissing;
-        const isValidLink = isValidUrl(url);
+        const isValidLink = isValidUrl(url, platform);
 
         if (isEmpty) {
             if (emptyMessageRef.current) emptyMessageRef.current.style.display = 'flex';
@@ -102,7 +109,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
                     Can&apos;t be empty
                 </p>
                 <p className="h-[40px] hidden justify-center items-center text-dl-red font-instrument text-xs font-normal leading-[150%] absolute right-4 bg-white top-0 bottom-0 my-auto" ref={invalidUrlMessageRef}>
-                    Please check the URL
+                    {`Invalid ${platform} URL`}
                 </p>
             </div>
         </fieldset>
@@ -110,3 +117,6 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId }) => {
 };
 
 export default LinkInput;
+
+
+// Please check the URL

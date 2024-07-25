@@ -16,6 +16,10 @@ export type LinksAction =
 
 export interface AppContextType {
   uid: string;
+  openCustomPopup: boolean;
+  setOpenCustomPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  customPopupMessage: string;
+  setCustomPopupMessage: React.Dispatch<React.SetStateAction<string>>;
   setUid: React.Dispatch<React.SetStateAction<string>>;
   usersLinks: LinksState;
   dispatch: React.Dispatch<LinksAction>;

@@ -10,6 +10,7 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import ProfileTab from './ProfileTab';
 import LoadingLink from './LoadingLink';
 import LinksTab from './LinksTab';
+import CustomAlert from './CustomAlert';
 
 export default function TabsContainer({currentTab}: {currentTab: string}) {
   const context = useContext(Context);
@@ -44,6 +45,7 @@ export default function TabsContainer({currentTab}: {currentTab: string}) {
           <ProfileTab />
         }
       </div>
+      <CustomAlert />
     </div>
   );
 }

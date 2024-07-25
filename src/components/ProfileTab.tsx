@@ -75,7 +75,7 @@ export default function ProfileDetails() {
               <BasicDetails />
             </div>
           </div>
-          <div className="w-full p-4 md:py-6 border-t bg-dl-white border-dl-light-gray md:px-10 flex justify-end items-center sticky bottom-0 rounded-b-xl" style={{ zIndex: '9999'}}>
+          <div className="w-full p-4 md:py-6 border-t bg-dl-white border-dl-light-gray md:px-10 flex justify-end items-center bottom-0 rounded-b-xl" style={{ zIndex: '9999'}}>
               <button className="w-[91px] h-[46px] rounded-[8px] bg-dl-purple text-white font-instrument text-base font-semibold leading-[150%] cursor-pointer flex justify-center items-center hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]" type="submit">
                   {loading ? <CircularProgress className="text-dl-light-purple" color="secondary" size='33px' /> : 'Save'}
               </button>
