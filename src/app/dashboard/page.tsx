@@ -1,68 +1,70 @@
-"use client";
+'use client'
 
-import { useState, useContext, useEffect } from 'react';
-import { Context } from '@/hooks/context';
-import NavBar from "@/layouts/navbar";
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from "@/firebase/Configuration";
-import Alert from "@/components/Alert";
-import { CircularProgress } from '@mui/material';
-import TabsContainer from '@/components/TabsContainer';
-import { useRouter } from 'next/navigation';
+import { useState, useContext, useEffect } from 'react'
+import { Context } from '@/hooks/context'
+import NavBar from '@/layouts/navbar'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '@/firebase/Configuration'
+import Alert from '@/components/Alert'
+import { CircularProgress } from '@mui/material'
+import TabsContainer from '@/components/TabsContainer'
+import { useRouter } from 'next/navigation'
 
 const Dashboard: React.FC = () => {
-    const context = useContext(Context);
-    const router = useRouter();
+  const context = useContext(Context)
+  const router = useRouter()
 
-    if (!context) {
-        throw new Error('Account must be used within a Context.Provider');
+  if (!context) {
+    throw new Error('Account must be used within a Context.Provider')
+  }
+
+  const { uid, setUid } = context
+  const [currentTab, setCurrentTab] = useState<string>('links')
+
+  useEffect(() => {
+    console.log('Setting up onAuthStateChanged listener')
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        console.log(`Setting UID to ${currentUser.uid}`)
+        setUid(currentUser.uid)
+      } else {
+        console.log('No current user')
+        router.push('/login')
+      }
+    })
+
+    return () => {
+      console.log('Cleaning up onAuthStateChanged listener')
+      unsubscribe()
     }
+  }, [setUid, router])
 
-    const { uid, setUid } = context;
-    const [currentTab, setCurrentTab] = useState<string>('links');
+  useEffect(() => {
+    console.log(`Current tab is now ${currentTab}`)
+  }, [currentTab])
 
-    useEffect(() => {
-        console.log('Setting up onAuthStateChanged listener');
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser) {
-                console.log(`Setting UID to ${currentUser.uid}`);
-                setUid(currentUser.uid);
-            } else {
-                console.log('No current user');
-                router.push('/login');
-            }
-        });
-
-        return () => {
-            console.log('Cleaning up onAuthStateChanged listener');
-            unsubscribe();
-        };
-    }, [setUid, router]);
-
-    useEffect(() => {
-        console.log(`Current tab is now ${currentTab}`);
-    }, [currentTab]);
-
-    return (
-        <>
-            <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
-                {uid ? (
-                    <>
-                        <NavBar currentTab={currentTab} setCurrentTab={setCurrentTab} />
-                        <TabsContainer currentTab={currentTab} />
-                    </>
-                ) : (
-                    <div className="w-full h-screen flex justify-center items-center">
-                      <span className="h-12">
-                        <CircularProgress className="text-dl-light-purple" color="secondary" />
-                      </span>
-                    </div>
-                )}
-            </main>
-            <Alert />
-        </>
-    );
+  return (
+    <>
+      <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
+        {uid ? (
+          <>
+            <NavBar currentTab={currentTab} setCurrentTab={setCurrentTab} />
+            <TabsContainer currentTab={currentTab} />
+          </>
+        ) : (
+          <div className="w-full h-screen flex justify-center items-center">
+            <span className="h-12">
+              <CircularProgress
+                className="text-dl-light-purple"
+                color="secondary"
+              />
+            </span>
+          </div>
+        )}
+      </main>
+      <Alert />
+    </>
+  )
 }
 
-export default Dashboard;
-
+export default Dashboard

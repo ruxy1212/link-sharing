@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,34 +11,90 @@ body {
   border-width: 0;
 }
 
-  .bg-dl-github { background-color: #1A1A1A }
-  .bg-dl-frontendmentor { background-color: #FFFFFF }
-  .bg-dl-twitter { background-color: #43B7E9 }
-  .bg-dl-linkedin { background-color: #2D68FF }
-  .bg-dl-youtube { background-color: #EE3939 }
-  .bg-dl-facebook { background-color: #2442AC }
-  .bg-dl-twitch { background-color: #EE3FC8 }
-  .bg-dl-devto { background-color: #333333 }
-  .bg-dl-codewars { background-color: #8A1A50 }
-  .bg-dl-codepen { background-color: #1E1F26 }
-  .bg-dl-freecodecamp { background-color: #302267 }
-  .bg-dl-gitlab { background-color: #EB4925 }
-  .bg-dl-hashnode { background-color: #0330D1 }
-  .bg-dl-stackoverflow { background-color: #EC7100 }
-  .border-dl-github { border-color: #1A1A1A }
-  .border-dl-frontendmentor { border-color: #FFFFFF }
-  .border-dl-twitter { border-color: #43B7E9 }
-  .border-dl-linkedin { border-color: #2D68FF }
-  .border-dl-youtube { border-color: #EE3939 }
-  .border-dl-facebook { border-color: #2442AC }
-  .border-dl-twitch { border-color: #EE3FC8 }
-  .border-dl-devto { border-color: #333333 }
-  .border-dl-codewars { border-color: #8A1A50 }
-  .border-dl-codepen { border-color: #1E1F26 }
-  .border-dl-freecodecamp { border-color: #302267 }
-  .border-dl-gitlab { border-color: #EB4925 }
-  .border-dl-hashnode { border-color: #0330D1 }
-  .border-dl-stackoverflow { border-color: #EC7100 }
+.bg-dl-github {
+  background-color: #1a1a1a;
+}
+.bg-dl-frontendmentor {
+  background-color: #ffffff;
+}
+.bg-dl-twitter {
+  background-color: #43b7e9;
+}
+.bg-dl-linkedin {
+  background-color: #2d68ff;
+}
+.bg-dl-youtube {
+  background-color: #ee3939;
+}
+.bg-dl-facebook {
+  background-color: #2442ac;
+}
+.bg-dl-twitch {
+  background-color: #ee3fc8;
+}
+.bg-dl-devto {
+  background-color: #333333;
+}
+.bg-dl-codewars {
+  background-color: #8a1a50;
+}
+.bg-dl-codepen {
+  background-color: #1e1f26;
+}
+.bg-dl-freecodecamp {
+  background-color: #302267;
+}
+.bg-dl-gitlab {
+  background-color: #eb4925;
+}
+.bg-dl-hashnode {
+  background-color: #0330d1;
+}
+.bg-dl-stackoverflow {
+  background-color: #ec7100;
+}
+.border-dl-github {
+  border-color: #1a1a1a;
+}
+.border-dl-frontendmentor {
+  border-color: #ffffff;
+}
+.border-dl-twitter {
+  border-color: #43b7e9;
+}
+.border-dl-linkedin {
+  border-color: #2d68ff;
+}
+.border-dl-youtube {
+  border-color: #ee3939;
+}
+.border-dl-facebook {
+  border-color: #2442ac;
+}
+.border-dl-twitch {
+  border-color: #ee3fc8;
+}
+.border-dl-devto {
+  border-color: #333333;
+}
+.border-dl-codewars {
+  border-color: #8a1a50;
+}
+.border-dl-codepen {
+  border-color: #1e1f26;
+}
+.border-dl-freecodecamp {
+  border-color: #302267;
+}
+.border-dl-gitlab {
+  border-color: #eb4925;
+}
+.border-dl-hashnode {
+  border-color: #0330d1;
+}
+.border-dl-stackoverflow {
+  border-color: #ec7100;
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
