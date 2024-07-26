@@ -14,7 +14,16 @@ import { doc } from 'firebase/firestore'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import PhoneLinkBox from '../PhoneLinkBox'
 import Image from 'next/image'
-import { DragDropContext, Droppable, Draggable, DropResult, DroppableStateSnapshot, DraggableStateSnapshot, DroppableProvided, DraggableProvided } from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+  DroppableStateSnapshot,
+  DraggableStateSnapshot,
+  DroppableProvided,
+  DraggableProvided,
+} from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '@/components/StrictModeDroppable'
 
 const PhoneMockup: FC = () => {
@@ -95,7 +104,10 @@ const PhoneMockup: FC = () => {
         >
           <DragDropContext onDragEnd={onDragEnd}>
             <StrictModeDroppable droppableId="droppable">
-              {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+              {(
+                provided: DroppableProvided,
+                snapshot: DroppableStateSnapshot
+              ) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
@@ -107,7 +119,10 @@ const PhoneMockup: FC = () => {
                       draggableId={item.id}
                       index={index}
                     >
-                      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                      {(
+                        provided: DraggableProvided,
+                        snapshot: DraggableStateSnapshot
+                      ) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}

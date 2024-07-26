@@ -84,11 +84,15 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({
     if (popupRef.current) {
       popupRef.current.style.display = open ? 'block' : ''
     }
-    const handleClickOutside = (event: any) => {
-      if (selectRef.current && !selectRef.current.contains(event.target)) {
+    const clickOutside = (event: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
         setOpen(false)
       }
     }
+    const handleClickOutside = clickOutside as unknown as EventListener
     if (open) {
       document.addEventListener('mousedown', handleClickOutside)
     } else {
