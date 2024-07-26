@@ -59,7 +59,7 @@ export default function SignupForm() {
                 const usersLinksDoc = doc(db, `${auth.currentUser.uid}/userLinks`);
                 const profileDetailsDoc = doc(db, `${auth.currentUser.uid}/profileDetails`);
                 await setDoc(usersLinksDoc, { links: [] });
-                await setDoc(profileDetailsDoc, { firstName: '', lastName: '', email: '', avatar: '' });
+                await setDoc(profileDetailsDoc, { firstName: '', lastName: '', email: userEmail, avatar: '' });
                 setLoading(false);
                 setOpenLoginMessage(true);
             }

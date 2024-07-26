@@ -117,6 +117,3 @@ const LinkInput: React.FC<LinkInputProps> = ({ initialState, linkId, platform })
 };
 
 export default LinkInput;
-
-
-// Please check the URL
