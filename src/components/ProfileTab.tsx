@@ -42,14 +42,14 @@ export default function ProfileDetails() {
 
             const newFirstName = form.elements.firstName.value;
             const newLastName = form.elements.lastName.value;
-            const newEmail = form.elements.email.value;
+            // const newEmail = form.elements.email.value;
 
             const docRef = doc(db, `${uid}/profileDetails`);
             await setDoc(docRef, {
                 avatar: newAvatarFile ? newAvatarFile.name : '',
                 firstName: newFirstName,
                 lastName: newLastName,
-                email: newEmail,
+                // email: newEmail,
             });
 
             setOpenSaveChangesMessage(true);
