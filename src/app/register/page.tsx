@@ -10,13 +10,15 @@ const Register = () => {
   return (
     <div className="flex min-h-screen justify-center p-8 bg-dl-white md:bg-dl-white-gray">
       <main className="my-8 flex flex-col items-start gap-12 md:gap-10 md:items-center w-full max-w-[476px]">
-        <Image
-          src={'/icons/logo-devlinks-large.svg'}
-          width="0"
-          height="0"
-          alt="devlinks"
-          className="w-[182.5px] h-auto object-contain"
-        />
+        <Link href="/">
+          <Image
+            src={'/icons/logo-devlinks-large.svg'}
+            width="0"
+            height="0"
+            alt="devlinks"
+            className="w-[182.5px] h-auto object-contain"
+          />
+        </Link>
         <section className="bg-dl-white rounded-xl flex flex-col gap-2 p-0 md:p-10 w-full">
           <h1 className="login_title text-dl-black-gray text-2xl font-sans font-bold leading-[150%] md:text-3xl">
             Register
