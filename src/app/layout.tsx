@@ -6,10 +6,16 @@ import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ['latin'] })
 
+const baseUrl = new URL(process.env.NEXT_APP_URL || 'http://localhoster:3000')
+
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_APP_URL || 'http://localhoster:3000'),
   title: 'Devlinks',
   description:
     'Share links to your social media profiles and projects with a single link.',
+  openGraph: {
+    images: baseUrl + 'opengraph-image.png',
+  },
 }
 
 export default function RootLayout({
