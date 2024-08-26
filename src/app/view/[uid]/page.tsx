@@ -153,9 +153,9 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                     profile &&
                     `${profile.firstName} ${profile.lastName}`}
                 </h1>
-                <h2 className="email text-dl-dark-gray font-sans text-base font-normal leading-[150%] mb-[56px]">
+                <a href={"mailto:"+profile?.email} className="font-normal hover:font-bold mb-[56px]"><h2 className="email text-dl-dark-gray font-sans text-base leading-[150%]">
                   {!loadingProfile && profile && profile.email}
-                </h2>
+                </h2></a>
                 <div className="links w-[237px] flex flex-col gap-5">
                   {showLinks}
                 </div>
