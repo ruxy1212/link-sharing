@@ -6,10 +6,10 @@ import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ['latin'] })
 
-const baseUrl = new URL(process.env.NEXT_APP_URL || 'http://localhoster:3000')
+const baseUrl = new URL(process.env.NEXT_APP_URL || 'http://localhost:3000')
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_APP_URL || 'http://localhoster:3000'),
+  metadataBase: new URL(process.env.NEXT_APP_URL || 'http://localhost:3000'),
   title: 'Devlinks',
   description:
     'Share links to your social media profiles and projects with a single link.',

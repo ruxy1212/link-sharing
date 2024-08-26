@@ -22,6 +22,7 @@ export default function Logo() {
 
   const { animations, scene } = useGLTF("/third1.glb");
   const { actions } = useAnimations(animations, scene);
+
   return (
     <group 
       onPointerDown={() => motionVal.set(0)}
