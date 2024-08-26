@@ -10,9 +10,10 @@ interface Link {
 
 interface PhoneLinkBoxProps {
   link: Link
+  notForGrabs?: boolean
 }
 
-const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link }) => {
+const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link, notForGrabs }) => {
   const context = useContext(Context)
 
   if (!context) {
@@ -35,7 +36,7 @@ const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link }) => {
 
   return (
     <div
-      className={`w-full h-[44px] rounded-lg flex items-center px-4 gap-2 font-sans text-xs font-normal leading-[150%] relative cursor-grab no-underline ${'bg-dl-' + platform} ${platformTitle === 'Frontend Mentor' ? 'text-dl-black-gray border border-dl-dark-gray' : 'text-dl-white border-dl-' + platform}`}
+      className={`${notForGrabs ? 'cursor-pointer hover:opacity-80' : 'cursor-grap' } w-full h-[44px] rounded-lg flex  items-center px-4 gap-2 font-sans text-xs font-normal leading-[150%] relative no-underline ${'bg-dl-' + platform} ${platformTitle === 'Frontend Mentor' ? 'text-dl-black-gray border border-dl-dark-gray' : 'text-dl-white border-dl-' + platform}`}
       ref={linkRef}
     >
       <Image

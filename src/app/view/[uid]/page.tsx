@@ -25,6 +25,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false)
   const [userId, setUserId] = useState<string | null>(null)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false)
   const router = useRouter()
 
   const context = useContext(Context)
@@ -105,14 +106,15 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     if (loadingLinks || !allLinks) return null
     return allLinks.links.map((link, i) => {
       return (
-        <a key={i} href={link.link} target="_blank" rel="noopener noreferrer">
-          <PhoneLinkBox link={link} />
+        <a key={i} href={link.link} target="_blank" className="cursor-pointer" rel="noopener noreferrer">
+          <PhoneLinkBox link={link} notForGrabs={true} />
         </a>
       )
     })
   }, [allLinks, loadingLinks])
 
   const handleSignOut = async () => {
+    setIsLoggingOut(true)
     try {
       auth.signOut();
       router.push('/')
@@ -129,10 +131,10 @@ const Preview = ({ params }: { params: { uid: string } }) => {
           <>
             <NavBar isUser={isAuth} />
             <main className="flex justify-center items-center">
-              <section className="relative -top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 md:py-12 md:px-14 flex flex-col items-center">
-                <span className="h-12">
+              <section className="relative top-0 sm:-top-24 lg:-top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 pb-12 md:py-12 md:px-14 flex flex-col items-center">
+                <span className={`h-12 ${isLoaded?'hidden':''}`}>
                   <CircularProgress
-                    className={`text-dl-light-purple ${isLoaded?'hidden':''}`}
+                    className="text-dl-light-purple"
                     color="secondary"
                   />
                 </span>
@@ -144,6 +146,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                   height={0}
                   width={0}
                   onLoad={() => setIsLoaded(true)}
+                  onError={() => setIsLoaded(false)}
                 />
                 <h1 className="title text-dl-black-gray font-sans text-2xl font-bold leading-[150%] mb-[8px]">
                   {!loadingProfile &&
@@ -157,10 +160,23 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                   {showLinks}
                 </div>
                 {isAuth && <button
-                  className="flex-shrink-0 mt-14 rounded-lg py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
+                  className="flex-shrink-0 mt-14 rounded-lg w-32 py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
                   onClick={handleSignOut}
                 >
-                  Logout
+                  {isLoggingOut ? (
+                    <span className="flex items-center justify-center gap-2">
+                      Logout 
+                      <span className="h-4">
+                        <CircularProgress
+                          className="text-dl-light-purple"
+                          color="secondary"
+                          size="16px"
+                        />
+                      </span>
+                    </span>
+                  ) : (
+                    "Logout"
+                  )}
                 </button>}
               </section>
             </main>
