@@ -1,9 +1,3 @@
-import {
-  useDrop,
-  useDrag,
-  DropTargetMonitor,
-  DragSourceMonitor,
-} from 'react-dnd'
 import { useContext, useEffect, useRef, FC } from 'react'
 import { Context } from '@/hooks/context'
 import Image from 'next/image'
@@ -25,7 +19,6 @@ const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link }) => {
     throw new Error('PhoneLinkBox must be used within a Context.Provider')
   }
 
-  const { dispatch } = context
   const linkRef = useRef<HTMLDivElement>(null)
   const arrowRef = useRef<HTMLImageElement>(null)
   const platform = link.platform.toLowerCase().replace(' ', '').replace('.', '')

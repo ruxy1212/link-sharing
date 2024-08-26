@@ -16,13 +16,10 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { CircularProgress } from '@mui/material'
 import {
   DragDropContext,
-  Droppable,
   Draggable,
   DropResult,
   DraggableProvided,
-  DraggableStateSnapshot,
   DroppableProvided,
-  DroppableStateSnapshot,
 } from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '@/components/StrictModeDroppable'
 import Image from 'next/image'
@@ -64,7 +61,7 @@ const CustomizeLinks: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    let temp: string[] = []
+    const temp: string[] = []
     const hasDuplicate = usersLinks.every((link) => {
       if (!temp.includes(link.platform)) {
         temp.push(link.platform)
@@ -135,7 +132,6 @@ const CustomizeLinks: React.FC = () => {
               <StrictModeDroppable droppableId="droppable">
                 {(
                   provided: DroppableProvided,
-                  snapshot: DroppableStateSnapshot
                 ) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
                     {usersLinks.map((item, index) => (
@@ -146,7 +142,6 @@ const CustomizeLinks: React.FC = () => {
                       >
                         {(
                           provided: DraggableProvided,
-                          snapshot: DraggableStateSnapshot
                         ) => (
                           <div
                             ref={provided.innerRef}

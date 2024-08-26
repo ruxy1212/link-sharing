@@ -1,8 +1,6 @@
 import {
   memo,
-  useMemo,
   useContext,
-  useState,
   useRef,
   useEffect,
   FC,
@@ -16,11 +14,8 @@ import PhoneLinkBox from '../PhoneLinkBox'
 import Image from 'next/image'
 import {
   DragDropContext,
-  Droppable,
   Draggable,
   DropResult,
-  DroppableStateSnapshot,
-  DraggableStateSnapshot,
   DroppableProvided,
   DraggableProvided,
 } from 'react-beautiful-dnd'
@@ -106,7 +101,6 @@ const PhoneMockup: FC = () => {
             <StrictModeDroppable droppableId="droppable">
               {(
                 provided: DroppableProvided,
-                snapshot: DroppableStateSnapshot
               ) => (
                 <div
                   {...provided.droppableProps}
@@ -121,7 +115,6 @@ const PhoneMockup: FC = () => {
                     >
                       {(
                         provided: DraggableProvided,
-                        snapshot: DraggableStateSnapshot
                       ) => (
                         <div
                           ref={provided.innerRef}

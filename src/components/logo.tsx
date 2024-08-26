@@ -11,7 +11,7 @@ export default function Logo() {
   const spring = useSpring(motionVal, { stiffness: 20 });
   const group = useRef<Group>(null);
 
-  useFrame(({ camera }) => {
+  useFrame(() => {
     group.current?.rotateX(MathUtils.degToRad(0.9)).rotateY(MathUtils.degToRad(0.4)).rotateZ(MathUtils.degToRad(0.9));
     Object.keys(actions).forEach((key) => {
       const action = actions[key] as AnimationAction;
@@ -20,7 +20,7 @@ export default function Logo() {
     })
   })
 
-  const { nodes, animations, scene } = useGLTF("/third1.glb");
+  const { animations, scene } = useGLTF("/third1.glb");
   const { actions } = useAnimations(animations, scene);
   return (
     <group 

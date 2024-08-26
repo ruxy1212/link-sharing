@@ -5,7 +5,7 @@ const linksReducer = (
   action: LinksAction
 ): LinksState => {
   switch (action.type) {
-    case 'initialize links':
+    case 'initialize links': {
       const links = [...action.links]
       links.sort((linkOne, linkTwo) =>
         linkOne.order > linkTwo.order
@@ -15,6 +15,7 @@ const linksReducer = (
             : 0
       )
       return links
+    }
 
     case 'add link':
       return [...usersLinks, action.link]
@@ -33,11 +34,12 @@ const linksReducer = (
           : link
       )
 
-    case 're-order links':
+    case 're-order links': {
       const { removed, index } = action.indices
       const reorderedLinks = [...usersLinks]
       reorderedLinks.splice(index, 0, removed)
       return reorderedLinks
+    }
 
     default:
       return usersLinks

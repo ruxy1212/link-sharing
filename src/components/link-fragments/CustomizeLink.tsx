@@ -12,12 +12,6 @@ interface Link {
   link: string
 }
 
-interface HoverLink {
-  id: string
-  index: number
-  itemCameFromOtherComponent: string
-}
-
 interface CustomizeLinkProps {
   link: Link
   index: number

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, memo } from 'react'
+import { memo } from 'react'
 import Image from 'next/image'
 import LoginForm from '@/components/LoginForm'
 import Popup from '@/components/Popup'

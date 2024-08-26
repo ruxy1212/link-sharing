@@ -1,42 +1,26 @@
 'use client'
 
-import { useEffect, MouseEvent } from 'react'
-// import { Context } from '@/hooks/context';
+import { MouseEvent } from 'react'
 import { useRouter } from 'next/navigation'
-// import { auth } from "@/firebase/Configuration";
-// import { signOut } from 'firebase/auth';
 import Image from 'next/image'
-// import styles from '../../styles/account/NavBar.module.css';
 
 interface NavBarProps {
   currentTab: string
-  setCurrentTab: (tab: string) => void
+  setCurrentTab: (tab: string) => void,
+  uid: string
 }
 
-const NavBar: React.FC<NavBarProps> = ({ currentTab, setCurrentTab }) => {
-  // const context = useContext(Context);
-
-  // if (!context) {
-  //     throw new Error('NavBar must be used within a Context.Provider');
-  // }
-  // const { setUid } = context;
+const NavBar: React.FC<NavBarProps> = ({ currentTab, setCurrentTab, uid }) => {
 
   const router = useRouter()
-  const mobile = true
 
   const handleLink = (e: MouseEvent<HTMLButtonElement>) => {
     const currentLink = e.currentTarget.dataset.link || ''
     setCurrentTab(currentLink)
   }
 
-  // const handleGoBackToLogin = async () => {
-  //     await signOut(auth);
-  //     setUid('');
-  //     router.push('/login');
-  // }
-
   const handlePreviewLink = () => {
-    router.push('/preview')
+    router.push('/view/'+uid)
   }
 
   return (

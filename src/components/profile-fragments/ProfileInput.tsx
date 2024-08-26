@@ -16,10 +16,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string
 }
 
-interface InputRef {
-  state: string
-}
-
 const Input: FC<InputProps> = ({ type, label, name, placeholder, ...rest }) => {
   const [text, setText] = useState('')
   const errorMessageRef = useRef<HTMLDivElement>(null)
@@ -79,7 +75,6 @@ const Input: FC<InputProps> = ({ type, label, name, placeholder, ...rest }) => {
       <div className="w-full md:w-1/2 lg:w-7/12 relative">
         <input
           type={type}
-          value={text}
           onChange={handleChange}
           onBlur={handleBlur}
           onInvalid={handleInvalid}

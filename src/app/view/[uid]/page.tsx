@@ -13,7 +13,6 @@ import { doc, DocumentReference } from 'firebase/firestore'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import PhoneLinkBox from '@/components/PhoneLinkBox'
-import { useRouter } from 'next/router'
 
 interface Link {
   id: string
@@ -21,19 +20,10 @@ interface Link {
   link: string
 }
 
-interface Profile {
-  firstName: string
-  lastName: string
-  email: string
-  avatar?: string
-}
-
 const Preview = ({ params }: { params: { uid: string } }) => {
-  const [loading, setLoading] = useState<boolean>(true)
   const [isAuth, setIsAuth] = useState<boolean>(false)
   const [userId, setUserId] = useState<string | null>(null)
-  // const router = useRouter();
-  // const { uid } = router.query;
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   const context = useContext(Context)
 
@@ -128,13 +118,20 @@ const Preview = ({ params }: { params: { uid: string } }) => {
             <NavBar isUser={isAuth} />
             <main className="flex justify-center items-center">
               <section className="relative -top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 md:py-12 md:px-14 flex flex-col items-center">
+                <span className="h-12">
+                  <CircularProgress
+                    className={`text-dl-light-purple ${isLoaded?'hidden':''}`}
+                    color="secondary"
+                  />
+                </span>
                 <Image
-                  className="avatar w-[104px] h-[104px] rounded-full border-[4px] border-dl-purple mb-[25px]"
+                  className={`avatar w-[104px] h-[104px] rounded-full border-[4px] border-dl-purple mb-[25px] ${isLoaded?'':'hidden'}`}
                   ref={avatarRef}
                   alt="profile avatar"
                   src={''}
                   height={0}
                   width={0}
+                  onLoad={() => setIsLoaded(true)}
                 />
                 <h1 className="title text-dl-black-gray font-sans text-2xl font-bold leading-[150%] mb-[8px]">
                   {!loadingProfile &&

@@ -35,8 +35,8 @@ const LinkInput: React.FC<LinkInputProps> = ({
   const invalidUrlMessageRef = useRef<HTMLParagraphElement>(null)
 
   const isValidUrl = (url: string, platform: string): boolean => {
-    const [_, domain, usernameFormat] =
-      platforms.find((p) => p[0] === platform) || []
+    const [, domain, usernameFormat] =
+      platforms.find((p) => p[0] === platform) || [];
     if (!domain || !usernameFormat) {
       return false
     }

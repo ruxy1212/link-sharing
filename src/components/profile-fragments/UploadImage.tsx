@@ -1,9 +1,33 @@
-import { useState, useRef, ChangeEvent } from 'react'
+import { useContext, useEffect, useState, useRef, ChangeEvent } from 'react'
+import { Context } from '@/hooks/context'
+import { storage } from '@/firebase/Configuration'
+import { ref, getDownloadURL } from 'firebase/storage'
 
 export default function UploadImage() {
+  const context = useContext(Context)
+
+  if (!context) {
+    throw new Error('UploadImage must be used within a Context.Provider')
+  }
+
   const [imageUrl, setImageUrl] = useState<string>('')
   const [set, isSet] = useState<boolean>(false)
   const messageRef = useRef<HTMLParagraphElement>(null)
+  const { uid } = context
+
+  useEffect(() => {
+    const reference = ref(storage, `/${uid}/usersAvatar`)
+    getDownloadURL(reference)
+      .then((url) => {
+        if(url){
+          setImageUrl(url)
+          isSet(true)
+        }
+      })
+      .catch(() => {
+        console.log('no avatar available')
+      })
+  }, [uid])
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedImage = e.target.files?.[0]
@@ -42,7 +66,7 @@ export default function UploadImage() {
       </h1>
       <div className="flex gap-6 flex-wrap md:flex-nowrap w-full md:w-1/2 lg:w-7/12 items-center">
         <label
-          className={`${set ? 'text-dl-white' : 'text-dl-purple'} flex-shrink-0 gap-2 w-[193px] h-[193px] bg-dl-light-purple rounded-[12px] cursor-pointer flex flex-col justify-center items-center font-instrument text-base font-semibold leading-[150%] bg-cover bg-center bg-no-repeat md:max-w-[65%]`}
+          className={`${set ? 'text-dl-white bg-black/65 bg-blend-darken' : 'text-dl-purple bg-dl-light-purple'} flex-shrink-0 gap-2 w-[193px] h-[193px] rounded-[12px] cursor-pointer flex flex-col justify-center items-center font-instrument text-base font-semibold leading-[150%] bg-cover bg-center bg-no-repeat md:max-w-[65%]`}
           htmlFor="inputFile"
           style={{ backgroundImage: `url(${imageUrl})` }}
         >
@@ -66,7 +90,7 @@ export default function UploadImage() {
               d="M33.75 6.25H6.25a2.5 2.5 0 0 0-2.5 2.5v22.5a2.5 2.5 0 0 0 2.5 2.5h27.5a2.5 2.5 0 0 0 2.5-2.5V8.75a2.5 2.5 0 0 0-2.5-2.5Zm0 2.5v16.055l-4.073-4.072a2.5 2.5 0 0 0-3.536 0l-3.125 3.125-6.875-6.875a2.5 2.5 0 0 0-3.535 0L6.25 23.339V8.75h27.5ZM6.25 26.875l8.125-8.125 12.5 12.5H6.25v-4.375Zm27.5 4.375h-3.34l-5.624-5.625L27.91 22.5l5.839 5.84v2.91ZM22.5 15.625a1.875 1.875 0 1 1 3.75 0 1.875 1.875 0 0 1-3.75 0Z"
             />
           </svg>
-          + Upload Image
+          + {set?'Change Image':'Upload Image'}
         </label>
         <p
           className=" w-full md:w-auto text-dl-dark-gray font-instrument text-xs font-normal leading-[150%]"

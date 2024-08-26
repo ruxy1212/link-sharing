@@ -23,7 +23,7 @@ export default function BasicDetails() {
         label="First name*"
         name="firstName"
         placeholder="e.g. John"
-        defaultValue={loadingProfile ? '' : profileDetails?.firstName}
+        defaultValue={loadingProfile ? '' : profileDetails?.firstName ?? "apple"}
         required
       />
       <Input
@@ -31,7 +31,7 @@ export default function BasicDetails() {
         label="Last name*"
         name="lastName"
         placeholder="e.g. Appleseed"
-        defaultValue={loadingProfile ? '' : profileDetails?.lastName}
+        defaultValue={loadingProfile ? '' : profileDetails?.lastName ?? "john"}
         required
       />
       <Input
@@ -39,7 +39,7 @@ export default function BasicDetails() {
         label="Email"
         name="email"
         placeholder="e.g. email@example.com"
-        value={loadingProfile ? '' : profileDetails?.email}
+        value={loadingProfile ? '' : profileDetails?.email ?? "johnapple@example.com"}
         readOnly
       />
     </fieldset>

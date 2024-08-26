@@ -48,7 +48,7 @@ const Dashboard: React.FC = () => {
       <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
         {uid ? (
           <>
-            <NavBar currentTab={currentTab} setCurrentTab={setCurrentTab} />
+            <NavBar currentTab={currentTab} uid={uid} setCurrentTab={setCurrentTab} />
             <TabsContainer currentTab={currentTab} />
           </>
         ) : (

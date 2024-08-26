@@ -1,9 +1,6 @@
 import { useContext } from 'react'
 import { Context } from '@/hooks/context'
 import { useRouter } from 'next/navigation'
-import { db } from '@/firebase/Configuration'
-import { doc } from 'firebase/firestore'
-import { useDocumentData } from 'react-firebase-hooks/firestore'
 import CopiedToClipboardMessage from '@/components/Copier'
 
 export default function NavBar({ isUser }: { isUser: boolean }) {
@@ -21,7 +18,7 @@ export default function NavBar({ isUser }: { isUser: boolean }) {
   }
 
   const handleShare = () => {
-    const url = `${window.location.origin}/preview/${uid}`
+    const url = `${window.location.origin}/view/${uid}`
     navigator.clipboard.writeText(url)
     setOpenCopiedToClipboardMessage(true)
   }
