@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useState, useMemo, useContext, useEffect, useRef } from 'react'
 import { Context } from '@/hooks/context'
 import NavBar from '@/layouts/preview'
-import { onAuthStateChanged } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '@/firebase/Configuration'
 import Alert from '@/components/Alert'
 import { CircularProgress } from '@mui/material'
@@ -13,6 +13,7 @@ import { doc, DocumentReference } from 'firebase/firestore'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import PhoneLinkBox from '@/components/PhoneLinkBox'
+import { useRouter } from 'next/navigation'
 
 interface Link {
   id: string
@@ -24,6 +25,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false)
   const [userId, setUserId] = useState<string | null>(null)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const router = useRouter()
 
   const context = useContext(Context)
 
@@ -110,6 +112,16 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     })
   }, [allLinks, loadingLinks])
 
+  const handleSignOut = async () => {
+    try {
+      auth.signOut();
+      router.push('/')
+      console.log('User signed out')
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  }
+
   return (
     <>
       <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
@@ -144,6 +156,12 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                 <div className="links w-[237px] flex flex-col gap-5">
                   {showLinks}
                 </div>
+                {isAuth && <button
+                  className="flex-shrink-0 mt-14 rounded-lg py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
+                  onClick={handleSignOut}
+                >
+                  Logout
+                </button>}
               </section>
             </main>
           </>
