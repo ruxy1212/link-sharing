@@ -131,7 +131,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
           <>
             <NavBar isUser={isAuth} />
             <main className="flex justify-center items-center">
-              <section className="relative top-0 sm:-top-24 lg:-top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 pb-12 md:py-12 md:px-14 flex flex-col items-center">
+              <section className="relative top-7 sm:-top-24 lg:-top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 pb-12 md:py-12 md:px-14 flex flex-col items-center">
                 <span className={`h-12 ${isLoaded?'hidden':''}`}>
                   <CircularProgress
                     className="text-dl-light-purple"
