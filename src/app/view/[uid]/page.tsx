@@ -1,3 +1,5 @@
+"use server"
+
 import { Metadata, ResolvingMetadata } from 'next';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase/Configuration';
