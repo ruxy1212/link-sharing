@@ -43,7 +43,6 @@ const LinkInput: React.FC<LinkInputProps> = ({
 
     try {
       const urlObj = new URL(url)
-      console.log('in', urlObj)
       return (
         urlObj.hostname.includes(domain) && urlObj.href.includes(usernameFormat)
       )

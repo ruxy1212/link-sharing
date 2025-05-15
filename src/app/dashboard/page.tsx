@@ -22,25 +22,20 @@ const Dashboard: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<string>('links')
 
   useEffect(() => {
-    console.log('Setting up onAuthStateChanged listener')
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        console.log(`Setting UID to ${currentUser.uid}`)
         setUid(currentUser.uid)
       } else {
-        console.log('No current user')
         router.push('/login')
       }
     })
 
     return () => {
-      console.log('Cleaning up onAuthStateChanged listener')
       unsubscribe()
     }
   }, [setUid, router])
 
   useEffect(() => {
-    console.log(`Current tab is now ${currentTab}`)
   }, [currentTab])
 
   return (

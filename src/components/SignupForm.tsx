@@ -58,7 +58,6 @@ export default function SignupForm() {
 
     try {
       await createUserWithEmailAndPassword(auth, userEmail, userPassword)
-      console.log(auth.currentUser)
       if (auth.currentUser) {
         const usersLinksDoc = doc(db, `${auth.currentUser.uid}/userLinks`)
         const profileDetailsDoc = doc(

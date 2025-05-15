@@ -43,10 +43,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser && currentUser.uid === uid) {
-        console.log(`Setting UID to ${currentUser.uid}`)
         setUid(currentUser.uid)
-      } else {
-        console.log('No current user')
       }
       if (params.uid === uid) {
         setIsAuth(true)
@@ -55,7 +52,6 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     })
 
     return () => {
-      console.log('Cleaning up onAuthStateChanged listener')
       unsubscribe()
     }
   }, [setUid, uid, params.uid])
@@ -86,18 +82,13 @@ const Preview = ({ params }: { params: { uid: string } }) => {
   }, [userId])
 
   useEffect(() => {
-    console.log('Setting up onAuthStateChanged listener')
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        console.log(`Setting UID to ${currentUser.uid}`)
         setUid(currentUser.uid)
-      } else {
-        console.log('No current user')
       }
     })
 
     return () => {
-      console.log('Cleaning up onAuthStateChanged listener')
       unsubscribe()
     }
   }, [setUid])
@@ -118,7 +109,6 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     try {
       auth.signOut();
       router.push('/')
-      console.log('User signed out')
     } catch (error) {
       console.error("Error signing out", error);
     }

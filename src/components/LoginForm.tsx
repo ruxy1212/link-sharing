@@ -31,7 +31,6 @@ export default function LoginForm() {
         router.push('/dashboard')
       }
     } catch (error) {
-      console.log(error)
       if (errorMessageRef.current) {
         errorMessageRef.current.style.display = 'block'
       }
