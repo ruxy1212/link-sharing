@@ -4,6 +4,7 @@ import {
   useRef,
   useEffect,
   FC,
+  useState,
 } from 'react'
 import { Context } from '@/hooks/context'
 import { storage, db } from '@/firebase/Configuration'
@@ -20,6 +21,7 @@ import {
   DraggableProvided,
 } from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '@/components/StrictModeDroppable'
+import { CircularProgress } from '@mui/material'
 
 const PhoneMockup: FC = () => {
   const context = useContext(Context)
@@ -32,6 +34,7 @@ const PhoneMockup: FC = () => {
   const profileDocRef = doc(db, `${uid}/profileDetails`)
   const [profileDetails, loadingProfile] = useDocumentData(profileDocRef)
   const avatarRef = useRef<HTMLImageElement>(null)
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     if (loadingProfile) return
@@ -71,14 +74,27 @@ const PhoneMockup: FC = () => {
           priority
           className="w-80 h-auto object-contain"
         />
+        
         {loadingProfile ? null : (
-          <Image
-            src={''}
-            className="border-[4px] border-dl-purple w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px]"
-            ref={avatarRef}
-            style={profileDetails?.avatar ? {} : { visibility: 'hidden' }}
-            alt="User Avatar"
-          />
+          <>
+            <Image
+              src={''}
+              className="border-[4px] border-dl-purple w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px]"
+              ref={avatarRef}
+              style={profileDetails?.avatar ? {} : { visibility: 'hidden' }}
+              alt="User Avatar"
+              onLoad={() => setIsLoaded(true)}
+              onError={() => setIsLoaded(false)}
+              height={0}
+              width={0}
+            />
+            <span className={`h-12 ${isLoaded?'hidden':''}`}>
+              <CircularProgress
+                className="text-dl-light-purple"
+                color="secondary"
+              />
+            </span>
+          </>
         )}
         {loadingProfile
           ? null

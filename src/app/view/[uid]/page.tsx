@@ -1,5 +1,6 @@
 'use client'
 
+
 import Image from 'next/image'
 import { useState, useMemo, useContext, useEffect, useRef } from 'react'
 import { Context } from '@/hooks/context'
@@ -9,16 +10,49 @@ import { auth } from '@/firebase/Configuration'
 import Alert from '@/components/Alert'
 import { CircularProgress } from '@mui/material'
 import { db, storage } from '@/firebase/Configuration'
-import { doc, DocumentReference } from 'firebase/firestore'
+import { doc, DocumentReference, getDoc } from 'firebase/firestore'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import PhoneLinkBox from '@/components/PhoneLinkBox'
 import { useRouter } from 'next/navigation'
+import { Metadata } from 'next';
 
 interface Link {
   id: string
   platform: string
   link: string
+}
+
+export async function generateMetadata({ params }: { params: { uid: string } }): Promise<Metadata> {
+  const profileSnap = await getDoc(doc(db, `${params.uid}/profileDetails`));
+
+  if (!profileSnap.exists()) {
+    return {
+      title: 'User Not Found',
+      description: 'No user found for this ID.',
+    };
+  }
+
+  const profile = profileSnap.data();
+  const fullName = `${profile.firstName} ${profile.lastName}`;
+  const appUrl = process.env.NEXT_APP_URL || 'http://localhost:3000';
+
+  return {
+    title: `${fullName} | DevLinks`,
+    description: `Check out ${fullName}'s public profile on DevLinks.`,
+    openGraph: {
+      title: `${fullName} | DevLinks`,
+      description: `Check out ${fullName}'s public profile on DevLinks.`,
+      images: [
+        {
+          url: `${appUrl}/view/${params.uid}/og?firstName=${profile.firstName}&lastName=${profile.lastName}&userId=${params.uid}`,
+          width: 1200,
+          height: 630,
+          alt: `${fullName}'s OG Image`,
+        },
+      ],
+    },
+  };
 }
 
 const Preview = ({ params }: { params: { uid: string } }) => {

@@ -30,7 +30,7 @@ export default function NavBar({ isUser }: { isUser: boolean }) {
           className="flex-shrink-0 rounded-lg py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
           onClick={handleShare}
         >
-          Share Link
+          {isUser?'Share Link':'Copy Card Link'}
         </button>
         {isUser && (
           <button
