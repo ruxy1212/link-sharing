@@ -4,7 +4,7 @@ import { getDownloadURL, ref } from 'firebase/storage';
 import { db, storage } from '@/firebase/Configuration';
 import { jsx, jsxs } from 'react/jsx-runtime';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export async function GET(
   request: Request,
