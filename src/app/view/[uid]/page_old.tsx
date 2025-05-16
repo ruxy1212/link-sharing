@@ -209,7 +209,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                   {showLinks}
                 </div>
                 {isAuth && <button
-                  className="flex-shrink-0 mt-14 rounded-lg w-32 py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
+                  className="flex-shrink-0 mt-14 rounded-lg w-32 py-3 px-7 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
                   onClick={handleSignOut}
                 >
                   {isLoggingOut ? (

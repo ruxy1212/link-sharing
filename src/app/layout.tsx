@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { MyAppProvider } from '@/hooks/context'
 import NextTopLoader from 'nextjs-toploader';
+import Providers from './providers';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,8 +27,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className} style={{ backgroundColor: 'white'}}>
-        <NextTopLoader
+      <body className={`${inter.className} bg-dl-background`}>
+        <Providers>
+        {/* <NextTopLoader
           color="#633bff"
           initialPosition={0.08}
           crawlSpeed={200}
@@ -38,7 +40,9 @@ export default function RootLayout({
           speed={200}
           shadow="0 0 10px #2299DD,0 0 5px #2299DD"
         />
-        <MyAppProvider>{children}</MyAppProvider>
+        <MyAppProvider> */}
+          {children}
+        </Providers>
       </body>
     </html>
   )

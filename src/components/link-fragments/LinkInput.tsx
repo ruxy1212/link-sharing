@@ -130,13 +130,13 @@ const LinkInput: React.FC<LinkInputProps> = ({
           required
         />
         <p
-          className="h-[40px] hidden justify-center items-center text-dl-red font-instrument text-xs font-normal leading-[150%] absolute right-4 bg-white top-0 bottom-0 my-auto"
+          className="h-[40px] hidden justify-center items-center text-dl-red font-instrument text-xs font-normal leading-[150%] absolute right-4 bg-dl-white top-0 bottom-0 my-auto"
           ref={emptyMessageRef}
         >
           Can&apos;t be empty
         </p>
         <p
-          className="h-[40px] hidden justify-center items-center text-dl-red font-instrument text-xs font-normal leading-[150%] absolute right-4 bg-white top-0 bottom-0 my-auto"
+          className="h-[40px] hidden justify-center items-center text-dl-red font-instrument text-xs font-normal leading-[150%] absolute right-4 bg-dl-white top-0 bottom-0 my-auto"
           ref={invalidUrlMessageRef}
         >
           {`Invalid ${platform} URL`}

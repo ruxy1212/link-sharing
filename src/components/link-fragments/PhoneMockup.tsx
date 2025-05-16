@@ -72,7 +72,15 @@ const PhoneMockup: FC = () => {
           height={0}
           alt="phone mockup"
           priority
-          className="w-80 h-auto object-contain"
+          className="w-80 h-auto object-contain inline dark:hidden"
+        />
+        <Image
+          src={'/images/illustration-phone-mockup-dark.svg'}
+          width={0}
+          height={0}
+          alt="phone mockup"
+          priority
+          className="w-80 h-auto object-contain hidden dark:inline"
         />
         
         {loadingProfile ? null : (
@@ -99,19 +107,19 @@ const PhoneMockup: FC = () => {
         {loadingProfile
           ? null
           : profileDetails?.firstName && (
-              <h1 className="text-dl-black-gray font-instrument text-[1.125rem] font-semibold leading-[150%] w-[80%] text-center bg-white absolute left-0 right-0 mx-auto top-[176px]">
+              <h1 className="text-dl-black-gray font-instrument text-[1.125rem] font-semibold leading-[150%] w-[80%] text-center bg-dl-white dark:bg-transparent absolute left-0 right-0 mx-auto top-[176px]">
                 {profileDetails.firstName}&nbsp;{profileDetails.lastName}
               </h1>
             )}
         {loadingProfile
           ? null
           : profileDetails?.email && (
-              <h2 className="text-dl-dark-gray font-instrument text-sm font-normal leading-[150%] w-[80%] text-center bg-white absolute left-0 right-0 mx-auto top-[206px]">
+              <h2 className="text-dl-dark-gray font-instrument text-sm font-normal leading-[150%] w-[80%] text-center bg-dl-white dark:bg-transparent absolute left-0 right-0 mx-auto top-[206px]">
                 {profileDetails.email}
               </h2>
             )}
         <div
-          className={`bg-dl-white w-[245px] h-[320px] absolute bottom-[57px] left-0 right-0 mx-auto ${usersLinks.length > 0 ? '' : 'animate-pulse'}`}
+          className={`bg-dl-white dark:bg-transparent w-[245px] h-[320px] absolute bottom-[57px] left-0 right-0 mx-auto ${usersLinks.length > 0 ? '' : 'animate-pulse'}`}
         >
           <DragDropContext onDragEnd={onDragEnd}>
             <StrictModeDroppable droppableId="droppable">

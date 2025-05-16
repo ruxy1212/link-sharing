@@ -36,7 +36,7 @@ const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link, notForGrabs }) => {
 
   return (
     <div
-      className={`${notForGrabs ? 'cursor-pointer hover:opacity-80' : 'cursor-grap' } w-full h-[44px] rounded-lg flex  items-center px-4 gap-2 font-sans text-xs font-normal leading-[150%] relative no-underline ${'bg-dl-' + platform} ${platformTitle === 'Frontend Mentor' ? 'text-dl-black-gray border border-dl-dark-gray' : 'text-dl-white border-dl-' + platform}`}
+      className={`${notForGrabs ? 'cursor-pointer hover:opacity-80' : 'cursor-grap' } w-full h-[44px] rounded-lg flex  items-center px-4 gap-2 font-sans text-xs font-normal leading-[150%] relative no-underline ${'bg-dl-' + platform} ${platformTitle === 'Frontend Mentor' ? 'text-dl-black-gray border border-dl-dark-gray' : 'text-dl-neutral-white border-dl-' + platform} dark:border-dl-neutral-white border group hover:scale-95 transition-all`}
       ref={linkRef}
     >
       <Image
@@ -49,7 +49,7 @@ const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link, notForGrabs }) => {
       {platformTitle}
       <Image
         src={''}
-        className="absolute top-0 bottom-0 right-4 m-auto w-4 object-contain"
+        className="absolute top-0 bottom-0 right-4 m-auto w-4 object-contain group-hover:scale-150 transition-all"
         ref={arrowRef}
         alt="arrow icon"
         height={0}

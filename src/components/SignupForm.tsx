@@ -129,7 +129,7 @@ export default function SignupForm() {
       </p>
       <button
         disabled={loading}
-        className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
+        className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
       >
         {loading ? (
           <CircularProgress

@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
   @apply leading-[normal] m-0;
 }
@@ -96,19 +97,73 @@ body {
   border-color: #ec7100;
 }
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --dl-background: 255, 255, 255;
+    --dl-purple: 99, 59, 255;
+    --dl-mid-purple: 190, 173, 255;
+    --dl-light-purple: 239, 235, 255;
+    --dl-black-gray: 51, 51, 51;
+    --dl-dark-gray: 115, 115, 115;
+    --dl-light-gray: 217, 217, 217;
+    --dl-white-gray: 250, 250, 250;
+    --dl-white: 255, 255, 255;
+    --dl-black: 0, 0, 0;
+    --dl-special-black: 0 0 0;
+    --dl-neutral-white: 255, 255, 255;
+    --dl-red: 255, 57, 57;
+    --dl-github: 26, 26, 26;
+    --dl-frontendmentor: 255, 255, 255;
+    --dl-twitter: 67, 183, 233;
+    --dl-linkedin: 45, 104, 255;
+    --dl-youtube: 238, 57, 57;
+    --dl-facebook: 36, 66, 172;
+    --dl-twitch: 238, 63, 200;
+    --dl-devto: 51, 51, 51;
+    --dl-codewars: 138, 26, 80;
+    --dl-codepen: 30, 31, 38;
+    --dl-freecodecamp: 48, 34, 103;
+    --dl-gitlab: 235, 73, 37;
+    --dl-hashnode: 3, 48, 209;
+    --dl-stackoverflow: 236, 113, 0;
+  }
+
+  .dark {
+    --dl-background: 27,27,27;
+    --dl-purple: 99, 59, 255;
+    --dl-mid-purple: 190, 173, 255;
+    --dl-light-purple: 146, 143, 156;
+    --dl-black-gray: 201, 201, 201;
+    --dl-dark-gray: 175, 175, 175;
+    --dl-light-gray: 117, 117, 117;
+    --dl-white-gray: 54, 54, 54;
+    --dl-white: 17, 17, 17;
+    --dl-black: 200, 200, 200;
+    --dl-special-black: 200 200 200;
+    --dl-neutral-white: 255, 255, 255;
+    --dl-red: 255, 57, 57;
+    --dl-github: 26, 26, 26;
+    --dl-frontendmentor: 255, 255, 255;
+    --dl-twitter: 67, 183, 233;
+    --dl-linkedin: 45, 104, 255;
+    --dl-youtube: 238, 57, 57;
+    --dl-facebook: 36, 66, 172;
+    --dl-twitch: 238, 63, 200;
+    --dl-devto: 51, 51, 51;
+    --dl-codewars: 138, 26, 80;
+    --dl-codepen: 30, 31, 38;
+    --dl-freecodecamp: 48, 34, 103;
+    --dl-gitlab: 235, 73, 37;
+    --dl-hashnode: 3, 48, 209;
+    --dl-stackoverflow: 236, 113, 0;
   }
 }
+
+
+/* 
+@media (prefers-color-scheme: dark) {
+  
+} */
 
 /* body {
   color: rgb(var(--foreground-rgb));
@@ -129,4 +184,15 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: 0;
+  /* none; */
 }

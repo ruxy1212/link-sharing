@@ -3,6 +3,7 @@
 import { MouseEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface NavBarProps {
   currentTab: string
@@ -26,20 +27,29 @@ const NavBar: React.FC<NavBarProps> = ({ currentTab, setCurrentTab, uid }) => {
   return (
     <header className="w-full p-0 sm:p-4 md:px-6 md:py-4 lg:py-6">
       <nav className="w-full bg-dl-white rounded-xl flex justify-between items-center gap-6 p-4">
-        <Image
-          src={'/icons/logo-devlinks-large.svg'}
-          width="0"
-          height="0"
-          alt="devlinks"
-          className="w-[182.5px] h-auto object-contain hidden md:inline"
-        />
-        <Image
-          src={'/icons/logo-devlinks-small.svg'}
-          width="32"
-          height="0"
-          alt="devlinks"
-          className="w-[32px] h-auto object-contain inline md:hidden"
-        />
+        <Link href="/">
+          <Image
+            src={'/icons/logo-devlinks-large.svg'}
+            width="0"
+            height="0"
+            alt="devlinks"
+            className="w-[182.5px] h-auto object-contain hidden md:inline dark:hidden"
+          />
+          <Image
+            src={'/icons/logo-devlinks-large-light.svg'}
+            width="0"
+            height="0"
+            alt="devlinks"
+            className="w-[182.5px] h-auto object-contain hidden dark:md:inline"
+          />
+          <Image
+            src={'/icons/logo-devlinks-small.svg'}
+            width="32"
+            height="0"
+            alt="devlinks"
+            className="w-[32px] h-auto object-contain inline md:hidden"
+          />
+        </Link>
         <ul className="links flex">
           <li>
             <button

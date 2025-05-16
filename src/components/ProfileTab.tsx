@@ -62,7 +62,7 @@ export default function ProfileDetails() {
   }
 
   return (
-    <form className="w-full bg-white rounded-xl" onSubmit={handleSubmit}>
+    <form className="w-full bg-dl-white rounded-xl" onSubmit={handleSubmit}>
       <div className="p-6 md:p-10 flex gap-10 flex-col">
         <div className="flex flex-col gap-2">
           <h1 className="text-dl-black-gray font-instrument text-3xl font-bold leading-[150%]">
@@ -82,7 +82,7 @@ export default function ProfileDetails() {
         style={{ zIndex: '9999' }}
       >
         <button
-          className="w-[91px] h-[46px] rounded-[8px] bg-dl-purple text-white font-instrument text-base font-semibold leading-[150%] cursor-pointer flex justify-center items-center hover:bg-dl-mid-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
+          className="w-[91px] h-[46px] rounded-[8px] bg-dl-purple text-white font-instrument text-base font-semibold leading-[150%] cursor-pointer flex justify-center items-center hover:bg-dl-mid-purple hover:text-dl-black-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
           type="submit"
         >
           {loading ? (

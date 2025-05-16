@@ -118,7 +118,7 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({
       </label>
 
       <div
-        className="flex items-center gap-3 px-4 w-full h-12 rounded-lg bg-white border border-dl-light-gray text-dl-black-gray font-instrument text-base font-normal leading-[150%] cursor-pointer relative hover:border-dl-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
+        className="flex items-center gap-3 px-4 w-full h-12 rounded-lg bg-dl-white border border-dl-light-gray text-dl-black-gray font-instrument text-base font-normal leading-[150%] cursor-pointer relative hover:border-dl-purple hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
         onClick={handlePopup}
         ref={selectRef}
         style={{ zIndex }}
@@ -149,7 +149,7 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({
           />
         )}
         <div
-          className="hidden w-full h-[245px] overflow-y-auto px-4 py-[12px] bg-white border border-dl-light-gray shadow-[0px_0px_32px_0px_rgba(0,0,0,0.10)] rounded-xl absolute top-[64px] left-0"
+          className="hidden w-full h-[245px] overflow-y-auto no-scrollbar px-4 py-[12px] bg-dl-white border border-dl-light-gray shadow-[0px_0px_32px_0px_rgba(0,0,0,0.10)] rounded-xl absolute top-[64px] left-0"
           onClick={handleOption}
           ref={popupRef}
         >

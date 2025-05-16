@@ -78,7 +78,7 @@ const Input: FC<InputProps> = ({ type, label, name, placeholder, ...rest }) => {
           onChange={handleChange}
           onBlur={handleBlur}
           onInvalid={handleInvalid}
-          className="w-full h-[48px] bg-white px-4 rounded-[8px] font-instrument text-base text-dl-black-gray border border-dl-light-gray leading-[150%] outline-none focus:border-dl-purple focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
+          className="w-full h-[48px] bg-dl-white px-4 rounded-[8px] font-instrument text-base text-dl-black-gray border border-dl-light-gray leading-[150%] outline-none focus:border-dl-purple focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]"
           placeholder={placeholder}
           id={label}
           ref={inputRef}

@@ -66,7 +66,7 @@ export default function UploadImage() {
       </h1>
       <div className="flex gap-6 flex-wrap md:flex-nowrap w-full md:w-1/2 lg:w-7/12 items-center">
         <label
-          className={`${set ? 'text-dl-white bg-black/65 bg-blend-darken' : 'text-dl-purple bg-dl-light-purple'} flex-shrink-0 gap-2 w-[193px] h-[193px] rounded-[12px] cursor-pointer flex flex-col justify-center items-center font-instrument text-base font-semibold leading-[150%] bg-cover bg-center bg-no-repeat md:max-w-[65%]`}
+          className={`${set ? 'text-dl-neutral-white bg-dl-special-black/65 bg-blend-darken dark:bg-blend-lighten' : 'text-dl-purple bg-dl-light-purple'} flex-shrink-0 gap-2 w-[193px] h-[193px] rounded-[12px] cursor-pointer flex flex-col justify-center items-center font-instrument text-base font-semibold leading-[150%] bg-cover bg-center bg-no-repeat md:max-w-[65%]`}
           htmlFor="inputFile"
           style={{ backgroundImage: `url(${imageUrl})` }}
         >

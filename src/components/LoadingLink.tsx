@@ -3,7 +3,7 @@ import { Skeleton } from '@mui/material'
 export default function LoadingLinksScreen() {
   return (
     <section
-      className="w-full flex flex-col gap-5 p-10 bg-white rounded-xl sm:w-[95%] sm:self-center"
+      className="w-full flex flex-col gap-5 p-10 bg-dl-white rounded-xl sm:w-[95%] sm:self-center"
       aria-busy="true"
     >
       {/* Adjust the width and height values as needed for your design */}
