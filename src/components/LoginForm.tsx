@@ -47,7 +47,7 @@ export default function LoginForm() {
         if (!user.emailVerified) {
           setUnverifiedUser(user)
           if (errorMessageRef.current) {
-            setErrorMessage('Please verify your email before logging in');
+            setErrorMessage('Please verify your email before logging in.');
             errorMessageRef.current.style.display = 'block'
             setResend(true);
           }
@@ -60,7 +60,7 @@ export default function LoginForm() {
       }
     } catch (error) {
       if (errorMessageRef.current) {
-        setErrorMessage('Email or password is incorrect')
+        setErrorMessage('Email or password is incorrect.')
         errorMessageRef.current.style.display = 'block'
       }
       setLoading(false)
@@ -115,7 +115,7 @@ export default function LoginForm() {
         className="hidden text-dl-red text-base md:text-center font-sans font-normal leading-[150%]"
         ref={errorMessageRef}
       >
-        {errorMessage} 
+        {errorMessage} {" "}
         {resend && <button onClick={resendEmail} className='underline hover:text-[#333] transition-colors'>Resend</button>}
       </p>
     </form>
