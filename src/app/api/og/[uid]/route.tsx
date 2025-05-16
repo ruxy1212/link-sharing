@@ -6,6 +6,12 @@ import { jsx, jsxs } from 'react/jsx-runtime';
 
 export const runtime = 'nodejs';
 
+interface Link {
+  id: string;
+  platform: string;
+  link: string;
+}
+
 export async function GET(
   request: Request,
   { params }: { params: { uid: string } }
@@ -13,15 +19,26 @@ export async function GET(
   const { uid } = params;
 
   const profileSnap = await getDoc(doc(db, `${uid}/profileDetails`));
+  const linksSnap = await getDoc(doc(db, `${uid}/userLinks`));
   let firstName = 'Devlinks';
   let lastName = 'User';
   let fullName = `${firstName} ${lastName}`;
+  let email = 'user@example.com'
+  let links: Link[] | null = null;
+  let linkText = '';
 
   if (profileSnap.exists()) {
     const profile = profileSnap.data();
     firstName = profile.firstName || 'Devlinks';
     lastName = profile.lastName || 'User';
     fullName = `${firstName} ${lastName}`;
+    email = profile.email || 'user@example.com';
+  }
+
+  if (linksSnap.exists()) {
+    const data = linksSnap.data();
+    links = data.links as Link[];
+    linkText = (links && links.length > 1) ? `${links[0].platform} and ${links.length - 1} more` : email;
   }
 
   let avatarUrl = '/images/placeholder-image.png';
@@ -108,7 +125,7 @@ export async function GET(
                     fontSize: '28px',
                     marginBottom: '30px',
                   },
-                  children: 'DevLinks Profile',
+                  children: linkText,
                 }),
                 jsx('img', {
                   src: logoUrl,
