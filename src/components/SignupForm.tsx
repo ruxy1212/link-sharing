@@ -4,7 +4,7 @@ import { useRef, useState, useContext, FormEvent } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import Input from './Input'
 import { auth, db } from '@/firebase/Configuration'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { Context } from '@/hooks/context'
 import { doc, setDoc } from 'firebase/firestore'
 
@@ -57,7 +57,7 @@ export default function SignupForm() {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, userEmail, userPassword)
+      const userCredential = await createUserWithEmailAndPassword(auth, userEmail, userPassword)
       if (auth.currentUser) {
         const usersLinksDoc = doc(db, `${auth.currentUser.uid}/userLinks`)
         const profileDetailsDoc = doc(
@@ -71,6 +71,7 @@ export default function SignupForm() {
           email: userEmail,
           avatar: '',
         })
+        await sendEmailVerification(userCredential.user);
         setLoading(false)
         setOpenLoginMessage(true)
       }

@@ -3,8 +3,8 @@
 import { memo } from 'react'
 import Image from 'next/image'
 import LoginForm from '@/components/LoginForm'
-import Popup from '@/components/Popup'
 import Link from 'next/link'
+import Popup2 from '@/components/Popup2'
 
 const Login = () => {
   return (
@@ -38,7 +38,7 @@ const Login = () => {
           </p>
         </section>
       </main>
-      <Popup />
+      <Popup2 />
     </div>
   )
 }
