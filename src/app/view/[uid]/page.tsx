@@ -26,7 +26,7 @@ export async function generateMetadata(
 
   const profile = profileSnap.data();
   const fullName = `${profile.firstName} ${profile.lastName}`;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const appUrl = process.env.NEXT_APP_URL || 'http://localhost:3000';
 
   const previousImages = (await parent).openGraph?.images || [];
 
