@@ -34,7 +34,7 @@ export async function GET(
   }
 
   const logoUrl = `${
-    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    process.env.NEXT_APP_URL || 'http://localhost:3000'
   }/devlinks.png`;
 
   return new ImageResponse(
