@@ -25,6 +25,9 @@ export default function Popup2() {
             dialogRef.current.style.bottom = '60px'
           }
         }, 10)
+        setTimeout(() => {
+          setOpenLoginMessage(false)
+        }, 3000)
       }
     } else {
       if (dialogRef.current) {
