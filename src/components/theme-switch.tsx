@@ -24,7 +24,7 @@ export function ThemeSwitch() {
 
   // Return null until mounted to prevent hydration issues
   if (!mounted) return null
-console.log(resolvedTheme);
+
   return (
     <button
       onClick={handleThemeToggle}

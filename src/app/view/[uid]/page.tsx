@@ -43,7 +43,7 @@ export async function generateMetadata(
           height: 630,
           alt: `${fullName}'s OG Image`,
         },
-        ...previousImages,
+        // ...previousImages,
       ],
     },
   };
