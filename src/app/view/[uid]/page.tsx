@@ -1,6 +1,6 @@
 "use server"
 
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next'; //ResolvingMetadata
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase/Configuration';
 import Preview from './Preview';
@@ -11,7 +11,7 @@ type Props = {
 
 export async function generateMetadata(
   { params }: Props,
-  parent: ResolvingMetadata
+  // parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { uid } = params;
 
@@ -28,7 +28,7 @@ export async function generateMetadata(
   const fullName = `${profile.firstName} ${profile.lastName}`;
   const appUrl = process.env.NEXT_APP_URL || 'http://localhost:3000';
 
-  const previousImages = (await parent).openGraph?.images || [];
+  // const previousImages = (await parent).openGraph?.images || [];
 
   return {
     title: `${fullName} | DevLinks`,
