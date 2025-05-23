@@ -20,6 +20,8 @@ import { Context } from "@/hooks/context";
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import GradientText from "@/components/gradient-text"
+// import GuestLayout from "@/layouts/guest-layout"
+import CustomPopup from "@/components/CustomAlert"
 
 const LogoScene = dynamic(() => import("@/components/logo-scene"), {
   ssr: false,
@@ -104,7 +106,7 @@ export default function LandingPage() {
     hidden: {
       pathLength: 0,
       fill: "rgba(0,0,0,0)",
-      stroke: "rgb(var(--dl-neutral-white))",
+      stroke: "rgba(255,255,255,1)",
       strokeWidth: 2,
     },
     visible: (i: number) => ({
@@ -118,7 +120,7 @@ export default function LandingPage() {
       },
     }),
     fillIn: (i: number) => ({
-      fill: "rgb(var(--dl-neutral-white))",
+      fill: "rgba(255,255,255,1)",
       stroke: "rgba(0,0,0,0)",
       transition: {
         delay: i * 0.5 + 1, // fill after draw
@@ -147,12 +149,17 @@ export default function LandingPage() {
 
   const context = useContext(Context);
   const router = useRouter();
-  const { uid } = context || {};
+  if (!context) {
+    throw new Error('DevLinks must be used within a Context.Provider')
+  }
+  const { uid, setCustomPopupMessage, setOpenCustomPopup } = context;
 
   const handleSignOut = async () => {
     if(uid){
       try {
         await auth.signOut();
+        setCustomPopupMessage('Logged out successfully')
+        setOpenCustomPopup(true)
       } catch (error) {
         console.error('Error signing out', error);
       }
@@ -161,484 +168,478 @@ export default function LandingPage() {
   
 
   return (
-    <div ref={containerRef} className="relative">
-      <div className="fixed inset-0 h-screen w-full items-center justify-center bg-gradient-to-br from-[#592785] to-dl-purple text-white">
-        <motion.header className="absolute top-6 text-center w-full" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <svg width="552" className="h-12 -translate-x-7 w-full" height="120" viewBox="0 0 552 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {paths.map((d, i) => (
-              <motion.path
-                key={i}
-                d={d}
-                variants={pathVariants}
-                custom={i} // used in variant function for delay
-                initial="hidden"
-                animate={controls}
-              />
-            ))}
-          </svg>
-        </motion.header>
-        {isLoading && (
-          <span className="absolute h-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <CircularProgress className="text-dl-light-purple" color="secondary" />
-          </span>
-        )}
-        <LogoScene onLoaded={() => setIsLoading(false)} />
-        <motion.footer className="absolute bottom-20 z-20 gap-2.5 md:bottom-16 text-center w-full flex justify-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <ThemeSwitch />
-            <button
-              onClick={handleSignOut}
-              className="w-12 h-12 bg-dl-neutral-white text-dl-black-gray font-sans font-semibold cursor-pointer select-none hover:bg-dl-mid-purple hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border-[1px] border-dl-purple flex justify-center items-center"
-              aria-label="Log Out"
-            >
-              {uid ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-dl-red hover:text-dl-black-gray"
-                >
-                  <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
-                  <line x1="12" y1="2" x2="12" y2="12" />
-                </svg>
-              ): (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="text-dl-red hover:text-dl-black-gray">
-                  <circle cx="12" cy="8" r="3"/>
-                  <path d="M12 11c-2.5 0-4 2-4 4v2h8v-2c0-2-1.5-4-4-4z"/>
-                  <path d="M16 12h4"/>
-                  <path d="M18 10l2 2l-2 2"/>
-                </svg>
-              )}
-            </button>
-        </motion.footer>
+    // <GuestLayout variant="forHome">
+      <div ref={containerRef} className="relative">
+        <div className="fixed inset-0 h-screen w-full items-center justify-center bg-gradient-to-br from-[#592785] to-dl-purple text-white">
+          <motion.header className="absolute top-6 text-center w-full" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <svg width="552" className="h-12 -translate-x-7 w-full" height="120" viewBox="0 0 552 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {paths.map((d, i) => (
+                <motion.path
+                  key={i}
+                  d={d}
+                  variants={pathVariants}
+                  custom={i}
+                  initial="hidden"
+                  animate={controls}
+                />
+              ))}
+            </svg>
+          </motion.header>
+          {isLoading && (
+            <span className="absolute h-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <CircularProgress className="text-dl-light-purple" color="secondary" />
+            </span>
+          )}
+          <LogoScene onLoaded={() => setIsLoading(false)} />
+          <motion.footer className="absolute bottom-20 z-20 gap-2.5 md:bottom-16 text-center w-full flex justify-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <ThemeSwitch />
+              <button
+                onClick={handleSignOut}
+                className="w-12 h-12 bg-dl-neutral-white text-dl-black-gray font-sans font-semibold cursor-pointer select-none hover:bg-dl-mid-purple hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border-[1px] border-dl-purple flex justify-center items-center"
+                aria-label="Log Out"
+              >
+                {uid ? (
+                  <svg className="text-dl-red hover:text-dl-black-gray" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+                    <path d="M9 12h12l-3 -3"></path>
+                    <path d="M18 15l3 -3"></path>
+                  </svg>
+                ): (
+                  <svg className="text-dl-red hover:text-dl-black-gray" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M9 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2"></path>
+                    <path d="M3 12h13l-3 -3"></path>
+                    <path d="M13 15l3 -3"></path>
+                  </svg>
+                )}
+              </button>
+          </motion.footer>
 
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-dl-red bg-opacity-20 blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.3, 0.2],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          ></motion.div>
-          <motion.div
-            className="absolute top-1/2 -left-32 h-96 w-96 rounded-full bg-violet-300 bg-opacity-20 blur-3xl"
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.2, 0.25, 0.2],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-          ></motion.div>
-          <motion.div
-            className="absolute -bottom-20 right-1/3 h-72 w-72 rounded-full bg-blue-600 bg-opacity-20 blur-3xl"
-            animate={{
-              scale: [1, 1.15, 1],
-              opacity: [0.2, 0.28, 0.2],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-              delay: 2,
-            }}
-          ></motion.div>
+          <div className="absolute inset-0 overflow-hidden">
+            <motion.div
+              className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-dl-red bg-opacity-20 blur-3xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0.3, 0.2],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              }}
+            ></motion.div>
+            <motion.div
+              className="absolute top-1/2 -left-32 h-96 w-96 rounded-full bg-violet-300 bg-opacity-20 blur-3xl"
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.2, 0.25, 0.2],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+                delay: 1,
+              }}
+            ></motion.div>
+            <motion.div
+              className="absolute -bottom-20 right-1/3 h-72 w-72 rounded-full bg-blue-600 bg-opacity-20 blur-3xl"
+              animate={{
+                scale: [1, 1.15, 1],
+                opacity: [0.2, 0.28, 0.2],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+                delay: 2,
+              }}
+            ></motion.div>
+          </div>
         </div>
-      </div>
-      <div style={{ height: "100vh" }}></div>
-      <motion.div
-        style={{
-          scale: bodyScale,
-          borderTopLeftRadius: bodyBorderRadius,
-          borderTopRightRadius: bodyBorderRadius,
-          transformOrigin: "top center"
-        }}
-        className="relative min-h-screen bg-dl-background mx-auto shadow-xl z-20 overflow-hidden -mt-6"
-      >
-        <section className="py-20 px-6 md:px-12 select-none">
-          <div className="max-w-7xl mx-auto">
-            <motion.h2
-              className="font-bold mb-8 text-dl-new-white"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <GradientText text="About" />
-            </motion.h2>
-            <motion.p
-              className="text-lg text-dl-dark-gray mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              {"DevLinks is a centralized hub for developers to consolidate their online presence. In today's digital landscape, developers often maintain multiple profiles across various platforms. DevLinks simplifies sharing by providing a single, customizable link that showcases all your professional profiles."}
-            </motion.p>
-            <div className="text-center">
-              <Link href={uid ? "/dashboard" : "/login"} className="w-40 h-12 bg-dl-background text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-dark-gray dark:active:border-dl-neutral-white hover:border-dl-dark-gray dark:hover:border-dl-neutral-white group py-3 px-5">
-                <span className="text-dl-dark-gray dark:text-white group-hover:text-dl-black-gray font-medium text-lg ">{uid ? 'Dashboard' : 'Get Started'}</span>
-              </Link>
-            </div>
-            <motion.div
-              className="grid md:grid-cols-3 gap-8 mt-12"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
-                <motion.div
-                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <Code className="h-6 w-6" />
-                </motion.div>
-                <h3 className="text-xl font-semibold mb-2">Showcase Your Work</h3>
-                <p className="text-dl-dark-gray">
-                  Link to your GitHub, portfolio, blog, and other platforms where your code lives.
-                </p>
-              </motion.div>
-
-              <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
-                <motion.div
-                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <Github className="h-6 w-6" />
-                </motion.div>
-                <h3 className="text-xl font-semibold mb-2">Professional Identity</h3>
-                <p className="text-dl-dark-gray">
-                  Present a cohesive professional identity across all your development platforms.
-                </p>
-              </motion.div>
-
-              <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
-                <motion.div
-                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <Linkedin className="h-6 w-6" />
-                </motion.div>
-                <h3 className="text-xl font-semibold mb-2">Grow Your Network</h3>
-                <p className="text-dl-dark-gray">
-                  Make it easy for potential employers and collaborators to find all your work.
-                </p>
-              </motion.div>
-            </motion.div>
-            <motion.div
-              className="bg-dl-white-gray p-6 mt-12 rounded-xl shadow-md border border-dl-light-purple max-w-2xl mx-auto"
-              whileHover={{ scale: 1.02, y: -5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <Zap className="h-8 w-8 text-dl-purple dark:text-dl-mid-purple" />
-                <h2 className="text-2xl md:text-3xl font-bold">Born from a Challenge</h2>
+        <div style={{ height: "100vh" }}></div>
+        <motion.div
+          style={{
+            scale: bodyScale,
+            borderTopLeftRadius: bodyBorderRadius,
+            borderTopRightRadius: bodyBorderRadius,
+            transformOrigin: "top center"
+          }}
+          className="relative min-h-screen bg-dl-background mx-auto shadow-xl z-20 overflow-hidden -mt-6"
+        >
+          <section className="py-20 px-6 md:px-12 select-none">
+            <div className="max-w-7xl mx-auto">
+              <motion.h2
+                className="font-bold mb-8 text-dl-new-white"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <GradientText text="About" />
+              </motion.h2>
+              <motion.p
+                className="text-lg text-dl-dark-gray mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                {"DevLinks is a centralized hub for developers to consolidate their online presence. In today's digital landscape, developers often maintain multiple profiles across various platforms. DevLinks simplifies sharing by providing a single, customizable link that showcases all your professional profiles."}
+              </motion.p>
+              <div className="text-center">
+                <Link href={uid ? "/dashboard" : "/login"} className="w-40 h-12 bg-dl-background text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-dark-gray dark:active:border-dl-neutral-white hover:border-dl-dark-gray dark:hover:border-dl-neutral-white group py-3 px-5">
+                  <span className="text-dl-dark-gray dark:text-white group-hover:text-dl-black-gray font-medium text-lg ">{uid ? 'Dashboard' : 'Get Started'}</span>
+                </Link>
               </div>
-              <p className="text-lg text-dl-new-white mb-8 max-w-3xl mx-auto">
-                DevLinks started as a UI challenge from{" "}
-                <Link
-                  href="https://frontendmentor.io"
-                  className="text-dl-purple dark:text-dl-mid-purple hover:text-dl-mid-purple dark:hover:text-dl-purple font-medium inline-flex items-center gap-1"
-                >
-                  Frontend Mentor
-                  <ExternalLink className="h-4 w-4" />
-                </Link>{" "}
-                — a platform that helps developers improve their coding skills by building realistic projects. What
-                began as a design implementation quickly evolved into something more when we realized the need for a
-                truly functional solution.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="py-20 px-6 md:px-12 bg-dl-white-gray select-none">
-          <div className="max-w-7xl mx-auto">
-            <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <GradientText text="How it Works" />
-            </motion.h2>
-
-            <div className="space-y-12">
               <motion.div
-                className="flex flex-col md:flex-row gap-8 items-center"
-                variants={stepVariants}
+                className="grid md:grid-cols-3 gap-8 mt-12"
+                variants={containerVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <div className="w-full md:w-1/2 aspect-square">
+                <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
                   <motion.div
-                    className="bg-white bg-[url('/images/step1.jpg')] bg-cover p-6 rounded-lg shadow-md h-full flex"
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    transition={{ duration: 0.3 }}
+                    className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
                   >
-                    <p className="text-gray-800 text-xl text-center">Step 1</p>
+                    <Code className="h-6 w-6" />
                   </motion.div>
-                </div>
-                <div className="w-full md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4">Create Your Account</h3>
+                  <h3 className="text-xl font-semibold mb-2">Showcase Your Work</h3>
                   <p className="text-dl-dark-gray">
-                    Sign up for DevLinks in seconds. All you need is an email address to get started.
+                    Link to your GitHub, portfolio, blog, and other platforms where your code lives.
                   </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="flex flex-col md:flex-row-reverse gap-8 items-center"
-                variants={stepVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="w-full md:w-1/2 aspect-square">
-                  <motion.div
-                    className="bg-white bg-[url('/images/step2.jpg')] bg-cover p-6 rounded-lg shadow-md h-full flex"
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-gray-800 text-xl text-center">Step 2</p>
-                  </motion.div>
-                </div>
-                <div className="w-full md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4">Add Your Links</h3>
-                  <p className="text-dl-dark-gray">
-                    Add links to your GitHub, LinkedIn, portfolio, blog, Twitter, and any other platforms where your
-                    work appears.
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="flex flex-col md:flex-row gap-8 items-center"
-                variants={stepVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-              >
-                <div className="w-full md:w-1/2 aspect-square">
-                  <motion.div
-                    className="bg-white bg-[url('/images/step3.jpg')] bg-cover p-6 rounded-lg shadow-md h-full flex"
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <p className="text-gray-800 text-xl text-center">Step 3</p>
-                  </motion.div>
-                </div>
-                <div className="w-full md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4 ">Share Your DevLinks</h3>
-                  <p className="text-dl-dark-gray">
-                    Get your personalized DevLinks URL and share it in your email signature, resume, business card, or
-                    social media profiles.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 px-6 md:px-12 select-none">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              className="text-center mb-12"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <GradientText text="Contribute to DevLinks" />
-              </h2>
-              <p className="text-lg text-dl-dark-gray max-w-2xl mx-auto">
-                DevLinks is built by developers, for developers. We welcome contributions, ideas, and feature requests.
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="grid md:grid-cols-2 gap-8"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <motion.div
-                className="bg-dl-white-gray p-8 rounded-xl border border-dl-light-purple"
-                variants={cardVariants}
-                whileHover="hover"
-              >
-                <motion.div
-                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <Github className="h-6 w-6" />
                 </motion.div>
-                <h3 className="text-xl font-semibold mb-3">Contribute on GitHub</h3>
-                <p className="text-dl-dark-gray mb-4">{"Our codebase is open for contributions. Whether you're fixing bugs, improving documentation, or adding new features, we appreciate your help."}
+
+                <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
+                  <motion.div
+                    className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Github className="h-6 w-6" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Professional Identity</h3>
+                  <p className="text-dl-dark-gray">
+                    Present a cohesive professional identity across all your development platforms.
+                  </p>
+                </motion.div>
+
+                <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
+                  <motion.div
+                    className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Linkedin className="h-6 w-6" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Grow Your Network</h3>
+                  <p className="text-dl-dark-gray">
+                    Make it easy for potential employers and collaborators to find all your work.
+                  </p>
+                </motion.div>
+              </motion.div>
+              <motion.div
+                className="bg-dl-white-gray p-6 mt-12 rounded-xl shadow-md border border-dl-light-purple max-w-2xl mx-auto"
+                whileHover={{ scale: 1.02, y: -5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <Zap className="h-8 w-8 text-dl-purple dark:text-dl-mid-purple" />
+                  <h2 className="text-2xl md:text-3xl font-bold">Born from a Challenge</h2>
+                </div>
+                <p className="text-lg text-dl-new-white mb-8 max-w-3xl mx-auto">
+                  DevLinks started as a UI challenge from{" "}
+                  <Link
+                    href="https://frontendmentor.io"
+                    className="text-dl-purple dark:text-dl-mid-purple hover:text-dl-mid-purple dark:hover:text-dl-purple font-medium inline-flex items-center gap-1"
+                  >
+                    Frontend Mentor
+                    <ExternalLink className="h-4 w-4" />
+                  </Link>{" "}
+                  — a platform that helps developers improve their coding skills by building realistic projects. What
+                  began as a design implementation quickly evolved into something more when we realized the need for a
+                  truly functional solution.
                 </p>
-                <div className="space-y-2">
-                  <motion.div
-                    className="flex items-center gap-2 text-dl-dark-gray"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
-                    <span>Submit pull requests for new features</span>
-                  </motion.div>
-                  <motion.div
-                    className="flex items-center gap-2 text-dl-dark-gray"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
-                    <span>Report bugs and issues</span>
-                  </motion.div>
-                  <motion.div
-                    className="flex items-center gap-2 text-dl-dark-gray"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
-                    <span>Improve documentation</span>
-                  </motion.div>
-                </div>
-                <Link
-                  href="#"
-                  className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
+              </motion.div>
+            </div>
+          </section>
+
+          <section className="py-20 px-6 md:px-12 bg-dl-white-gray select-none">
+            <div className="max-w-7xl mx-auto">
+              <motion.h2
+                className="text-3xl md:text-4xl font-bold mb-8"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <GradientText text="How it Works" />
+              </motion.h2>
+
+              <div className="space-y-12">
+                <motion.div
+                  className="flex flex-col md:flex-row gap-8 items-center"
+                  variants={stepVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
                 >
-                  View GitHub Repository <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
-                </Link>
+                  <div className="w-full md:w-1/2 aspect-square">
+                    <motion.div
+                      className="bg-white bg-[url('/images/step1.jpg')] bg-cover p-2.5 md:p-6 rounded-lg shadow-md h-full flex"
+                      whileHover={{ scale: 1.05, rotateY: 5 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="text-gray-800 text-lg md:text-xl text-center font-semibold"><GradientText text="Step 1" type="special" /></p>
+                    </motion.div>
+                  </div>
+                  <div className="w-full md:w-1/2">
+                    <h3 className="text-2xl font-semibold mb-4">Create Your Account</h3>
+                    <p className="text-dl-dark-gray">
+                      Sign up for DevLinks in seconds. All you need is an email address to get started.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="flex flex-col md:flex-row-reverse gap-8 items-center"
+                  variants={stepVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="w-full md:w-1/2 aspect-square">
+                    <motion.div
+                      className="bg-white bg-[url('/images/step2.jpg')] bg-cover p-2.5 md:p-6 rounded-lg shadow-md h-full flex"
+                      whileHover={{ scale: 1.05, rotateY: 5 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="text-gray-800 text-lg md:text-xl text-center font-semibold"><GradientText text="Step 2" type="special" /></p>
+                    </motion.div>
+                  </div>
+                  <div className="w-full md:w-1/2">
+                    <h3 className="text-2xl font-semibold mb-4">Add Your Links</h3>
+                    <p className="text-dl-dark-gray">
+                      Add links to your GitHub, LinkedIn, portfolio, blog, Twitter, and any other platforms where your
+                      work appears.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="flex flex-col md:flex-row gap-8 items-center"
+                  variants={stepVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <div className="w-full md:w-1/2 aspect-square">
+                    <motion.div
+                      className="bg-white bg-[url('/images/step3.jpg')] bg-cover p-2.5 md:p-6 rounded-lg shadow-md h-full flex"
+                      whileHover={{ scale: 1.05, rotateY: 5 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p className="text-gray-800 text-lg md:text-xl text-center font-semibold"><GradientText text="Step 3" type="special" /></p>
+                    </motion.div>
+                  </div>
+                  <div className="w-full md:w-1/2">
+                    <h3 className="text-2xl font-semibold mb-4 ">Share Your DevLinks</h3>
+                    <p className="text-dl-dark-gray">
+                      Get your personalized DevLinks URL and share it in your email signature, resume, business card, or
+                      social media profiles.
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+
+          <section className="py-20 px-6 md:px-12 select-none">
+            <div className="max-w-7xl mx-auto">
+              <motion.div
+                className="text-center mb-12"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  <GradientText text="Contribute to DevLinks" />
+                </h2>
+                <p className="text-lg text-dl-dark-gray max-w-2xl mx-auto">
+                  DevLinks is built by developers, for developers. We welcome contributions, ideas, and feature requests.
+                </p>
               </motion.div>
 
               <motion.div
-                className="bg-dl-white-gray p-8 rounded-xl border border-dl-light-purple"
-                variants={cardVariants}
-                whileHover="hover"
+                className="grid md:grid-cols-2 gap-8"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
               >
                 <motion.div
-                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
+                  className="bg-dl-white-gray p-8 rounded-xl border border-dl-light-purple"
+                  variants={cardVariants}
+                  whileHover="hover"
                 >
-                  <MessageSquare className="h-6 w-6" />
+                  <motion.div
+                    className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Github className="h-6 w-6" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-3">Contribute on GitHub</h3>
+                  <p className="text-dl-dark-gray mb-4">{"Our codebase is open for contributions. Whether you're fixing bugs, improving documentation, or adding new features, we appreciate your help."}
+                  </p>
+                  <div className="space-y-2">
+                    <motion.div
+                      className="flex items-center gap-2 text-dl-dark-gray"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
+                      <span>Submit pull requests for new features</span>
+                    </motion.div>
+                    <motion.div
+                      className="flex items-center gap-2 text-dl-dark-gray"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
+                      <span>Report bugs and issues</span>
+                    </motion.div>
+                    <motion.div
+                      className="flex items-center gap-2 text-dl-dark-gray"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
+                      <span>Improve documentation</span>
+                    </motion.div>
+                  </div>
+                  <Link
+                    href="#"
+                    className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
+                  >
+                    View GitHub Repository <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
+                  </Link>
                 </motion.div>
-                <h3 className="text-xl font-semibold mb-3">Request Features</h3>
-                <p className="text-dl-dark-gray mb-4">{"Have an idea for a feature that would make DevLinks even better? We'd love to hear it! Submit your feature requests through our GitHub issues."}</p>
-                <div className="space-y-2">
-                  <motion.div
-                    className="flex items-center gap-2 text-dl-dark-gray"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
-                    <span>Suggest new integrations</span>
-                  </motion.div>
-                  <motion.div
-                    className="flex items-center gap-2 text-dl-dark-gray"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
-                    <span>Request UI/UX improvements</span>
-                  </motion.div>
-                  <motion.div
-                    className="flex items-center gap-2 text-dl-dark-gray"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
-                    <span>Propose new customization options</span>
-                  </motion.div>
-                </div>
-                <Link
-                  href="#"
-                  className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
+
+                <motion.div
+                  className="bg-dl-white-gray p-8 rounded-xl border border-dl-light-purple"
+                  variants={cardVariants}
+                  whileHover="hover"
                 >
-                  Submit Feature Request <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
-                </Link>
+                  <motion.div
+                    className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <MessageSquare className="h-6 w-6" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-3">Request Features</h3>
+                  <p className="text-dl-dark-gray mb-4">{"Have an idea for a feature that would make DevLinks even better? We'd love to hear it! Submit your feature requests through our GitHub issues."}</p>
+                  <div className="space-y-2">
+                    <motion.div
+                      className="flex items-center gap-2 text-dl-dark-gray"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
+                      <span>Suggest new integrations</span>
+                    </motion.div>
+                    <motion.div
+                      className="flex items-center gap-2 text-dl-dark-gray"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
+                      <span>Request UI/UX improvements</span>
+                    </motion.div>
+                    <motion.div
+                      className="flex items-center gap-2 text-dl-dark-gray"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
+                      <span>Propose new customization options</span>
+                    </motion.div>
+                  </div>
+                  <Link
+                    href="#"
+                    className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
+                  >
+                    Submit Feature Request <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
+                  </Link>
+                </motion.div>
               </motion.div>
+            </div>
+          </section>
+
+          <section className="py-20 px-6 md:px-12 bg-gradient-to-br from-[#592785] to-dl-purple select-none">
+            <motion.div
+              className="max-w-7xl mx-auto text-center"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-dl-neutral-white">Ready to Consolidate Your Developer Presence?</h2>
+              <p className="text-xl mb-8 text-dl-neutral-white">
+                Join thousands of developers who use DevLinks to showcase their work.
+              </p>
+              <div>
+                <Link href={uid ? "/dashboard" : "/register"} className="w-40 h-12 bg-dl-github text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-neutral-white hover:border-dl-neutral-white group py-3 px-5">
+                  <span className="text-white dark:group-hover:text-dl-black-gray font-medium text-lg ">{uid ? 'Dashboard' : 'Get Started'}</span>
+                </Link>
+              </div>
             </motion.div>
-          </div>
-        </section>
+          </section>
 
-        <section className="py-20 px-6 md:px-12 bg-gradient-to-br from-[#592785] to-dl-purple text-white select-none">
-          <motion.div
-            className="max-w-7xl mx-auto text-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Consolidate Your Developer Presence?</h2>
-            <p className="text-xl mb-8 text-violet-100">
-              Join thousands of developers who use DevLinks to showcase their work.
-            </p>
-            <div>
-              <Link href={uid ? "/dashboard" : "/register"} className="w-40 h-12 bg-dl-github text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-neutral-white hover:border-dl-neutral-white group py-3 px-5">
-                <span className="text-white dark:group-hover:text-dl-black-gray font-medium text-lg ">{uid ? 'Dashboard' : 'Get Started'}</span>
-              </Link>
+          <footer className="py-8 px-6 bg-dl-github text-dl-neutral-white select-none">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex justify-between items-center">
+                <Image
+                  src={'/icons/logo-devlinks-large-light.svg'}
+                  width="0"
+                  height="0"
+                  alt="devlinks"
+                  className="w-[150px] h-auto object-contain invert brightness-0 hidden dark:md:inline"
+                />
+                <Image
+                  src={'/icons/logo-devlinks-small.svg'}
+                  width="32"
+                  height="0"
+                  alt="devlinks"
+                  className="w-[28px] h-auto object-contain invert brightness-0 inline md:hidden"
+                />
+                {/* <h3 className="text-xl font-bold text-white mb-2">DevLinks</h3> */}
+                <p className="text-sm">© {new Date().getFullYear()}. All rights reserved.</p>
+              </div>
             </div>
-          </motion.div>
-        </section>
-
-        <footer className="py-8 px-6 bg-dl-github text-dl-neutral-white select-none">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center">
-              <Image
-                src={'/icons/logo-devlinks-large-light.svg'}
-                width="0"
-                height="0"
-                alt="devlinks"
-                className="w-[150px] h-auto object-contain invert brightness-0 hidden dark:md:inline"
-              />
-              <Image
-                src={'/icons/logo-devlinks-small.svg'}
-                width="32"
-                height="0"
-                alt="devlinks"
-                className="w-[28px] h-auto object-contain invert brightness-0 inline md:hidden"
-              />
-              {/* <h3 className="text-xl font-bold text-white mb-2">DevLinks</h3> */}
-              <p className="text-sm">© {new Date().getFullYear()}. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
-      </motion.div>
-    </div>
+          </footer>
+        </motion.div>
+        <CustomPopup />
+      </div>
+    // </GuestLayout>
   )
 }

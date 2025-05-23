@@ -96,65 +96,70 @@ const PhoneMockup: FC = () => {
               height={0}
               width={0}
             />
-            <span className={`h-12 ${isLoaded?'hidden':''}`}>
-              <CircularProgress
-                className="text-dl-light-purple"
-                color="secondary"
-              />
-            </span>
+            <div className={`opacity-50 w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px] ${isLoaded?'hidden':''}`}>
+              <div className="animate-pulse h-full w-full rounded-full bg-dl-light-gray opacity-75" />
+            </div>
           </>
         )}
-        {loadingProfile
-          ? null
-          : profileDetails?.firstName && (
-              <h1 className="text-dl-black-gray font-instrument text-[1.125rem] font-semibold leading-[150%] w-[80%] text-center bg-dl-white dark:bg-transparent absolute left-0 right-0 mx-auto top-[176px]">
-                {profileDetails.firstName}&nbsp;{profileDetails.lastName}
-              </h1>
-            )}
-        {loadingProfile
-          ? null
-          : profileDetails?.email && (
-              <h2 className="text-dl-dark-gray font-instrument text-sm font-normal leading-[150%] w-[80%] text-center bg-dl-white dark:bg-transparent absolute left-0 right-0 mx-auto top-[206px]">
-                {profileDetails.email}
-              </h2>
-            )}
+        {!loadingProfile && profileDetails?.firstName && profileDetails?.lastName
+          ? ( 
+            <h2 className="text-dl-black-gray font-instrument text-[1.125rem] font-semibold leading-[150%] w-[80%] text-center bg-dl-white dark:bg-transparent absolute left-0 right-0 mx-auto top-[176px] select-none">
+              {profileDetails.firstName}&nbsp;{profileDetails.lastName}
+            </h2>
+          ) : <div className="w-full opacity-50"><div className="animate-pulse rounded-xl bg-dl-light-gray w-[180px] h-6 absolute left-0 right-0 mx-auto top-[176px] opacity-75" /></div>
+        }
+        {!loadingProfile && profileDetails?.email
+          ? ( 
+            <h2 className="text-dl-dark-gray font-instrument text-sm font-normal leading-[150%] w-[80%] text-center bg-dl-white dark:bg-transparent absolute left-0 right-0 mx-auto top-[206px] select-none">
+              {profileDetails.email}
+            </h2>
+          ) : <div className="w-full opacity-50"><div className="animate-pulse rounded-xl bg-dl-light-gray w-[100px] h-4 absolute left-0 right-0 mx-auto top-[206px] opacity-75" /></div>
+        }
         <div
-          className={`bg-dl-white dark:bg-transparent w-[245px] h-[320px] absolute bottom-[57px] left-0 right-0 mx-auto ${usersLinks.length > 0 ? '' : 'animate-pulse'}`}
+          className={`w-[245px] h-[320px] absolute bottom-[57px] left-0 right-0 mx-auto ${usersLinks.length > 0 ? 'bg-dl-white dark:bg-transparent' : ''}`}
         >
-          <DragDropContext onDragEnd={onDragEnd}>
-            <StrictModeDroppable droppableId="droppable">
-              {(
-                provided: DroppableProvided,
-              ) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="flex flex-col gap-5"
-                >
-                  {usersLinks.map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}
-                    >
-                      {(
-                        provided: DraggableProvided,
-                      ) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <PhoneLinkBox link={item} />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </StrictModeDroppable>
-          </DragDropContext>
+          {usersLinks.length>0?(
+            <DragDropContext onDragEnd={onDragEnd}>
+              <StrictModeDroppable droppableId="droppable">
+                {(
+                  provided: DroppableProvided,
+                ) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className="flex flex-col gap-5"
+                  >
+                    {usersLinks.map((item, index) => (
+                      <Draggable
+                        key={item.id}
+                        draggableId={item.id}
+                        index={index}
+                      >
+                        {(
+                          provided: DraggableProvided,
+                        ) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <PhoneLinkBox link={item} />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </StrictModeDroppable>
+            </DragDropContext>
+          ):(
+            <div className="flex flex-col gap-4 opacity-60">
+              {Array.from({length: 4}).map((_,i) => (
+                <div key={i} className="animate-pulse rounded-xl bg-dl-light-gray w-full h-8 opacity-75" />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

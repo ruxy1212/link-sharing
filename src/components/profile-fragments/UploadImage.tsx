@@ -61,7 +61,7 @@ export default function UploadImage() {
 
   return (
     <section className="w-full bg-dl-white-gray rounded-[12px] p-5 flex justify-between items-center gap-4 flex-wrap md:flex-nowrap">
-      <h1 className="whitespace-nowrap text-dl-dark-gray font-instrument text-base font-normal leading-[150%] w-full md:w-1/2 lg:w-5/12">
+      <h1 className="whitespace-nowrap text-dl-dark-gray font-instrument text-base font-normal leading-[150%] w-full md:w-1/2 lg:w-5/12 select-none">
         Profile picture
       </h1>
       <div className="flex gap-6 flex-wrap md:flex-nowrap w-full md:w-1/2 lg:w-7/12 items-center">
@@ -93,7 +93,7 @@ export default function UploadImage() {
           + {set?'Change Image':'Upload Image'}
         </label>
         <p
-          className=" w-full md:w-auto text-dl-dark-gray font-instrument text-xs font-normal leading-[150%]"
+          className=" w-full select-none md:w-auto text-dl-dark-gray font-instrument text-xs font-normal leading-[150%]"
           ref={messageRef}
         >
           Image must be below 1024x1024px. Use PNG or JPG format.

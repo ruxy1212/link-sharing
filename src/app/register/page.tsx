@@ -6,19 +6,27 @@ import SignupForm from '@/components/SignupForm'
 import Popup from '@/components/Popup'
 import Link from 'next/link'
 import GuestLayout from '@/layouts/guest-layout'
+import SocialForm from '@/components/SocialForm'
 
 const Register = () => {
   return (
     <GuestLayout variant="forAuth">
       <div className="flex min-h-screen justify-center p-8 bg-dl-white md:bg-dl-white-gray">
-        <main className="my-8 flex flex-col items-start gap-12 md:gap-10 md:items-center w-full max-w-[476px]">
+        <main className="my-8 flex flex-col items-start justify-center gap-12 md:gap-10 md:items-center w-full max-w-[476px]">
           <Link href="/">
             <Image
               src={'/icons/logo-devlinks-large.svg'}
               width="0"
               height="0"
               alt="devlinks"
-              className="w-[182.5px] h-auto object-contain"
+              className="w-[182.5px] h-auto object-contain dark:hidden"
+            />
+            <Image
+              src={'/icons/logo-devlinks-large-light.svg'}
+              width="0"
+              height="0"
+              alt="devlinks"
+              className="w-[182.5px] h-auto object-contain hidden dark:inline"
             />
           </Link>
           <section className="bg-dl-white rounded-xl flex flex-col gap-2 p-0 md:p-10 w-full">
@@ -29,6 +37,7 @@ const Register = () => {
               Let’s get you started sharing your links!
             </p>
             <SignupForm />
+            <SocialForm />
             <p className="justify-center items-center gap-0 md:gap-1 text-base font-instrument font-normal leading-[150%] text-dl-dark-gray self-center flex flex-col md:flex-row">
               Already have an account?
               <Link

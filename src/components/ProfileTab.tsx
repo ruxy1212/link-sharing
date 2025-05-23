@@ -64,7 +64,7 @@ export default function ProfileDetails() {
   return (
     <form className="w-full bg-dl-white rounded-xl" onSubmit={handleSubmit}>
       <div className="p-6 md:p-10 flex gap-10 flex-col">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 select-none">
           <h1 className="text-dl-black-gray font-instrument text-3xl font-bold leading-[150%]">
             Profile Details
           </h1>

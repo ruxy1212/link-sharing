@@ -23,6 +23,7 @@ import {
 } from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '@/components/StrictModeDroppable'
 import Image from 'next/image'
+import CustomPopup from './CustomAlert'
 
 interface Link {
   id: string
@@ -35,7 +36,7 @@ const CustomizeLinks: React.FC = () => {
   const context = useContext(Context)
 
   if (!context) {
-    throw new Error('CustomizeLinks must be used within a Context.Provider')
+    throw new Error('DevLinks must be used within a Context.Provider')
   }
 
   const {
@@ -109,7 +110,7 @@ const CustomizeLinks: React.FC = () => {
   return (
     <form className="w-full bg-dl-white rounded-xl" onSubmit={handleSubmit}>
       <div className="p-6 md:p-10 flex gap-10 flex-col">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 select-none">
           <h1 className="text-dl-black-gray font-instrument text-3xl font-bold leading-[150%]">
             Customize your links
           </h1>
@@ -160,7 +161,7 @@ const CustomizeLinks: React.FC = () => {
               </StrictModeDroppable>
             </DragDropContext>
           ) : (
-            <div className="w-full px-5 py-10 rounded-xl bg-dl-white-gray flex flex-col items-center justify-center gap-6">
+            <div className="w-full select-none px-5 py-10 rounded-xl bg-dl-white-gray flex flex-col items-center justify-center gap-6">
               <Image
                 src={'/images/illustration-empty.svg'}
                 alt="add link"
@@ -199,6 +200,7 @@ const CustomizeLinks: React.FC = () => {
           )}
         </button>
       </div>
+      <CustomPopup />
     </form>
   )
 }

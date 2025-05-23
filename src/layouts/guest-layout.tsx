@@ -33,6 +33,7 @@ const GuestLayout = ({ children, variant }: AuthWrapperProps) => {
           router.push('/dashboard');
         }
       } else {
+        setUid('');
         setIsAuthenticated(false);
       }
     });

@@ -23,9 +23,10 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
+      if (currentUser && currentUser.emailVerified === true) {
         setUid(currentUser.uid)
       } else {
+        setUid('')
         router.push('/login')
       }
     })
@@ -41,21 +42,23 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
-        {uid ? (
-          <>
-            <NavBar currentTab={currentTab} uid={uid} setCurrentTab={setCurrentTab} />
-            <TabsContainer currentTab={currentTab} />
-          </>
-        ) : (
-          <div className="w-full h-screen flex justify-center items-center">
-            <span className="h-12">
-              <CircularProgress
-                className="text-dl-light-purple"
-                color="secondary"
-              />
-            </span>
-          </div>
-        )}
+        <div className="w-full max-w-7xl mx-auto flex flex-col gap-0">
+          {uid ? (
+            <>
+              <NavBar currentTab={currentTab} uid={uid} setCurrentTab={setCurrentTab} />
+              <TabsContainer currentTab={currentTab} />
+            </>
+          ) : (
+            <div className="w-full h-screen flex justify-center items-center">
+              <span className="h-12">
+                <CircularProgress
+                  className="text-dl-light-purple"
+                  color="secondary"
+                />
+              </span>
+            </div>
+          )}
+        </div>
       </main>
       <Alert />
     </>

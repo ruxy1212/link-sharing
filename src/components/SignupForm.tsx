@@ -7,6 +7,7 @@ import { auth, db } from '@/firebase/Configuration'
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { Context } from '@/hooks/context'
 import { doc, setDoc } from 'firebase/firestore'
+import { useRouter } from 'next/navigation'
 
 interface SignupContext {
   setOpenLoginMessage: (open: boolean) => void
@@ -14,6 +15,7 @@ interface SignupContext {
 
 export default function SignupForm() {
   const context = useContext(Context)
+  const router = useRouter()
 
   if (!context) {
     throw new Error('Popup must be used within a Context.Provider')
@@ -74,6 +76,7 @@ export default function SignupForm() {
         await sendEmailVerification(userCredential.user);
         setLoading(false)
         setOpenLoginMessage(true)
+        router.push('/login')
       }
     } catch (error) {
       console.error(error)
@@ -129,7 +132,7 @@ export default function SignupForm() {
       </p>
       <button
         disabled={loading}
-        className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
+        className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray dark:hover:text-dl-white-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
       >
         {loading ? (
           <CircularProgress

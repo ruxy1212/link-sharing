@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const GradientText = ({text}: {text: string;}) => {
+const GradientText = ({text, type='normal'}: {text: string; type?: 'normal' | 'special'}) => {
   const [scrollPos, setScrollPos] = useState(0);
   const textRef = useRef<HTMLSpanElement>(null);
 
@@ -36,7 +36,7 @@ const GradientText = ({text}: {text: string;}) => {
   return (
     <span
       ref={textRef}
-      className="text-3xl md:text-4xl gradient-text font-bold"
+      className={type==='normal'?"text-3xl md:text-4xl gradient-text font-bold":"gradient-text"}
       style={{ backgroundPosition: `${scrollPos}%` }}
     >
       {text}
