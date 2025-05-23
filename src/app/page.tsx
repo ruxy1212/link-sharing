@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useContext } from "react"
 import { motion, useAnimation, useScroll, useTransform } from "framer-motion"
 import {
   ArrowDown,
@@ -17,6 +17,12 @@ import {
 import Link from "next/link"
 import dynamic from "next/dynamic";
 import { CircularProgress } from "@mui/material";
+import { auth } from '@/firebase/Configuration';
+import { ThemeSwitch } from "@/components/theme-switch";
+import { Context } from "@/hooks/context";
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import GradientText from "@/components/gradient-text"
 
 const LogoScene = dynamic(() => import("@/components/logo-scene"), {
   ssr: false,
@@ -47,7 +53,7 @@ export default function LandingPage() {
   // Transition completes when body section reaches 20% of screen height
   const transitionPoint = windowHeight * 0.8 // 80% of screen height scrolled = 20% of screen showing
 
-  const bodyWidth = useTransform(scrollY, [0, transitionPoint], ["90%", "100%"])
+  const bodyScale = useTransform(scrollY, [0, transitionPoint], [0.8, 1])
 
   const bodyBorderRadius = useTransform(scrollY, [0, transitionPoint], ["3rem", "0rem"])
 
@@ -144,13 +150,27 @@ export default function LandingPage() {
       controls.start("fillIn");
     });
   }, [controls]);
+
+  const context = useContext(Context);
+  const router = useRouter();
+  const { uid } = context || {};
+
+  const handleSignOut = async () => {
+    if(uid){
+      try {
+        await auth.signOut();
+      } catch (error) {
+        console.error('Error signing out', error);
+      }
+    }else router.push('/login')
+  };
   
 
   return (
     <div ref={containerRef} className="relative">
       <div className="fixed inset-0 h-screen w-full items-center justify-center bg-gradient-to-br from-[#592785] to-dl-purple text-white">
         <motion.header className="absolute top-6 text-center w-full" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <svg width="552" className="h-12 -translate-x-7 inline" height="120" viewBox="0 0 552 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="552" className="h-12 -translate-x-7 w-full" height="120" viewBox="0 0 552 120" fill="none" xmlns="http://www.w3.org/2000/svg">
             {paths.map((d, i) => (
               <motion.path
                 key={i}
@@ -169,7 +189,40 @@ export default function LandingPage() {
           </span>
         )}
         <LogoScene onLoaded={() => setIsLoading(false)} />
-        {/* <div className="max-w-4xl mx-auto text-center z-10">
+        <motion.footer className="absolute bottom-20 z-20 gap-2.5 md:bottom-16 text-center w-full flex justify-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+          <ThemeSwitch />
+            <button
+              onClick={handleSignOut}
+              className="w-12 h-12 bg-dl-neutral-white text-dl-black-gray font-sans font-semibold cursor-pointer select-none hover:bg-dl-mid-purple hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border-[1px] border-dl-purple flex justify-center items-center"
+              aria-label="Log Out"
+            >
+              {uid ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-dl-red hover:text-dl-black-gray"
+                >
+                  <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
+                  <line x1="12" y1="2" x2="12" y2="12" />
+                </svg>
+              ): (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="text-dl-red hover:text-dl-black-gray">
+                  <circle cx="12" cy="8" r="3"/>
+                  <path d="M12 11c-2.5 0-4 2-4 4v2h8v-2c0-2-1.5-4-4-4z"/>
+                  <path d="M16 12h4"/>
+                  <path d="M18 10l2 2l-2 2"/>
+                </svg>
+              )}
+            </button>
+        </motion.footer>
+        {/* <div className="max-w-7xl mx-auto text-center z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <motion.h1
               className="text-4xl md:text-6xl font-bold mb-6"
@@ -261,74 +314,29 @@ export default function LandingPage() {
           ></motion.div>
         </div>
       </div>
-
-      {/* Spacer to push content below the fold */}
       <div style={{ height: "100vh" }}></div>
-
-      {/* Body Section that transitions over the hero */}
       <motion.div
         style={{
-          width: bodyWidth,
+          scale: bodyScale,
           borderTopLeftRadius: bodyBorderRadius,
           borderTopRightRadius: bodyBorderRadius,
+          transformOrigin: "top center"
         }}
-        className="relative min-h-screen bg-white mx-auto shadow-xl z-20 overflow-hidden"
+        className="relative min-h-screen bg-dl-background mx-auto shadow-xl z-20 overflow-hidden -mt-6"
       >
-        {/* Frontend Mentor Origins Section */}
-        <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <Zap className="h-8 w-8 text-blue-600" />
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Born from a Challenge</h2>
-              </div>
-              <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-                DevLinks started as a UI challenge from{" "}
-                <Link
-                  href="https://frontendmentor.io"
-                  className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1"
-                >
-                  Frontend Mentor
-                  <ExternalLink className="h-4 w-4" />
-                </Link>{" "}
-                — a platform that helps developers improve their coding skills by building realistic projects. What
-                began as a design implementation quickly evolved into something more when we realized the need for a
-                truly functional solution.
-              </p>
-              <motion.div
-                className="bg-white p-6 rounded-xl shadow-md border border-blue-100 max-w-2xl mx-auto"
-                whileHover={{ scale: 1.02, y: -5 }}
-                transition={{ duration: 0.3 }}
-              >
-                <p className="text-gray-700 italic">
-                  {`"From static design to dynamic platform — DevLinks proves that the best projects often start with a
-                  simple challenge and grow into something developers actually need."`}
-                </p>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section className="py-20 px-6 md:px-12">
-          <div className="max-w-4xl mx-auto">
+        <section className="py-20 px-6 md:px-12 select-none">
+          <div className="max-w-7xl mx-auto">
             <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-8 text-gray-800"
+              className="font-bold mb-8 text-dl-new-white"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              About DevLinks
+              <GradientText text="About" />
             </motion.h2>
             <motion.p
-              className="text-lg text-gray-600 mb-8"
+              className="text-lg text-dl-dark-gray mb-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -336,7 +344,11 @@ export default function LandingPage() {
             >
               {"DevLinks is a centralized hub for developers to consolidate their online presence. In today's digital landscape, developers often maintain multiple profiles across various platforms. DevLinks simplifies sharing by providing a single, customizable link that showcases all your professional profiles."}
             </motion.p>
-
+            <div className="text-center">
+              <Link href={uid ? "/dashboard" : "/login"} className="w-40 h-12 bg-dl-background text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-dark-gray dark:active:border-dl-neutral-white hover:border-dl-dark-gray dark:hover:border-dl-neutral-white group py-3 px-5">
+                <span className="text-dl-dark-gray dark:text-white group-hover:text-dl-black-gray font-medium text-lg ">{uid ? 'Dashboard' : 'Get Started'}</span>
+              </Link>
+            </div>
             <motion.div
               className="grid md:grid-cols-3 gap-8 mt-12"
               variants={containerVariants}
@@ -344,62 +356,62 @@ export default function LandingPage() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <motion.div className="bg-gray-50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
+              <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
                 <motion.div
-                  className="bg-violet-100 text-violet-600 p-3 rounded-full w-fit mb-4"
+                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                 >
                   <Code className="h-6 w-6" />
                 </motion.div>
                 <h3 className="text-xl font-semibold mb-2">Showcase Your Work</h3>
-                <p className="text-gray-600">
+                <p className="text-dl-dark-gray">
                   Link to your GitHub, portfolio, blog, and other platforms where your code lives.
                 </p>
               </motion.div>
 
-              <motion.div className="bg-gray-50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
+              <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
                 <motion.div
-                  className="bg-violet-100 text-violet-600 p-3 rounded-full w-fit mb-4"
+                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                 >
                   <Github className="h-6 w-6" />
                 </motion.div>
                 <h3 className="text-xl font-semibold mb-2">Professional Identity</h3>
-                <p className="text-gray-600">
+                <p className="text-dl-dark-gray">
                   Present a cohesive professional identity across all your development platforms.
                 </p>
               </motion.div>
 
-              <motion.div className="bg-gray-50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
+              <motion.div className="bg-dl-white border border-dl-black/50 p-6 rounded-lg" variants={cardVariants} whileHover="hover">
                 <motion.div
-                  className="bg-violet-100 text-violet-600 p-3 rounded-full w-fit mb-4"
+                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                 >
                   <Linkedin className="h-6 w-6" />
                 </motion.div>
                 <h3 className="text-xl font-semibold mb-2">Grow Your Network</h3>
-                <p className="text-gray-600">
+                <p className="text-dl-dark-gray">
                   Make it easy for potential employers and collaborators to find all your work.
                 </p>
               </motion.div>
             </motion.div>
             <motion.div
-              className="bg-white p-6 mt-12 rounded-xl shadow-md border border-blue-100 max-w-2xl mx-auto"
+              className="bg-dl-white-gray p-6 mt-12 rounded-xl shadow-md border border-dl-light-purple max-w-2xl mx-auto"
               whileHover={{ scale: 1.02, y: -5 }}
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-center justify-center gap-3 mb-6">
-                <Zap className="h-8 w-8 text-blue-600" />
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Born from a Challenge</h2>
+                <Zap className="h-8 w-8 text-dl-purple dark:text-dl-mid-purple" />
+                <h2 className="text-2xl md:text-3xl font-bold">Born from a Challenge</h2>
               </div>
-              <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+              <p className="text-lg text-dl-new-white mb-8 max-w-3xl mx-auto">
                 DevLinks started as a UI challenge from{" "}
                 <Link
                   href="https://frontendmentor.io"
-                  className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1"
+                  className="text-dl-purple dark:text-dl-mid-purple hover:text-dl-mid-purple dark:hover:text-dl-purple font-medium inline-flex items-center gap-1"
                 >
                   Frontend Mentor
                   <ExternalLink className="h-4 w-4" />
@@ -413,16 +425,16 @@ export default function LandingPage() {
         </section>
 
         {/* How to Use Section */}
-        <section className="py-20 px-6 md:px-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto">
+        <section className="py-20 px-6 md:px-12 bg-dl-white-gray select-none">
+          <div className="max-w-7xl mx-auto">
             <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-8 text-gray-800"
+              className="text-3xl md:text-4xl font-bold mb-8"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              How to Use
+              <GradientText text="How it Works" />
             </motion.h2>
 
             <div className="space-y-12">
@@ -443,8 +455,8 @@ export default function LandingPage() {
                   </motion.div>
                 </div>
                 <div className="md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4 text-gray-800">1. Create Your Account</h3>
-                  <p className="text-gray-600">
+                  <h3 className="text-2xl font-semibold mb-4">1. Create Your Account</h3>
+                  <p className="text-dl-dark-gray">
                     Sign up for DevLinks in seconds. All you need is an email address to get started.
                   </p>
                 </div>
@@ -468,8 +480,8 @@ export default function LandingPage() {
                   </motion.div>
                 </div>
                 <div className="md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4 text-gray-800">2. Add Your Links</h3>
-                  <p className="text-gray-600">
+                  <h3 className="text-2xl font-semibold mb-4">2. Add Your Links</h3>
+                  <p className="text-dl-dark-gray">
                     Add links to your GitHub, LinkedIn, portfolio, blog, Twitter, and any other platforms where your
                     work appears.
                   </p>
@@ -494,8 +506,8 @@ export default function LandingPage() {
                   </motion.div>
                 </div>
                 <div className="md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4 text-gray-800">3. Share Your DevLinks</h3>
-                  <p className="text-gray-600">
+                  <h3 className="text-2xl font-semibold mb-4 ">3. Share Your DevLinks</h3>
+                  <p className="text-dl-dark-gray">
                     Get your personalized DevLinks URL and share it in your email signature, resume, business card, or
                     social media profiles.
                   </p>
@@ -506,8 +518,8 @@ export default function LandingPage() {
         </section>
 
         {/* Collaborate Section */}
-        <section className="py-20 px-6 md:px-12 bg-white">
-          <div className="max-w-4xl mx-auto">
+        <section className="py-20 px-6 md:px-12 select-none">
+          <div className="max-w-7xl mx-auto">
             <motion.div
               className="text-center mb-12"
               initial={{ opacity: 0, y: 30 }}
@@ -515,10 +527,11 @@ export default function LandingPage() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Join Our Developer Community</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                DevLinks is built by developers, for developers. We welcome contributions, ideas, and feature requests
-                from our community.
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <GradientText text="Contribute to DevLinks" />
+              </h2>
+              <p className="text-lg text-dl-dark-gray max-w-2xl mx-auto">
+                DevLinks is built by developers, for developers. We welcome contributions, ideas, and feature requests.
               </p>
             </motion.div>
 
@@ -530,154 +543,121 @@ export default function LandingPage() {
               viewport={{ once: true }}
             >
               <motion.div
-                className="bg-violet-50 p-8 rounded-xl border border-violet-100"
+                className="bg-dl-white-gray p-8 rounded-xl border border-dl-light-purple"
                 variants={cardVariants}
                 whileHover="hover"
               >
                 <motion.div
-                  className="bg-violet-100 text-violet-600 p-3 rounded-full w-fit mb-4"
+                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                 >
                   <Github className="h-6 w-6" />
                 </motion.div>
                 <h3 className="text-xl font-semibold mb-3">Contribute on GitHub</h3>
-                <p className="text-gray-600 mb-4">{"Our codebase is open for contributions. Whether you're fixing bugs, improving documentation, or adding new features, we appreciate your help."}
+                <p className="text-dl-dark-gray mb-4">{"Our codebase is open for contributions. Whether you're fixing bugs, improving documentation, or adding new features, we appreciate your help."}
                 </p>
                 <div className="space-y-2">
                   <motion.div
-                    className="flex items-center gap-2 text-gray-700"
+                    className="flex items-center gap-2 text-dl-dark-gray"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-violet-500"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
                     <span>Submit pull requests for new features</span>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 text-gray-700"
+                    className="flex items-center gap-2 text-dl-dark-gray"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
                     viewport={{ once: true }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-violet-500"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
                     <span>Report bugs and issues</span>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 text-gray-700"
+                    className="flex items-center gap-2 text-dl-dark-gray"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
                     viewport={{ once: true }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-violet-500"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
                     <span>Improve documentation</span>
                   </motion.div>
                 </div>
                 <Link
                   href="#"
-                  className="inline-flex items-center mt-6 text-violet-600 font-medium hover:text-violet-700"
+                  className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
                 >
-                  View GitHub Repository <ArrowRight className="ml-2 h-4 w-4" />
+                  View GitHub Repository <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
                 </Link>
               </motion.div>
 
               <motion.div
-                className="bg-violet-50 p-8 rounded-xl border border-violet-100"
+                className="bg-dl-white-gray p-8 rounded-xl border border-dl-light-purple"
                 variants={cardVariants}
                 whileHover="hover"
               >
                 <motion.div
-                  className="bg-violet-100 text-violet-600 p-3 rounded-full w-fit mb-4"
+                  className="bg-dl-light-purple-neutral text-dl-purple p-3 rounded-full w-fit mb-4"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                 >
                   <MessageSquare className="h-6 w-6" />
                 </motion.div>
                 <h3 className="text-xl font-semibold mb-3">Request Features</h3>
-                <p className="text-gray-600 mb-4">
-                  {"Have an idea for a feature that would make DevLinks even better? We'd love to hear it! Submit your feature requests through our GitHub issues."}
-                </p>
+                <p className="text-dl-dark-gray mb-4">{"Have an idea for a feature that would make DevLinks even better? We'd love to hear it! Submit your feature requests through our GitHub issues."}</p>
                 <div className="space-y-2">
                   <motion.div
-                    className="flex items-center gap-2 text-gray-700"
+                    className="flex items-center gap-2 text-dl-dark-gray"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-violet-500"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
                     <span>Suggest new integrations</span>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 text-gray-700"
+                    className="flex items-center gap-2 text-dl-dark-gray"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
                     viewport={{ once: true }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-violet-500"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
                     <span>Request UI/UX improvements</span>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 text-gray-700"
+                    className="flex items-center gap-2 text-dl-dark-gray"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
                     viewport={{ once: true }}
                   >
-                    <div className="h-1.5 w-1.5 rounded-full bg-violet-500"></div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-dl-purple dark:bg-dl-mid-purple"></div>
                     <span>Propose new customization options</span>
                   </motion.div>
                 </div>
                 <Link
                   href="#"
-                  className="inline-flex items-center mt-6 text-violet-600 font-medium hover:text-violet-700"
+                  className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
                 >
-                  Submit Feature Request <ArrowRight className="ml-2 h-4 w-4" />
+                  Submit Feature Request <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
                 </Link>
               </motion.div>
-            </motion.div>
-
-            <motion.div
-              className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-100"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="md:w-1/4 flex justify-center">
-                  <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }}>
-                    <Users className="h-16 w-16 text-violet-500" />
-                  </motion.div>
-                </div>
-                <div className="md:w-3/4 text-center md:text-left">
-                  <h3 className="text-xl font-semibold mb-2">Join Our Discord Community</h3>
-                  <p className="text-gray-600 mb-4">
-                    Connect with other developers, share your DevLinks profile, get help, and discuss new features in
-                    our growing community.
-                  </p>
-                  <motion.button
-                    className="bg-violet-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-violet-700 transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Join Discord
-                  </motion.button>
-                </div>
-              </div>
             </motion.div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-6 md:px-12 bg-gradient-to-br from-violet-500 to-purple-700 text-white">
+        <section className="py-20 px-6 md:px-12 bg-gradient-to-br from-[#592785] to-dl-purple text-white select-none">
           <motion.div
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-7xl mx-auto text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -687,42 +667,41 @@ export default function LandingPage() {
             <p className="text-xl mb-8 text-violet-100">
               Join thousands of developers who use DevLinks to showcase their work.
             </p>
-            <motion.button
+            <div>
+              <Link href={uid ? "/dashboard" : "/login"} className="w-40 h-12 bg-dl-github text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-neutral-white hover:border-dl-neutral-white group py-3 px-5">
+                <span className="text-white dark:group-hover:text-dl-black-gray font-medium text-lg ">{uid ? 'Dashboard' : 'Get Started'}</span>
+              </Link>
+            </div>
+            {/* <motion.button
               className="bg-white text-purple-700 px-8 py-4 rounded-lg font-medium hover:bg-opacity-90 transition-all text-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Get Started for Free
-            </motion.button>
+              Get Started
+            </motion.button> */}
           </motion.div>
         </section>
 
         {/* Footer */}
-        <footer className="py-8 px-6 bg-gray-800 text-gray-300">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="mb-4 md:mb-0">
-                <h3 className="text-xl font-bold text-white mb-2">DevLinks</h3>
-                <p className="text-sm">© {new Date().getFullYear()} DevLinks. All rights reserved.</p>
-              </div>
-
-              <div className="flex space-x-4">
-                <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    <Twitter className="h-5 w-5" />
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    <Github className="h-5 w-5" />
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    <Linkedin className="h-5 w-5" />
-                  </Link>
-                </motion.div>
-              </div>
+        <footer className="py-8 px-6 bg-dl-github text-dl-neutral-white select-none">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex justify-between items-center">
+              <Image
+                src={'/icons/logo-devlinks-large-light.svg'}
+                width="0"
+                height="0"
+                alt="devlinks"
+                className="w-[150px] h-auto object-contain invert brightness-0 hidden dark:md:inline"
+              />
+              <Image
+                src={'/icons/logo-devlinks-small.svg'}
+                width="32"
+                height="0"
+                alt="devlinks"
+                className="w-[28px] h-auto object-contain invert brightness-0 inline md:hidden"
+              />
+              {/* <h3 className="text-xl font-bold text-white mb-2">DevLinks</h3> */}
+              <p className="text-sm">© {new Date().getFullYear()}. All rights reserved.</p>
             </div>
           </div>
         </footer>
