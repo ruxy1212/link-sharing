@@ -3,13 +3,17 @@
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMotionValue, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { AnimationAction, Group, MathUtils } from "three";
 
-export default function Logo() {
+export default function Logo({ onLoaded }: { onLoaded: () => void }) {
   const motionVal = useMotionValue(0);
   const spring = useSpring(motionVal, { stiffness: 20 });
   const group = useRef<Group>(null);
+
+  useEffect(() => {
+    onLoaded();
+  }, [onLoaded]);
 
   useFrame(() => {
     group.current?.rotateX(MathUtils.degToRad(0.9)).rotateY(MathUtils.degToRad(0.4)).rotateZ(MathUtils.degToRad(0.9));
@@ -20,7 +24,7 @@ export default function Logo() {
     })
   })
 
-  const { animations, scene } = useGLTF("/third1.glb");
+  const { animations, scene } = useGLTF("/third.glb");
   const { actions } = useAnimations(animations, scene);
 
   return (
