@@ -3,14 +3,11 @@
 import { useEffect, useRef, useState, useContext } from "react"
 import { motion, useAnimation, useScroll, useTransform } from "framer-motion"
 import {
-  ArrowDown,
   Code,
   Github,
   Linkedin,
-  Twitter,
   ArrowRight,
   MessageSquare,
-  Users,
   ExternalLink,
   Zap,
 } from "lucide-react"
@@ -33,7 +30,6 @@ export default function LandingPage() {
   const [windowHeight, setWindowHeight] = useState(0)
   const [isLoading, setIsLoading] = useState(true);
 
-  // Update window height on mount and resize
   useEffect(() => {
     const updateHeight = () => setWindowHeight(window.innerHeight);
   
@@ -49,9 +45,7 @@ export default function LandingPage() {
 
   const { scrollY } = useScroll()
 
-  // Calculate the width and border radius based on scroll position
-  // Transition completes when body section reaches 20% of screen height
-  const transitionPoint = windowHeight * 0.8 // 80% of screen height scrolled = 20% of screen showing
+  const transitionPoint = windowHeight * 0.8;
 
   const bodyScale = useTransform(scrollY, [0, transitionPoint], [0.8, 1])
 
@@ -222,56 +216,6 @@ export default function LandingPage() {
               )}
             </button>
         </motion.footer>
-        {/* <div className="max-w-7xl mx-auto text-center z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <motion.h1
-              className="text-4xl md:text-6xl font-bold mb-6"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-            >
-              DevLinks
-            </motion.h1>
-            <motion.p
-              className="text-xl md:text-2xl mb-8 text-violet-100"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              One link to showcase all your developer profiles
-            </motion.p>
-            <motion.div
-              className="flex flex-wrap justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              <motion.button
-                className="bg-white text-purple-700 px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Get Started
-              </motion.button>
-              <motion.button
-                className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:bg-opacity-10 transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Learn More
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="absolute bottom-8 animate-bounce"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-        >
-          <ArrowDown className="h-8 w-8" />
-        </motion.div> */}
 
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -424,7 +368,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* How to Use Section */}
         <section className="py-20 px-6 md:px-12 bg-dl-white-gray select-none">
           <div className="max-w-7xl mx-auto">
             <motion.h2
@@ -445,17 +388,17 @@ export default function LandingPage() {
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <div className="md:w-1/2">
+                <div className="w-full md:w-1/2 aspect-square">
                   <motion.div
-                    className="bg-white p-6 rounded-lg shadow-md h-64 flex items-center justify-center"
+                    className="bg-white bg-[url('/images/step1.jpg')] bg-cover p-6 rounded-lg shadow-md h-full flex"
                     whileHover={{ scale: 1.05, rotateY: 5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <p className="text-gray-400 text-center">Step 1 Illustration</p>
+                    <p className="text-gray-800 text-xl text-center">Step 1</p>
                   </motion.div>
                 </div>
-                <div className="md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4">1. Create Your Account</h3>
+                <div className="w-full md:w-1/2">
+                  <h3 className="text-2xl font-semibold mb-4">Create Your Account</h3>
                   <p className="text-dl-dark-gray">
                     Sign up for DevLinks in seconds. All you need is an email address to get started.
                   </p>
@@ -470,17 +413,17 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="md:w-1/2">
+                <div className="w-full md:w-1/2 aspect-square">
                   <motion.div
-                    className="bg-white p-6 rounded-lg shadow-md h-64 flex items-center justify-center"
-                    whileHover={{ scale: 1.05, rotateY: -5 }}
+                    className="bg-white bg-[url('/images/step2.jpg')] bg-cover p-6 rounded-lg shadow-md h-full flex"
+                    whileHover={{ scale: 1.05, rotateY: 5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <p className="text-gray-400 text-center">Step 2 Illustration</p>
+                    <p className="text-gray-800 text-xl text-center">Step 2</p>
                   </motion.div>
                 </div>
-                <div className="md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4">2. Add Your Links</h3>
+                <div className="w-full md:w-1/2">
+                  <h3 className="text-2xl font-semibold mb-4">Add Your Links</h3>
                   <p className="text-dl-dark-gray">
                     Add links to your GitHub, LinkedIn, portfolio, blog, Twitter, and any other platforms where your
                     work appears.
@@ -496,17 +439,17 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
               >
-                <div className="md:w-1/2">
+                <div className="w-full md:w-1/2 aspect-square">
                   <motion.div
-                    className="bg-white p-6 rounded-lg shadow-md h-64 flex items-center justify-center"
+                    className="bg-white bg-[url('/images/step3.jpg')] bg-cover p-6 rounded-lg shadow-md h-full flex"
                     whileHover={{ scale: 1.05, rotateY: 5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <p className="text-gray-400 text-center">Step 3 Illustration</p>
+                    <p className="text-gray-800 text-xl text-center">Step 3</p>
                   </motion.div>
                 </div>
-                <div className="md:w-1/2">
-                  <h3 className="text-2xl font-semibold mb-4 ">3. Share Your DevLinks</h3>
+                <div className="w-full md:w-1/2">
+                  <h3 className="text-2xl font-semibold mb-4 ">Share Your DevLinks</h3>
                   <p className="text-dl-dark-gray">
                     Get your personalized DevLinks URL and share it in your email signature, resume, business card, or
                     social media profiles.
@@ -517,7 +460,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Collaborate Section */}
         <section className="py-20 px-6 md:px-12 select-none">
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -654,7 +596,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="py-20 px-6 md:px-12 bg-gradient-to-br from-[#592785] to-dl-purple text-white select-none">
           <motion.div
             className="max-w-7xl mx-auto text-center"
@@ -668,21 +609,13 @@ export default function LandingPage() {
               Join thousands of developers who use DevLinks to showcase their work.
             </p>
             <div>
-              <Link href={uid ? "/dashboard" : "/login"} className="w-40 h-12 bg-dl-github text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-neutral-white hover:border-dl-neutral-white group py-3 px-5">
+              <Link href={uid ? "/dashboard" : "/register"} className="w-40 h-12 bg-dl-github text-dl-white text-base font-sans font-semibold cursor-pointer select-none hover:bg-transparent hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border border-dl-purple active:border-dl-neutral-white hover:border-dl-neutral-white group py-3 px-5">
                 <span className="text-white dark:group-hover:text-dl-black-gray font-medium text-lg ">{uid ? 'Dashboard' : 'Get Started'}</span>
               </Link>
             </div>
-            {/* <motion.button
-              className="bg-white text-purple-700 px-8 py-4 rounded-lg font-medium hover:bg-opacity-90 transition-all text-lg"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get Started
-            </motion.button> */}
           </motion.div>
         </section>
 
-        {/* Footer */}
         <footer className="py-8 px-6 bg-dl-github text-dl-neutral-white select-none">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center">
