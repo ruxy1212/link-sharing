@@ -1,7 +1,6 @@
 import {
   memo,
   useContext,
-  useRef,
   useEffect,
   FC,
   useState,
@@ -21,7 +20,6 @@ import {
   DraggableProvided,
 } from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '@/components/StrictModeDroppable'
-import { CircularProgress } from '@mui/material'
 
 const PhoneMockup: FC = () => {
   const context = useContext(Context)
