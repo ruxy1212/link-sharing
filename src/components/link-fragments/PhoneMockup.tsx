@@ -33,7 +33,7 @@ const PhoneMockup: FC = () => {
   const { usersLinks, uid, dispatch } = context
   const profileDocRef = doc(db, `${uid}/profileDetails`)
   const [profileDetails, loadingProfile] = useDocumentData(profileDocRef)
-  const avatarRef = useRef<HTMLImageElement>(null)
+  const [avatarSrc, setAvatarSrc] = useState('/images/placeholder-image.png');
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -41,11 +41,7 @@ const PhoneMockup: FC = () => {
 
     const reference = ref(storage, `/${uid}/usersAvatar`)
     getDownloadURL(reference)
-      .then((url) => {
-        if (avatarRef.current) {
-          avatarRef.current.src = url
-        }
-      })
+      .then((url) => {setAvatarSrc(url)})
       .catch(() => {
         console.log('no avatar available')
       })
@@ -86,15 +82,14 @@ const PhoneMockup: FC = () => {
         {loadingProfile ? null : (
           <>
             <Image
-              src={''}
+              src={avatarSrc}
               className="border-[4px] border-dl-purple w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px]"
-              ref={avatarRef}
               style={profileDetails?.avatar ? {} : { visibility: 'hidden' }}
               alt="User Avatar"
               onLoad={() => setIsLoaded(true)}
               onError={() => setIsLoaded(false)}
-              height={0}
-              width={0}
+              height={96}
+              width={96}
             />
             <div className={`opacity-50 w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px] ${isLoaded?'hidden':''}`}>
               <div className="animate-pulse h-full w-full rounded-full bg-dl-light-gray opacity-75" />

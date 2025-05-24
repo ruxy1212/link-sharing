@@ -35,7 +35,7 @@ export default function TabsContainer({ currentTab }: { currentTab: string }) {
 
   return (
     <div className="px-4 py-4 md:px-6 md:pb-6 md:pt-0 grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div className="hidden lg:block lg:col-span-5 top-28 sticky self-start">
+      <div className="hidden lg:block lg:col-span-5 top-6 sticky self-start">
         {loadingUserLinks ? <LoadingPhone /> : <PhoneMockup />}
       </div>
       <div className="lg:col-span-7">

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, FC } from 'react'
+import { useContext, useRef, FC } from 'react'
 import { Context } from '@/hooks/context'
 import Image from 'next/image'
 
@@ -21,18 +21,8 @@ const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link, notForGrabs }) => {
   }
 
   const linkRef = useRef<HTMLDivElement>(null)
-  const arrowRef = useRef<HTMLImageElement>(null)
   const platform = link.platform.toLowerCase().replace(' ', '').replace('.', '')
   const platformTitle = link.platform
-
-  useEffect(() => {
-    if (arrowRef.current) {
-      arrowRef.current.src =
-        platformTitle === 'Frontend Mentor'
-          ? '/icons/icon-arrow-right-dark.svg'
-          : '/icons/icon-arrow-right.svg'
-    }
-  }, [link, platformTitle])
 
   return (
     <div
@@ -48,9 +38,12 @@ const PhoneLinkBox: FC<PhoneLinkBoxProps> = ({ link, notForGrabs }) => {
       />
       {platformTitle}
       <Image
-        src={''}
+        src={
+          platformTitle === 'Frontend Mentor'
+          ? '/icons/icon-arrow-right-dark.svg'
+          : '/icons/icon-arrow-right.svg'
+        }
         className="absolute top-0 bottom-0 right-4 m-auto w-4 object-contain group-hover:scale-150 transition-all"
-        ref={arrowRef}
         alt="arrow icon"
         height={0}
         width={0}

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useMemo, useContext, useEffect, useRef } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
 import { Context } from '@/hooks/context';
 import NavBar from '@/layouts/preview';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -56,7 +56,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     };
   }, [setUid, uid, params.uid]);
 
-  const avatarRef = useRef<HTMLImageElement>(null);
+  const [avatarSrc, setAvatarSrc] = useState('/images/placeholder-image.png');
   const linksRef = doc(db, `${userId}/userLinks`);
   const profileRef = doc(db, `${userId}/profileDetails`);
   const [allLinks, loadingLinks] = useDocumentData<{ links: Link[] }>(
@@ -69,14 +69,10 @@ const Preview = ({ params }: { params: { uid: string } }) => {
       const reference = ref(storage, `${userId}/usersAvatar`);
       getDownloadURL(reference)
         .then((url) => {
-          if (avatarRef.current) {
-            avatarRef.current.src = url;
-          }
+          setAvatarSrc(url);
         })
         .catch(() => {
-          if (avatarRef.current) {
-            avatarRef.current.src = '/images/placeholder-image.png';
-          }
+          setAvatarSrc('/images/placeholder-image.png');
         });
     }
   }, [userId]);
@@ -126,26 +122,28 @@ const Preview = ({ params }: { params: { uid: string } }) => {
         {userId ? (
           <>
             <NavBar isUser={isAuth} />
-            <main className="flex justify-center items-center">
-              <section className="relative top-7 sm:-top-24 lg:-top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 sm:pt-6 pb-12 md:py-12 md:px-14 flex flex-col items-center">
-                <span className={`h-12 ${isLoaded ? 'hidden' : ''}`}>
-                  <CircularProgress
-                    className="text-dl-light-purple"
-                    color="secondary"
+            <main className="flex justify-center items-center pb-28 sm:pb-0">
+              <section className="relative top-20 sm:-top-24 lg:-top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 sm:pt-6 pb-12 md:py-12 md:px-14 flex flex-col items-center">
+                <div className="relative -mt-8 sm:mt-0 mb-[25px] w-[104px] h-[104px] flex justify-center items-center">
+                  <span className={`h-12 relative z-10 ${isLoaded ? 'hidden' : ''}`}>
+                    <CircularProgress
+                      className="text-dl-light-purple"
+                      color="secondary"
+                    />
+                  </span>
+                  <Image
+                    className={`avatar absolute top-0 left-0 w-[104px] h-[104px] rounded-full border-[4px] border-dl-purple ${
+                      isLoaded ? '' : ''
+                    }`}
+                    alt="profile avatar"
+                    src={avatarSrc}
+                    height={104}
+                    width={104}
+                    onLoad={() => setIsLoaded(true)}
+                    onError={() => setIsLoaded(false)}
                   />
-                </span>
-                <Image
-                  className={`avatar w-[104px] h-[104px] -mt-8 rounded-full border-[4px] border-dl-purple mb-[25px] ${
-                    isLoaded ? '' : 'hidden'
-                  }`}
-                  ref={avatarRef}
-                  alt="profile avatar"
-                  src={''}
-                  height={0}
-                  width={0}
-                  onLoad={() => setIsLoaded(true)}
-                  onError={() => setIsLoaded(false)}
-                />
+                </div>
+                
                 <h1 className="title text-dl-black-gray font-sans text-2xl font-bold leading-[150%] mb-[8px]">
                   {!loadingProfile &&
                     profile &&
