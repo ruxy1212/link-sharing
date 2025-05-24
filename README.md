@@ -88,16 +88,6 @@ Project Link: [https://github.com/ruxy1212/link-sharing](https://github.com/ruxy
 ## 🎨 Color Reference
 
 | Color             | Hex                                                                |
-| ----------------- | ------------------------------------------------------------------ |
-| Primary           | ![#0070f3](https://via.placeholder.com/10/0070f3?text=+) `#0070f3` |
-| Secondary         | ![#2083ff](https://via.placeholder.com/10/2083ff?text=+) `#2083ff` |
-| Background        | ![#ffffff](https://via.placeholder.com/10/ffffff?text=+) `#ffffff` |
-| Text              | ![#1a1a1a](https://via.placeholder.com/10/1a1a1a?text=+) `#1a1a1a` |
-
-
-## 🎨 Color Reference
-
-| Color             | Hex                                                                |
 |-------------------|--------------------------------------------------------------------|
 | Primary           | <span style="background-color: #0070f3; padding: 0 10px;">&nbsp;</span> `#0070f3` |
 | Secondary         | <span style="background-color: #2083ff; padding: 0 10px;">&nbsp;</span> `#2083ff` |
