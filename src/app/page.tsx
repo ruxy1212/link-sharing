@@ -531,7 +531,7 @@ export default function LandingPage() {
                     </motion.div>
                   </div>
                   <Link
-                    href="#"
+                    href="https://github.com/ruxy1212/link-sharing"
                     className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
                   >
                     View GitHub Repository <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
@@ -585,7 +585,7 @@ export default function LandingPage() {
                     </motion.div>
                   </div>
                   <Link
-                    href="#"
+                    href="https://github.com/ruxy1212/link-sharing/issues"
                     className="inline-flex items-center mt-6 text-dl-purple dark:text-dl-light-purple-neutral font-medium hover:font-bold group"
                   >
                     Submit Feature Request <ArrowRight className="ml-2 transition-all group-hover:ml-3.5 h-4 w-4" />
