@@ -2,6 +2,10 @@
 
 A modern, interactive link management application built with Next.js, React, and Firebase.
 
+### 🔗 Check it out 
+
+[https://devlinks-go.vercel.app](https://devlinks-go.vercel.app)
+
 ## 🚀 Features
 
 - Beautiful and responsive UI with 3D animations
@@ -75,7 +79,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📫 Contact
 
-Project Link: [https://github.com/ruxy1212/link-sharing](https://github.com/ruxy1212/link-sharing)
+Project Link: [https://github.com/ruxy1212/link-sharing/issues](https://github.com/ruxy1212/link-sharing/issues)
 
 ## 📋 TODO
 
