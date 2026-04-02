@@ -1,8 +1,8 @@
 import { ImageResponse } from 'next/og';
 import { doc, getDoc } from 'firebase/firestore';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { db, storage } from '@/firebase/Configuration';
+import { db } from '@/firebase/Configuration';
 import { jsx, jsxs } from 'react/jsx-runtime';
+import { getAvatarUrl } from '@/hooks/avatar-utils';
 
 export const runtime = 'nodejs';
 
@@ -44,8 +44,7 @@ export async function GET(
   let avatarUrl = '/images/placeholder-image.png';
 
   try {
-    const avatarRef = ref(storage, `${uid}/usersAvatar`);
-    avatarUrl = await getDownloadURL(avatarRef);
+    avatarUrl = await getAvatarUrl(uid);
   } catch (err) {
     console.warn('Using fallback avatar due to error:', err);
   }

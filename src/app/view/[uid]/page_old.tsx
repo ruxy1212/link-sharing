@@ -9,13 +9,13 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '@/firebase/Configuration'
 import Alert from '@/components/Alert'
 import { CircularProgress } from '@mui/material'
-import { db, storage } from '@/firebase/Configuration'
+import { db } from '@/firebase/Configuration'
 import { doc, DocumentReference, getDoc } from 'firebase/firestore'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
-import { getDownloadURL, ref } from 'firebase/storage'
 import PhoneLinkBox from '@/components/PhoneLinkBox'
 import { useRouter } from 'next/navigation'
 import { Metadata, ResolvingMetadata } from 'next';
+import { getAvatarUrl } from '@/hooks/avatar-utils'
 
 interface Link {
   id: string
@@ -124,21 +124,16 @@ const Preview = ({ params }: { params: { uid: string } }) => {
   const [profile, loadingProfile] = useDocumentData(profileRef)
 
   useEffect(() => {
-    if (userId) {
-      const reference = ref(storage, `${userId}/usersAvatar`)
-      getDownloadURL(reference)
-        .then((url) => {
-          if (avatarRef.current) {
-            avatarRef.current.src = url
-          }
-        })
-        .catch(() => {
-          if (avatarRef.current) {
-            avatarRef.current.src = '/images/placeholder-image.png'
-          }
-        })
-    }
-  }, [userId])
+    const fetchAvatar = async () => {
+      if (!userId) return;
+      const url = await getAvatarUrl(userId);
+      if (avatarRef.current) {
+        avatarRef.current.src = url
+      }
+    };
+
+    fetchAvatar();
+  }, [userId]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

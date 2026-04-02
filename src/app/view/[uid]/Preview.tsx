@@ -8,10 +8,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/firebase/Configuration';
 import Alert from '@/components/Alert';
 import { CircularProgress } from '@mui/material';
-import { db, storage } from '@/firebase/Configuration';
+import { db } from '@/firebase/Configuration';
 import { doc, DocumentReference } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { getDownloadURL, ref } from 'firebase/storage';
 import PhoneLinkBox from '@/components/PhoneLinkBox';
 import { useRouter } from 'next/navigation';
 
@@ -65,17 +64,10 @@ const Preview = ({ params }: { params: { uid: string } }) => {
   const [profile, loadingProfile] = useDocumentData(profileRef);
 
   useEffect(() => {
-    if (userId) {
-      const reference = ref(storage, `${userId}/usersAvatar`);
-      getDownloadURL(reference)
-        .then((url) => {
-          setAvatarSrc(url);
-        })
-        .catch(() => {
-          setAvatarSrc('/images/placeholder-image.png');
-        });
+    if (profile?.avatar) {
+      setAvatarSrc(profile?.avatar);
     }
-  }, [userId]);
+  }, [profile]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

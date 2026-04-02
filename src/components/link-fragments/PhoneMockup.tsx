@@ -6,8 +6,7 @@ import {
   useState,
 } from 'react'
 import { Context } from '@/hooks/context'
-import { storage, db } from '@/firebase/Configuration'
-import { ref, getDownloadURL } from 'firebase/storage'
+import { db } from '@/firebase/Configuration'
 import { doc } from 'firebase/firestore'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import PhoneLinkBox from '../PhoneLinkBox'
@@ -35,15 +34,10 @@ const PhoneMockup: FC = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    if (loadingProfile) return
-
-    const reference = ref(storage, `/${uid}/usersAvatar`)
-    getDownloadURL(reference)
-      .then((url) => {setAvatarSrc(url)})
-      .catch(() => {
-        console.log('no avatar available')
-      })
-  }, [profileDetails, loadingProfile, uid])
+    if (loadingProfile || !profileDetails?.avatar) return
+  
+    setAvatarSrc(profileDetails?.avatar);
+  }, [profileDetails, loadingProfile]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {

@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState, useRef, ChangeEvent } from 'react'
 import { Context } from '@/hooks/context'
-import { storage } from '@/firebase/Configuration'
-import { ref, getDownloadURL } from 'firebase/storage'
+import { getAvatarUrl } from '@/hooks/avatar-utils'
 
 export default function UploadImage() {
   const context = useContext(Context)
@@ -16,18 +15,14 @@ export default function UploadImage() {
   const { uid } = context
 
   useEffect(() => {
-    const reference = ref(storage, `/${uid}/usersAvatar`)
-    getDownloadURL(reference)
-      .then((url) => {
-        if(url){
-          setImageUrl(url)
-          isSet(true)
-        }
-      })
-      .catch(() => {
-        console.log('no avatar available')
-      })
-  }, [uid])
+    const fetchAvatar = async () => {
+      const url = await getAvatarUrl(uid);
+      setImageUrl(url);
+      isSet(true);
+    };
+
+    fetchAvatar();
+  }, [uid]);
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedImage = e.target.files?.[0]

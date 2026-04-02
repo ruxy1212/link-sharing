@@ -40,7 +40,7 @@ cd devlinks
 
 2. Install dependencies:
 ```bash
-npm install
+pnpm install
 ```
 
 3. Create a `.env.local` file with your Firebase configuration:
@@ -55,7 +55,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
 4. Start the development server:
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.

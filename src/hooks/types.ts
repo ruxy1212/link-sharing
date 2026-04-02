@@ -1,3 +1,10 @@
+export type UserProfile = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatar?: string; // The question mark means it's optional
+}
+
 export interface Link {
   id: string
   platform: string

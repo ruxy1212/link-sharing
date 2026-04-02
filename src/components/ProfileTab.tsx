@@ -1,11 +1,12 @@
 import { useContext, useState, FormEvent } from 'react'
 import { Context } from '@/hooks/context'
-import { storage, db } from '@/firebase/Configuration'
-import { ref, uploadBytes } from 'firebase/storage'
-import { doc, setDoc } from 'firebase/firestore'
+import { db } from '@/firebase/Configuration'
+import { doc, updateDoc } from 'firebase/firestore'
 import UploadImage from './profile-fragments/UploadImage'
 import BasicDetails from './profile-fragments/BasicDetails'
 import { CircularProgress } from '@mui/material'
+import { uploadAvatar } from '@/hooks/avatar-utils'
+import { UserProfile } from '@/hooks/types'
 
 interface FormElements extends HTMLFormControlsCollection {
   profileAvatar: HTMLInputElement
@@ -33,24 +34,20 @@ export default function ProfileDetails() {
     try {
       setLoading(true)
       const form = e.currentTarget
+      const updates: UserProfile = {
+        firstName: form.elements.firstName.value,
+        lastName: form.elements.lastName.value,
+        email: form.elements.email.value,
+      }
 
       const newAvatarFile = form.elements.profileAvatar.files?.[0]
       if (newAvatarFile) {
-        const avatarRef = ref(storage, `/${uid}/usersAvatar`)
-        await uploadBytes(avatarRef, newAvatarFile)
+        const avatarUrl = await uploadAvatar(newAvatarFile, uid);
+        updates.avatar = avatarUrl;
       }
 
-      const newFirstName = form.elements.firstName.value
-      const newLastName = form.elements.lastName.value
-      const newEmail = form.elements.email.value;
-
       const docRef = doc(db, `${uid}/profileDetails`)
-      await setDoc(docRef, {
-        avatar: newAvatarFile ? newAvatarFile.name : '',
-        firstName: newFirstName,
-        lastName: newLastName,
-        email: newEmail,
-      })
+      await updateDoc(docRef, updates)
 
       setOpenSaveChangesMessage(true)
       setLoading(false)
