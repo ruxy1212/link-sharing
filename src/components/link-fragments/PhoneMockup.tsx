@@ -35,8 +35,8 @@ const PhoneMockup: FC = () => {
 
   useEffect(() => {
     if (loadingProfile || !profileDetails?.avatar) return
-  
-    setAvatarSrc(profileDetails?.avatar);
+    if (profileDetails.avatar.startsWith('https://'))
+      setAvatarSrc(profileDetails?.avatar);
   }, [profileDetails, loadingProfile]);
 
   const onDragEnd = (result: DropResult) => {

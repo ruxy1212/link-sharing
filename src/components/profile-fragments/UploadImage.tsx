@@ -16,9 +16,11 @@ export default function UploadImage() {
 
   useEffect(() => {
     const fetchAvatar = async () => {
-      const url = await getAvatarUrl(uid);
-      setImageUrl(url);
-      isSet(true);
+      const url = await getAvatarUrl(uid, true);
+      if(url.startsWith('https://')){
+        setImageUrl(url);
+        isSet(true);
+      }
     };
 
     fetchAvatar();

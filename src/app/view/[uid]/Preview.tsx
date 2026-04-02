@@ -64,7 +64,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
   const [profile, loadingProfile] = useDocumentData(profileRef);
 
   useEffect(() => {
-    if (profile?.avatar) {
+    if (profile?.avatar && profile?.avatar.startsWith('https://')) {
       setAvatarSrc(profile?.avatar);
     }
   }, [profile]);

@@ -1,13 +1,13 @@
-export const getAvatarUrl = async (userId: string): Promise<string> => {
+export const getAvatarUrl = async (userId: string, allowEmpty = false): Promise<string> => {
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
   const fallback = '/images/placeholder-image.png';
-  const url = `https://res.cloudinary.com/${cloudName}/image/upload/f_auto/usersAvatar/${userId}`;
+  const url = `https://res.cloudinary.com/${cloudName}/image/upload/f_auto/devlinks/usersAvatar/${userId}`;
 
   try {
     const probe = await fetch(url, { method: 'HEAD' });
     return probe.ok ? url : fallback;
   } catch {
-    return fallback;
+    return allowEmpty ? '' : fallback;
   }
 };
 
