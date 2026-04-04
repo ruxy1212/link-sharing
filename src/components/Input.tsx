@@ -15,6 +15,7 @@ import {
   EyeIcon
 } from "lucide-react"
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface InputProps {
   label: string
@@ -22,6 +23,7 @@ interface InputProps {
   icon: string
   error: string
   placeholder: string
+  includeForgotPassword?: boolean
 }
 
 interface InputRef {
@@ -29,7 +31,7 @@ interface InputRef {
 }
 
 const Input = forwardRef<InputRef, InputProps>(
-  ({ label, type, icon, error, placeholder }, ref) => {
+  ({ label, type, icon, error, placeholder, includeForgotPassword = false }, ref) => {
     const [text, setText] = useState('')
     const [inputType, setInputType] = useState(type)
     const errorMessageRef = useRef<HTMLSpanElement>(null)
@@ -115,12 +117,20 @@ const Input = forwardRef<InputRef, InputProps>(
 
     return (
       <fieldset className="flex flex-col gap-1 w-full">
-        <label
-          className="text-dl-black-gray text-sm font-instrument font-normal leading-[150%] sm:text-xs"
-          ref={labelRef}
-        >
-          {label}
-        </label>
+        <div className="flex justify-between items-center">
+          <label
+            className="text-dl-black-gray text-sm font-instrument font-normal leading-[150%] sm:text-xs"
+            ref={labelRef}
+          >
+            {label}
+          </label>
+          {includeForgotPassword && (<Link
+            href="/forgot-password"
+            className="text-center text-sm font-sans font-normal leading-[150%] bg-transparent text-dl-purple cursor-pointer hover:underline"
+          >
+            Forgot Password?
+          </Link>)}
+        </div>
         <div className="relative">
           <input
             type={inputType}

@@ -100,6 +100,7 @@ export default function LoginForm() {
         error="Please check again"
         placeholder="Enter your password"
         ref={password}
+        includeForgotPassword={true}
       />
       <button className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray dark:hover:text-dl-white-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple">
         {loading ? (
