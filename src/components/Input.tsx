@@ -10,6 +10,10 @@ import {
   FocusEvent,
   InvalidEvent,
 } from 'react'
+import {
+  EyeOff,
+  EyeIcon
+} from "lucide-react"
 import Image from 'next/image'
 
 interface InputProps {
@@ -27,6 +31,7 @@ interface InputRef {
 const Input = forwardRef<InputRef, InputProps>(
   ({ label, type, icon, error, placeholder }, ref) => {
     const [text, setText] = useState('')
+    const [inputType, setInputType] = useState(type)
     const errorMessageRef = useRef<HTMLSpanElement>(null)
     const emptyMessageRef = useRef<HTMLSpanElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -104,6 +109,10 @@ const Input = forwardRef<InputRef, InputProps>(
       }
     }, [text])
 
+    const toggleEye = () => {
+      setInputType(inputType === 'password' ? 'text' : 'password')
+    }
+
     return (
       <fieldset className="flex flex-col gap-1 w-full">
         <label
@@ -114,7 +123,7 @@ const Input = forwardRef<InputRef, InputProps>(
         </label>
         <div className="relative">
           <input
-            type={type}
+            type={inputType}
             value={text}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -131,6 +140,15 @@ const Input = forwardRef<InputRef, InputProps>(
             alt=""
             className="icon absolute top-0 bottom-0 m-auto left-4 w-4 object-contain"
           />
+          {type === 'password' && (
+            <button onClick={toggleEye}>
+              {inputType === 'text' ? (
+                <EyeOff className="absolute top-0 bottom-0 m-auto right-4 w-4"/>
+              ) : (
+                <EyeIcon className="absolute top-0 bottom-0 m-auto right-4 w-4"/>
+              )}
+            </button>
+          )}
           <span
             className="hidden h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-4"
             ref={errorMessageRef}

@@ -152,7 +152,7 @@ export default function LandingPage() {
   if (!context) {
     throw new Error('DevLinks must be used within a Context.Provider')
   }
-  const { uid, setCustomPopupMessage, setOpenCustomPopup } = context;
+  const { uid, setUid, setCustomPopupMessage, setOpenCustomPopup } = context;
 
   const handleSignOut = async () => {
     if(uid){
@@ -160,10 +160,11 @@ export default function LandingPage() {
         await auth.signOut();
         setCustomPopupMessage('Logged out successfully')
         setOpenCustomPopup(true)
+        setUid('')
       } catch (error) {
         console.error('Error signing out', error);
       }
-    }else router.push('/login')
+    } else router.push('/login')
   };
   
 
@@ -171,28 +172,23 @@ export default function LandingPage() {
     // <GuestLayout variant="forHome">
       <div ref={containerRef} className="relative">
         <div className="fixed inset-0 h-screen w-full items-center justify-center bg-gradient-to-br from-[#592785] to-dl-purple text-white">
-          <motion.header className="absolute top-6 text-center w-full" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <svg width="552" className="h-12 -translate-x-7 w-full" height="120" viewBox="0 0 552 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {paths.map((d, i) => (
-                <motion.path
-                  key={i}
-                  d={d}
-                  variants={pathVariants}
-                  custom={i}
-                  initial="hidden"
-                  animate={controls}
-                />
-              ))}
-            </svg>
-          </motion.header>
-          {isLoading && (
-            <span className="absolute h-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <CircularProgress className="text-dl-light-purple" color="secondary" />
-            </span>
-          )}
-          <LogoScene onLoaded={() => setIsLoading(false)} />
-          <motion.footer className="absolute bottom-20 z-20 gap-2.5 md:bottom-16 text-center w-full flex justify-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <ThemeSwitch />
+          <motion.header className="absolute top-6 z-10 text-center w-full flex justify-between" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <div>
+              <svg width="552" className="h-12 -translate-x-7 w-full" height="120" viewBox="0 0 552 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {paths.map((d, i) => (
+                  <motion.path
+                    key={i}
+                    d={d}
+                    variants={pathVariants}
+                    custom={i}
+                    initial="hidden"
+                    animate={controls}
+                  />
+                ))}
+              </svg>
+            </div>
+            <div className="flex gap-2 pr-8">
+              <ThemeSwitch />
               <button
                 onClick={handleSignOut}
                 className="w-12 h-12 bg-dl-neutral-white text-dl-black-gray font-sans font-semibold cursor-pointer select-none hover:bg-dl-mid-purple hover:text-dl-black-gray active:translate-y-2 active:[box-shadow:0_0px_0_0_#beadff,0_0px_0_0_#1b70f841] active:border-b-[0px] transition-all duration-150 [box-shadow:0_5px_0_0_#beadff,0_7px_0_0_#efebff41] rounded-full border-[1px] border-dl-purple flex justify-center items-center"
@@ -205,7 +201,7 @@ export default function LandingPage() {
                     <path d="M9 12h12l-3 -3"></path>
                     <path d="M18 15l3 -3"></path>
                   </svg>
-                ): (
+                ) : (
                   <svg className="text-dl-red hover:text-dl-black-gray" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M9 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2"></path>
@@ -214,8 +210,14 @@ export default function LandingPage() {
                   </svg>
                 )}
               </button>
-          </motion.footer>
-
+            </div>
+          </motion.header>
+          {isLoading && (
+            <span className="absolute h-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <CircularProgress className="text-dl-light-purple" color="secondary" />
+            </span>
+          )}
+          <LogoScene onLoaded={() => setIsLoading(false)} />
           <div className="absolute inset-0 overflow-hidden">
             <motion.div
               className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-dl-red bg-opacity-20 blur-3xl"
