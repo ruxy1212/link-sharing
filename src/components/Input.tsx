@@ -15,7 +15,6 @@ import {
   EyeIcon
 } from "lucide-react"
 import Image from 'next/image'
-import Link from 'next/link'
 
 interface InputProps {
   label: string
@@ -24,6 +23,7 @@ interface InputProps {
   error: string
   placeholder: string
   includeForgotPassword?: boolean
+  handleForgotPassword?: () => void
 }
 
 interface InputRef {
@@ -31,62 +31,32 @@ interface InputRef {
 }
 
 const Input = forwardRef<InputRef, InputProps>(
-  ({ label, type, icon, error, placeholder, includeForgotPassword = false }, ref) => {
+  ({ label, type, icon, error, placeholder, includeForgotPassword = false, handleForgotPassword }, ref) => {
     const [text, setText] = useState('')
     const [inputType, setInputType] = useState(type)
     const errorMessageRef = useRef<HTMLSpanElement>(null)
     const emptyMessageRef = useRef<HTMLSpanElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const labelRef = useRef<HTMLLabelElement>(null)
+    const [validationState, setValidationState] = useState<'empty' | 'error' | null>(null)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       e.target.setCustomValidity('')
       setText(e.target.value)
+      setValidationState(null) // reset on typing
     }
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-      const isEmpty = e.target.validity.valueMissing
-      const isTypeInvalid = e.target.validity.typeMismatch
-
-      if (
-        isEmpty &&
-        inputRef.current &&
-        emptyMessageRef.current &&
-        labelRef.current
-      ) {
-        inputRef.current.style.border = '1px solid #FF3939'
-        inputRef.current.style.boxShadow = 'none'
-        inputRef.current.style.paddingRight = '100px'
-        emptyMessageRef.current.style.display = 'block'
-        labelRef.current.style.color = '#FF3939'
-      } else if (
-        isTypeInvalid &&
-        inputRef.current &&
-        errorMessageRef.current &&
-        labelRef.current
-      ) {
-        inputRef.current.style.border = '1px solid #FF3939'
-        inputRef.current.style.boxShadow = 'none'
-        inputRef.current.style.paddingRight = '100px'
-        errorMessageRef.current.style.display = 'block'
-        labelRef.current.style.color = '#FF3939'
+      if (e.target.validity.valueMissing) {
+        setValidationState('empty')
+      } else if (e.target.validity.typeMismatch) {
+        setValidationState('error')
       }
     }
 
     const handleInvalid = (e: InvalidEvent<HTMLInputElement>) => {
       e.target.setCustomValidity(' ')
-      const isEmpty = e.target.validity.valueMissing
-      if (inputRef.current && labelRef.current) {
-        inputRef.current.style.border = '1px solid #FF3939'
-        inputRef.current.style.boxShadow = 'none'
-        inputRef.current.style.paddingRight = '100px'
-        labelRef.current.style.color = '#FF3939'
-        if (isEmpty && emptyMessageRef.current) {
-          emptyMessageRef.current.style.display = 'block'
-        } else if (errorMessageRef.current) {
-          errorMessageRef.current.style.display = 'block'
-        }
-      }
+      setValidationState(e.target.validity.valueMissing ? 'empty' : 'error')
     }
 
     useImperativeHandle(ref, () => ({
@@ -119,17 +89,17 @@ const Input = forwardRef<InputRef, InputProps>(
       <fieldset className="flex flex-col gap-1 w-full">
         <div className="flex justify-between items-center">
           <label
-            className="text-dl-black-gray text-sm font-instrument font-normal leading-[150%] sm:text-xs"
+            className={`text-sm font-instrument font-normal leading-[150%] sm:text-xs ${validationState ? 'text-dl-red' : 'text-dl-black-gray'}`}
             ref={labelRef}
           >
             {label}
           </label>
-          {includeForgotPassword && (<Link
-            href="/forgot-password"
+          {includeForgotPassword && (<button
+            onClick={handleForgotPassword}
             className="text-center text-sm font-sans font-normal leading-[150%] bg-transparent text-dl-purple cursor-pointer hover:underline"
           >
             Forgot Password?
-          </Link>)}
+          </button>)}
         </div>
         <div className="relative">
           <input
@@ -139,10 +109,34 @@ const Input = forwardRef<InputRef, InputProps>(
             onBlur={handleBlur}
             onInvalid={handleInvalid}
             placeholder={placeholder}
-            className="w-full h-12 rounded-lg border border-dl-light-gray bg-dl-white text-dl-black-gray px-12 text-base font-instrument font-normal leading-[150%] focus:border-dl-purple focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] focus:outline-none"
-            ref={inputRef}
+            ref={inputRef}            
+            className={`w-full h-12 rounded-lg border bg-dl-white text-dl-black-gray px-12 text-base font-instrument font-normal leading-[150%] focus:outline-none
+              ${validationState
+                ? 'border-dl-red shadow-none pr-[48px] focus:border-dl-red focus:shadow-none'
+                : 'border-dl-light-gray focus:border-dl-purple focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)]'
+              }`
+            }
             required
           />
+
+          {/* Toggle - only show when password type and no validation error */}
+          {type === 'password' && !validationState && (
+            <button className="absolute top-0 bottom-0 m-auto right-4 w-4" onClick={toggleEye}>
+              {inputType === 'text' ? <EyeOff className="w-4"/> : <EyeIcon className="w-4"/>}
+            </button>
+          )}
+
+          {/* Error messages */}
+          {validationState === 'empty' && (
+            <span className="h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-4">
+              Can&apos;t be empty
+            </span>
+          )}
+          {validationState === 'error' && (
+            <span className="h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-4">
+              {error}
+            </span>
+          )}
           <Image
             src={icon}
             width="0"
@@ -150,27 +144,6 @@ const Input = forwardRef<InputRef, InputProps>(
             alt=""
             className="icon absolute top-0 bottom-0 m-auto left-4 w-4 object-contain"
           />
-          {type === 'password' && (
-            <button onClick={toggleEye}>
-              {inputType === 'text' ? (
-                <EyeOff className="absolute top-0 bottom-0 m-auto right-4 w-4"/>
-              ) : (
-                <EyeIcon className="absolute top-0 bottom-0 m-auto right-4 w-4"/>
-              )}
-            </button>
-          )}
-          <span
-            className="hidden h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-4"
-            ref={errorMessageRef}
-          >
-            {error}
-          </span>
-          <span
-            className="hidden h-[18px] text-dl-red text-right text-sm font-sans font-normal leading-[150%] absolute top-0 bottom-0 m-auto right-4"
-            ref={emptyMessageRef}
-          >
-            Can&apos;t be empty
-          </span>
         </div>
       </fieldset>
     )

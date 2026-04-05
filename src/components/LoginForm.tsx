@@ -4,9 +4,10 @@ import { useContext, useRef, useState } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import Input from './Input'
 import { auth } from '@/firebase/Configuration'
-import { sendEmailVerification, signInWithEmailAndPassword, User } from 'firebase/auth'
+import { sendEmailVerification, signInWithEmailAndPassword, sendPasswordResetEmail, User } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import { Context } from '@/hooks/context'
+import { FirebaseError } from 'firebase/app'
 
 interface SignupContext {
   setOpenLoginMessage: (open: boolean) => void
@@ -58,7 +59,7 @@ export default function LoginForm() {
         setLoading(false)
         router.push('/dashboard')
       }
-    } catch (error) {
+    } catch (error: unknown) {
       if (errorMessageRef.current) {
         setErrorMessage('Email or password is incorrect.')
         errorMessageRef.current.style.display = 'block'
@@ -83,6 +84,44 @@ export default function LoginForm() {
     setLoading(false)
   }
 
+  const handleForgotPassword = async () => {
+    const userEmail = email.current?.state
+
+    if (!userEmail) {
+      setErrorMessage('Please enter your email first.')
+      errorMessageRef.current!.style.display = 'block'
+      return
+    }
+
+    try {
+      setLoading(true)
+      await sendPasswordResetEmail(auth, userEmail)
+
+      setErrorMessage('If an account with this email exists, a password reset link has been sent.')
+      errorMessageRef.current!.style.display = 'block'
+    } catch (error: unknown) {
+      // Firebase-specific errors
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/user-not-found':
+            setErrorMessage('No account found with this email.')
+            break
+          case 'auth/invalid-email':
+            setErrorMessage('Invalid email address.')
+            break
+          default:
+            setErrorMessage(error.message)
+        }
+      } else {
+        setErrorMessage('Failed to send reset email.')
+      }
+
+      errorMessageRef.current!.style.display = 'block'
+    }
+
+    setLoading(false)
+  }
+
   return (
     <form className="flex flex-col gap-6 mb-6" onSubmit={handleSubmit}>
       <Input
@@ -101,6 +140,7 @@ export default function LoginForm() {
         placeholder="Enter your password"
         ref={password}
         includeForgotPassword={true}
+        handleForgotPassword={handleForgotPassword}
       />
       <button className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray dark:hover:text-dl-white-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple">
         {loading ? (
