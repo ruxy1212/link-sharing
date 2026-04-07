@@ -1,4 +1,5 @@
 import Input from './ProfileInput'
+import Toggle from './toggle'
 import { useContext } from 'react'
 import { Context } from '@/hooks/context'
 import { db } from '@/firebase/Configuration'
@@ -50,6 +51,7 @@ export default function BasicDetails() {
         value={loadingProfile ? '' : profileDetails?.email ?? "johnapple@example.com"}
         readOnly
       />
+      <Toggle />
     </fieldset>
   )
 }

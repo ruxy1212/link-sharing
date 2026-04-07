@@ -6,6 +6,7 @@ export type UserProfile = {
   lastName: string;
   email: string;
   avatar?: string; // The question mark means it's optional
+  includeEmail?: boolean;
 }
 
 export interface Link {

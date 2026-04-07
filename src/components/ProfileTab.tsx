@@ -14,6 +14,7 @@ interface FormElements extends HTMLFormControlsCollection {
   firstName: HTMLInputElement
   lastName: HTMLInputElement
   email: HTMLInputElement
+  includeEmail: HTMLInputElement
 }
 
 interface FormElement extends HTMLFormElement {
@@ -40,6 +41,7 @@ export default function ProfileDetails({ profileDetails }: { profileDetails: Use
         firstName: form.elements.firstName.value,
         lastName: form.elements.lastName.value,
         email: form.elements.email.value,
+        includeEmail: form.elements.includeEmail.checked,
       }
 
       const newAvatarFile = form.elements.profileAvatar.files?.[0]
