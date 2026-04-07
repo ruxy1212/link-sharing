@@ -101,7 +101,7 @@ const Preview = ({ param }: { param: string }) => {
   const linkText = useMemo(() => {
     if (loadingLinks || !allLinks || !profile?.email) return null;
     return (allLinks.links && allLinks.links.length > 1) ? `${allLinks.links[0].platform} and ${allLinks.links.length - 1} more` : profile.email;
-  }, [allLinks, loadingLinks]);
+  }, [allLinks, loadingLinks, profile?.email]);
 
   const handleSignOut = async () => {
     setIsLoggingOut(true);

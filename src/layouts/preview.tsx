@@ -3,7 +3,7 @@ import { Context } from '@/hooks/context'
 import { useRouter } from '@bprogress/next/app'
 import CopiedToClipboardMessage from '@/components/Copier'
 import Link from 'next/link'
-import { ArrowBigLeft, Copy, Share, Share2 } from 'lucide-react'
+import { ArrowBigLeft, Copy, Share2 } from 'lucide-react'
 
 export default function NavBar({ isUser, link, name, platform }: { isUser: boolean, link: string; name: string; platform: string; }) {
   const context = useContext(Context)
