@@ -51,7 +51,7 @@ export default function BasicDetails() {
         value={loadingProfile ? '' : profileDetails?.email ?? "johnapple@example.com"}
         readOnly
       />
-      <Toggle />
+      <Toggle isChecked={loadingProfile ? false : profileDetails?.includeEmail ?? false} />
     </fieldset>
   )
 }

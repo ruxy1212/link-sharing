@@ -151,7 +151,7 @@ const Preview = ({ param }: { param: string }) => {
                     profile &&
                     `${profile.firstName} ${profile.lastName}`}
                 </h1>
-                {!loadingProfile && profile?.includeEmail (
+                {!loadingProfile && profile?.includeEmail && (
                   <a
                     href={'mailto:' + profile?.email}
                     className="font-normal hover:font-bold mb-[56px]"

@@ -1,11 +1,18 @@
+import { useEffect, useState } from 'react'
 import './toggle.css'
 
-export default function Toggle() {
+export default function Toggle({ isChecked }: { isChecked: boolean }) {
+  const [checked, setChecked] = useState<boolean>(isChecked || false)
+  useEffect(() => {
+    if(isChecked !== undefined) setChecked(isChecked)
+  }, [isChecked])
   return (
     <fieldset className="w-full flex items-center flex-wrap">
       <div className="toggle-container mx-3">
         <input
           type="checkbox"
+          checked={checked}
+          onChange={(e) => setChecked(e.target.checked)}
           name="includeEmail"
           id="includeEmail"
           className="toggle-input"

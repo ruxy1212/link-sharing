@@ -95,7 +95,7 @@ const PhoneMockup: FC = () => {
             </h2>
           ) : <div className="w-full opacity-50"><div className="animate-pulse rounded-xl bg-dl-light-gray w-[180px] h-6 absolute left-0 right-0 mx-auto top-[176px] opacity-75" /></div>
         }
-        {!loadingProfile && profileDetails?.email
+        {!loadingProfile && profileDetails?.email && profileDetails.includeEmail
           ? ( 
             <h2 className="text-dl-dark-gray font-instrument text-sm font-normal leading-[150%] w-[80%] text-center bg-dl-white dark:bg-transparent absolute left-0 right-0 mx-auto top-[206px] select-none">
               {profileDetails.email}
