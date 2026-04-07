@@ -23,6 +23,7 @@ module.exports = {
         'dl-new-white': "rgb(var(--dl-new-white))",
         'dl-neutral-white': "rgb(var(--dl-neutral-white))",
         'dl-black': "rgb(var(--dl-black))",
+        'dl-black-neutral': "rgb(var(--dl-black-neutral))",
         'dl-red': "rgb(var(--dl-red))",
         'dl-github': "rgb(var(--dl-github))",
         'dl-frontendmentor': "rgb(var(--dl-frontendmentor))",

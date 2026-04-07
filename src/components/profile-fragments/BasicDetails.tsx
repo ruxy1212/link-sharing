@@ -20,10 +20,18 @@ export default function BasicDetails() {
     <fieldset className="rounded-lg p-5 bg-dl-white-gray flex flex-col justify-center gap-3">
       <Input
         type="text"
+        label="Username (optional)"
+        name="username"
+        placeholder="e.g. JohnDoe"
+        defaultValue={loadingProfile ? '' : profileDetails?.username ?? ""}
+        required
+      />
+      <Input
+        type="text"
         label="First name*"
         name="firstName"
         placeholder="e.g. John"
-        defaultValue={loadingProfile ? '' : profileDetails?.firstName ?? "apple"}
+        defaultValue={loadingProfile ? '' : profileDetails?.firstName ?? "John"}
         required
       />
       <Input
@@ -31,7 +39,7 @@ export default function BasicDetails() {
         label="Last name*"
         name="lastName"
         placeholder="e.g. Appleseed"
-        defaultValue={loadingProfile ? '' : profileDetails?.lastName ?? "john"}
+        defaultValue={loadingProfile ? '' : profileDetails?.lastName ?? "Appleseed"}
         required
       />
       <Input

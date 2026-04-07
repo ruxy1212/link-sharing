@@ -75,8 +75,8 @@ const PhoneMockup: FC = () => {
           <>
             <Image
               src={avatarSrc}
-              className="border-[4px] border-dl-purple w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px]"
-              style={profileDetails?.avatar ? {} : { visibility: 'hidden' }}
+              className={`w-[96px] h-[96px] rounded-full absolute left-0 right-0 mx-auto top-[63.5px] ${profileDetails?.avatar ? 'border-[4px] border-dl-purple' : 'opacity-35 animate-pulse'}`}
+              // style={profileDetails?.avatar ? {} : { visibility: 'hidden' }}
               alt="User Avatar"
               onLoad={() => setIsLoaded(true)}
               onError={() => setIsLoaded(false)}

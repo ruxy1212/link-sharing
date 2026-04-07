@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useRef } from 'react'
 import { Context } from '@/hooks/context'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@bprogress/next/app'
 
 export default function Popup() {
   const context = useContext(Context)

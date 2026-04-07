@@ -110,6 +110,7 @@ body {
     --dl-white-gray: 250, 250, 250;
     --dl-white: 255, 255, 255;
     --dl-black: 0, 0, 0;
+    --dl-black-neutral: 10, 10, 10;
     --dl-new-white: 0, 0, 0;
     --dl-special-black: 0 0 0;
     --dl-neutral-white: 255, 255, 255;
@@ -142,6 +143,7 @@ body {
     --dl-white-gray: 54, 54, 54;
     --dl-white: 17, 17, 17;
     --dl-black: 200, 200, 200;
+    --dl-black-neutral: 10, 10, 10;
     --dl-new-white: 255, 255, 255;
     --dl-special-black: 200 200 200;
     --dl-neutral-white: 255, 255, 255;
@@ -172,6 +174,33 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.notch {
+  position: relative;
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+
+.notch::before, .notch::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: rgb(var(--dl-light-gray));
+}
+
+.notch::before {
+  left: calc(0.75rem * -1);
+  border-top-right-radius: 0.75rem;
+  box-shadow: 5px -5px 0 5px rgb(var(--dl-white));
+}
+
+.notch::after {
+  right: calc(0.75rem * -1);
+  border-top-left-radius: 0.75rem;
+  box-shadow: -5px -5px 0 5px rgb(var(--dl-white));
 }
 
 

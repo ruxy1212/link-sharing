@@ -13,7 +13,7 @@ import { db } from '@/firebase/Configuration'
 import { doc, DocumentReference, getDoc } from 'firebase/firestore'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import PhoneLinkBox from '@/components/PhoneLinkBox'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@bprogress/next/app'
 import { Metadata, ResolvingMetadata } from 'next';
 import { getAvatarUrl } from '@/hooks/avatar-utils'
 

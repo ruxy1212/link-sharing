@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Input from './Input'
 import { auth } from '@/firebase/Configuration'
 import { sendEmailVerification, signInWithEmailAndPassword, sendPasswordResetEmail, User } from 'firebase/auth'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@bprogress/next/app'
 import { Context } from '@/hooks/context'
 import { FirebaseError } from 'firebase/app'
 
@@ -60,8 +60,27 @@ export default function LoginForm() {
         router.push('/dashboard')
       }
     } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/invalid-credential':
+            setErrorMessage('Email or password is incorrect.')
+            break
+          case 'auth/user-disabled':
+            setErrorMessage('Your account has been disabled by Admin')
+            break
+          case 'auth/network-request-failed':
+            setErrorMessage('There was a connection problem, check your internet.')
+            break
+          case 'auth/too-many-requests':
+            setErrorMessage('Too many login attempts, try again later.')
+            break
+          default:
+            setErrorMessage('Something went wrong, please try again.')
+        }
+      } else {
+        setErrorMessage('Failed to connect, please check your internet.')
+      }
       if (errorMessageRef.current) {
-        setErrorMessage('Email or password is incorrect.')
         errorMessageRef.current.style.display = 'block'
       }
       setLoading(false)
@@ -110,7 +129,7 @@ export default function LoginForm() {
             setErrorMessage('Invalid email address.')
             break
           default:
-            setErrorMessage(error.message)
+            setErrorMessage('Something went wrong, please try again.')
         }
       } else {
         setErrorMessage('Failed to send reset email.')
@@ -142,23 +161,29 @@ export default function LoginForm() {
         includeForgotPassword={true}
         handleForgotPassword={handleForgotPassword}
       />
-      <button className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray dark:hover:text-dl-white-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple">
-        {loading ? (
-          <CircularProgress
-            className="text-dl-light-purple"
-            color="secondary"
-          />
-        ) : (
-          'Login'
-        )}
-      </button>
-      <p
-        className="hidden text-dl-red text-base md:text-center font-sans font-normal leading-[150%]"
-        ref={errorMessageRef}
-      >
-        {errorMessage} {" "}
-        {resend && <button onClick={resendEmail} className='underline hover:text-[#333] transition-colors'>Resend</button>}
-      </p>
+      <div className="flex flex-col gap-1.5">
+        <button
+          disabled={loading}
+          className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-mid-purple"
+        >
+          {loading ? (
+            <CircularProgress
+              className="text-dl-neutral-white"
+              color="secondary"
+              size={36}
+            />
+          ) : (
+            'Login'
+          )}
+        </button>
+        <p
+          className="hidden text-dl-red text-sm md:text-base md:text-center font-sans font-normal leading-[150%]"
+          ref={errorMessageRef}
+        >
+          {errorMessage} {" "}
+          {resend && <button onClick={resendEmail} className='underline hover:text-[#333] transition-colors'>Resend</button>}
+        </p>
+      </div>
     </form>
   )
 }

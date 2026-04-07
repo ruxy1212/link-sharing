@@ -1,9 +1,8 @@
 "use server"
 
 import { Metadata } from 'next'; //ResolvingMetadata
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/firebase/Configuration';
 import Preview from './Preview';
+import { fetchProfile, fetchUid } from '@/hooks/fetch-profile';
 
 type Props = {
   params: { uid: string };
@@ -15,16 +14,15 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { uid } = params;
 
-  const profileSnap = await getDoc(doc(db, `${uid}/profileDetails`));
+  const profile = await fetchProfile(uid);
 
-  if (!profileSnap.exists()) {
+  if (!profile) {
     return {
       title: 'User Not Found',
       description: 'No user found for this ID.',
     };
   }
 
-  const profile = profileSnap.data();
   const fullName = `${profile.firstName} ${profile.lastName}`;
   const appUrl = process.env.NEXT_APP_URL || 'http://localhost:3000';
 
@@ -50,5 +48,6 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: Props) {
-  return <Preview params={params} />;
+  const actualUid = await fetchUid(params.uid)
+  return <Preview param={actualUid ?? params.uid} />;
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 import { Context } from '@/hooks/context';
 import { auth } from '@/firebase/Configuration';
 import { CircularProgress } from '@mui/material';

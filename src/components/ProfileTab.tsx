@@ -1,7 +1,7 @@
 import { useContext, useState, FormEvent } from 'react'
 import { Context } from '@/hooks/context'
 import { db } from '@/firebase/Configuration'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, runTransaction } from 'firebase/firestore'
 import UploadImage from './profile-fragments/UploadImage'
 import BasicDetails from './profile-fragments/BasicDetails'
 import { CircularProgress } from '@mui/material'
@@ -9,6 +9,7 @@ import { uploadAvatar } from '@/hooks/avatar-utils'
 import { UserProfile } from '@/hooks/types'
 
 interface FormElements extends HTMLFormControlsCollection {
+  username: HTMLInputElement
   profileAvatar: HTMLInputElement
   firstName: HTMLInputElement
   lastName: HTMLInputElement
@@ -19,14 +20,14 @@ interface FormElement extends HTMLFormElement {
   readonly elements: FormElements
 }
 
-export default function ProfileDetails() {
+export default function ProfileDetails({ profileDetails }: { profileDetails: UserProfile }) {
   const context = useContext(Context)
 
   if (!context) {
     throw new Error('PhoneMockup must be used within a Context.Provider')
   }
-
-  const { uid, setOpenSaveChangesMessage } = context
+//Your changes have been successfully saved!
+  const { uid, setOpenSaveChangesMessage, setCustomPopupMessage, setOpenCustomPopup } = context
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async (e: FormEvent<FormElement>) => {
@@ -35,6 +36,7 @@ export default function ProfileDetails() {
       setLoading(true)
       const form = e.currentTarget
       const updates: UserProfile = {
+        username: form.elements.username.value.toLowerCase().trim(),
         firstName: form.elements.firstName.value,
         lastName: form.elements.lastName.value,
         email: form.elements.email.value,
@@ -46,13 +48,33 @@ export default function ProfileDetails() {
         updates.avatar = avatarUrl;
       }
 
+      const newUsername = updates.username?.toLowerCase().trim()
+      const oldUsername = profileDetails?.username?.toLowerCase().trim()
       const docRef = doc(db, `${uid}/profileDetails`)
-      await updateDoc(docRef, updates)
+      const usernameRef = doc(db, `usernames/${newUsername}`)
 
+      await runTransaction(db, async (transaction) => {
+        const usernameDoc = await transaction.get(usernameRef)
+        if (usernameDoc.exists()) {
+          if (usernameDoc.data().uid !== uid) //throw the error
+            throw new Error('USERNAME_TAKEN')
+        }
+
+        transaction.set(usernameRef, { uid: uid })
+        if (oldUsername && oldUsername !== newUsername) {
+          const oldUsernameRef = doc(db, `usernames/${oldUsername}`);
+          transaction.delete(oldUsernameRef)
+        }
+        transaction.update(docRef, updates)
+      })
       setOpenSaveChangesMessage(true)
-      setLoading(false)
     } catch (error) {
-      console.error(error)
+      if (error === 'USERNAME_TAKEN') {
+        setCustomPopupMessage('Username is already taken')
+      } else if (error instanceof Error) {
+        setCustomPopupMessage('Error: '+error.message)
+      }
+      setOpenCustomPopup(true)
     } finally {
       setLoading(false)
     }

@@ -23,7 +23,7 @@ import {
 } from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '@/components/StrictModeDroppable'
 import Image from 'next/image'
-import CustomPopup from './CustomAlert'
+// import CustomPopup from './CustomAlert'
 
 interface Link {
   id: string
@@ -200,7 +200,7 @@ const CustomizeLinks: React.FC = () => {
           )}
         </button>
       </div>
-      <CustomPopup />
+      {/* <CustomPopup /> */}
     </form>
   )
 }

@@ -5,10 +5,10 @@ import { Context } from '@/hooks/context'
 import NavBar from '@/layouts/navbar'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '@/firebase/Configuration'
-import Alert from '@/components/Alert'
+import CustomPopup from '@/components/CustomAlert'
 import { CircularProgress } from '@mui/material'
 import TabsContainer from '@/components/TabsContainer'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@bprogress/next/app'
 
 const Dashboard: React.FC = () => {
   const context = useContext(Context)
@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
     throw new Error('Account must be used within a Context.Provider')
   }
 
-  const { uid, setUid } = context
+  const { uid, setUid, setCustomPopupMessage, setOpenCustomPopup } = context
   const [currentTab, setCurrentTab] = useState<string>('links')
 
   useEffect(() => {
@@ -41,11 +41,18 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
+      <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-light-gray">
         <div className="w-full max-w-7xl mx-auto flex flex-col gap-0">
           {uid ? (
             <>
-              <NavBar currentTab={currentTab} uid={uid} setCurrentTab={setCurrentTab} />
+              <NavBar
+                currentTab={currentTab}
+                uid={uid}
+                setCurrentTab={setCurrentTab}
+                setUid={setUid}
+                setCustomPopupMessage={setCustomPopupMessage}
+                setOpenCustomPopup={setOpenCustomPopup}
+              />
               <TabsContainer currentTab={currentTab} />
             </>
           ) : (
@@ -60,7 +67,7 @@ const Dashboard: React.FC = () => {
           )}
         </div>
       </main>
-      <Alert />
+      <CustomPopup />
     </>
   )
 }

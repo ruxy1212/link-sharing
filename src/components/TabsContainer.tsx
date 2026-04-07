@@ -11,6 +11,7 @@ import ProfileTab from './ProfileTab'
 import LoadingLink from './LoadingLink'
 import LinksTab from './LinksTab'
 import CustomAlert from './CustomAlert'
+import { UserProfile } from '@/hooks/types'
 
 export default function TabsContainer({ currentTab }: { currentTab: string }) {
   const context = useContext(Context)
@@ -22,6 +23,8 @@ export default function TabsContainer({ currentTab }: { currentTab: string }) {
   const { uid, dispatch } = context
 
   const linkDocRef = doc(db, `${uid}/userLinks`)
+  const profileDocRef = doc(db, `${uid}/profileDetails`)
+  const [profileDetails, loadingProfile] = useDocumentData(profileDocRef)
   const [userLinks, loadingUserLinks, error] = useDocumentData(linkDocRef)
 
   if (error) {
@@ -36,7 +39,7 @@ export default function TabsContainer({ currentTab }: { currentTab: string }) {
   return (
     <div className="px-4 py-4 md:px-6 md:pb-6 md:pt-0 grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="hidden lg:block lg:col-span-5 top-6 sticky self-start">
-        {loadingUserLinks ? <LoadingPhone /> : <PhoneMockup />}
+        {loadingUserLinks || loadingProfile ? <LoadingPhone /> : <PhoneMockup />}
       </div>
       <div className="lg:col-span-7">
         {currentTab === 'links' ? (
@@ -46,7 +49,7 @@ export default function TabsContainer({ currentTab }: { currentTab: string }) {
             <LinksTab />
           )
         ) : (
-          <ProfileTab />
+          <ProfileTab profileDetails={profileDetails as UserProfile} />
         )}
       </div>
       <CustomAlert />

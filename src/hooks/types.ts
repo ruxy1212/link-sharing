@@ -1,4 +1,7 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type UserProfile = {
+  username?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -24,18 +27,18 @@ export type LinksAction =
 export interface AppContextType {
   uid: string
   openCustomPopup: boolean
-  setOpenCustomPopup: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenCustomPopup: Dispatch<SetStateAction<boolean>>
   customPopupMessage: string
-  setCustomPopupMessage: React.Dispatch<React.SetStateAction<string>>
-  setUid: React.Dispatch<React.SetStateAction<string>>
+  setCustomPopupMessage: Dispatch<SetStateAction<string>>
+  setUid: Dispatch<SetStateAction<string>>
   usersLinks: LinksState
-  dispatch: React.Dispatch<LinksAction>
+  dispatch: Dispatch<LinksAction>
   openLoginMessage: boolean
-  setOpenLoginMessage: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenLoginMessage: Dispatch<SetStateAction<boolean>>
   openSaveChangesMessage: boolean
-  setOpenSaveChangesMessage: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenSaveChangesMessage: Dispatch<SetStateAction<boolean>>
   openCopiedToClipboardMessage: boolean
-  setOpenCopiedToClipboardMessage: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenCopiedToClipboardMessage: Dispatch<SetStateAction<boolean>>
 }
 
 export interface UserLink {

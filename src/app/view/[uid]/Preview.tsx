@@ -12,7 +12,7 @@ import { db } from '@/firebase/Configuration';
 import { doc, DocumentReference } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import PhoneLinkBox from '@/components/PhoneLinkBox';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@bprogress/next/app';
 
 interface Link {
   id: string;
@@ -20,7 +20,7 @@ interface Link {
   link: string;
 }
 
-const Preview = ({ params }: { params: { uid: string } }) => {
+const Preview = ({ param }: { param: string }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -33,7 +33,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     throw new Error('Preview must be used within a Context.Provider');
   }
 
-  if (!params.uid) {
+  if (!param) {
     throw new Error('Preview must be used with a uid');
   }
 
@@ -44,16 +44,16 @@ const Preview = ({ params }: { params: { uid: string } }) => {
       if (currentUser && currentUser.uid === uid) {
         setUid(currentUser.uid);
       }
-      if (params.uid === uid) {
+      if (param === uid) {
         setIsAuth(true);
       } else setIsAuth(false);
-      setUserId(params.uid);
+      setUserId(param);
     });
 
     return () => {
       unsubscribe();
     };
-  }, [setUid, uid, params.uid]);
+  }, [setUid, uid, param]);
 
   const [avatarSrc, setAvatarSrc] = useState('/images/placeholder-image.png');
   const linksRef = doc(db, `${userId}/userLinks`);
@@ -98,6 +98,11 @@ const Preview = ({ params }: { params: { uid: string } }) => {
     });
   }, [allLinks, loadingLinks]);
 
+  const linkText = useMemo(() => {
+    if (loadingLinks || !allLinks || !profile?.email) return null;
+    return (allLinks.links && allLinks.links.length > 1) ? `${allLinks.links[0].platform} and ${allLinks.links.length - 1} more` : profile.email;
+  }, [allLinks, loadingLinks]);
+
   const handleSignOut = async () => {
     setIsLoggingOut(true);
     try {
@@ -110,10 +115,15 @@ const Preview = ({ params }: { params: { uid: string } }) => {
 
   return (
     <>
-      <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-white-gray">
+      <main className="w-full flex flex-col gap-0 min-h-screen bg-dl-light-gray">
         {userId ? (
           <>
-            <NavBar isUser={isAuth} />
+            <NavBar
+              name={`${profile?.firstName} ${profile?.lastName}`}
+              link={profile?.username ?? userId}
+              isUser={isAuth}
+              platform={linkText}
+            />
             <main className="flex justify-center items-center pb-28 sm:pb-0">
               <section className="relative top-20 sm:-top-24 lg:-top-36 bg-dl-white shadow-none md:shadow-xl w-full max-w-[349px] rounded-3xl p-0 sm:pt-6 pb-12 md:py-12 md:px-14 flex flex-col items-center">
                 <div className="relative -mt-8 sm:mt-0 mb-[25px] w-[104px] h-[104px] flex justify-center items-center">
@@ -154,7 +164,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                 </div>
                 {isAuth && (
                   <button
-                    className="flex-shrink-0 mt-14 rounded-lg w-32 py-3 px-7 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray dark:hover:text-dl-white hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
+                    className="flex-shrink-0 mt-14 rounded-lg w-32 py-3 px-7 bg-dl-red text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray dark:hover:text-dl-white hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
                     onClick={handleSignOut}
                   >
                     {isLoggingOut ? (
@@ -162,7 +172,7 @@ const Preview = ({ params }: { params: { uid: string } }) => {
                         Logout
                         <span className="h-4">
                           <CircularProgress
-                            className="text-dl-light-purple"
+                            className="text-dl-neutral-white"
                             color="secondary"
                             size="16px"
                           />

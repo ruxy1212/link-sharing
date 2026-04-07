@@ -121,7 +121,7 @@ const Input = forwardRef<InputRef, InputProps>(
 
           {/* Toggle - only show when password type and no validation error */}
           {type === 'password' && !validationState && (
-            <button className="absolute top-0 bottom-0 m-auto right-4 w-4" onClick={toggleEye}>
+            <button type="button" className="absolute top-0 bottom-0 m-auto right-4 w-4" onClick={toggleEye}>
               {inputType === 'text' ? <EyeOff className="w-4"/> : <EyeIcon className="w-4"/>}
             </button>
           )}

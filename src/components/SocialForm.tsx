@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@bprogress/next/app'
 import { auth } from '@/firebase/Configuration'
 import {
   GoogleAuthProvider,

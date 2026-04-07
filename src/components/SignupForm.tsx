@@ -7,7 +7,8 @@ import { auth, db } from '@/firebase/Configuration'
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { Context } from '@/hooks/context'
 import { doc, setDoc } from 'firebase/firestore'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@bprogress/next/app'
+import { FirebaseError } from 'firebase/app'
 
 interface SignupContext {
   setOpenLoginMessage: (open: boolean) => void
@@ -23,37 +24,32 @@ export default function SignupForm() {
 
   const { setOpenLoginMessage } = context as SignupContext
   const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState('')
+  const [isNormalError, setIsNormalError] = useState<boolean>(false)
 
   const email = useRef<{ state: string }>(null)
   const password = useRef<{ state: string }>(null)
   const confirmPassword = useRef<{ state: string }>(null)
-  const notEightCharactersMessage = useRef<HTMLParagraphElement>(null)
-  const passwordsDontMatch = useRef<HTMLParagraphElement>(null)
-  const emailAlreadyExists = useRef<HTMLParagraphElement>(null)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
+    setIsNormalError(false)
 
     const userEmail = email.current?.state || ''
     const userPassword = password.current?.state || ''
     const userConfirmPassword = confirmPassword.current?.state || ''
 
-    if (passwordsDontMatch.current)
-      passwordsDontMatch.current.style.display = 'none'
-    if (notEightCharactersMessage.current)
-      notEightCharactersMessage.current.style.color = ''
-
-    if (userPassword !== userConfirmPassword) {
-      if (passwordsDontMatch.current)
-        passwordsDontMatch.current.style.display = 'block'
+    if (userPassword.length < 8) {
+      setIsNormalError(true)
+      setError('Password must contain at least 8 characters')
       setLoading(false)
       return
     }
 
-    if (userPassword.length < 8) {
-      if (notEightCharactersMessage.current)
-        notEightCharactersMessage.current.style.color = '#FF3939'
+    if (userPassword !== userConfirmPassword) {
+      setError('Passwords do not match')
       setLoading(false)
       return
     }
@@ -78,10 +74,31 @@ export default function SignupForm() {
         setOpenLoginMessage(true)
         router.push('/login')
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error)
-      if (emailAlreadyExists.current)
-        emailAlreadyExists.current.style.display = 'block'
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            setError('This email already exists.')
+            break
+          case 'auth/invalid-email':
+            setError('Invalid email address entered.')
+            break
+          case 'auth/network-request-failed':
+            setError('There was a connection problem, check your internet.')
+            break
+          case 'auth/too-many-requests':
+            setError('Too many login attempts, try again later.')
+            break
+          case 'auth/weak-password':
+            setError('Your password is too weak.')
+            break
+          default:
+            setError('Something went wrong, please try again.')
+        }
+      } else {
+        setError('Failed to connect, please check your internet.')
+      }
       setLoading(false)
     }
   }
@@ -112,37 +129,29 @@ export default function SignupForm() {
         placeholder="At least 8 characters"
         ref={confirmPassword}
       />
-      <p
-        className="text-dl-dark-gray text-sm font-sans font-normal leading-[150%]"
-        ref={notEightCharactersMessage}
-      >
-        Password must contain at least 8 characters
-      </p>
-      <p
-        className="hidden text-dl-red text-base font-sans font-normal leading-[150%]"
-        ref={passwordsDontMatch}
-      >
-        Passwords do not match
-      </p>
-      <p
-        className="hidden text-dl-red text-base font-sans font-normal leading-[150%]"
-        ref={emailAlreadyExists}
-      >
-        Email already exists
-      </p>
-      <button
-        disabled={loading}
-        className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray dark:hover:text-dl-white-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-light-purple"
-      >
-        {loading ? (
-          <CircularProgress
-            className="text-dl-light-purple"
-            color="secondary"
-          />
-        ) : (
-          'Create new account'
+      <div className="flex flex-col gap-1.5">
+        <button
+          disabled={loading}
+          className="flex-shrink-0 rounded-lg h-12 bg-dl-purple text-dl-neutral-white text-base font-sans font-semibold leading-[150%] cursor-pointer hover:bg-dl-mid-purple hover:text-dl-black-gray hover:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] disabled:bg-dl-mid-purple"
+        >
+          {loading ? (
+            <CircularProgress
+              className="text-dl-neutral-white"
+              color="secondary"
+              size={36}
+            />
+          ) : (
+            'Create new account'
+          )}
+        </button>
+        {error && (
+          <p
+            className={`text-sm md:text-base font-sans font-normal leading-[150%] ${isNormalError ? 'text-dl-dark-gray' : 'text-dl-red'}`}
+          >
+            {error}
+          </p>
         )}
-      </button>
+      </div>
     </form>
   )
 }
