@@ -12,6 +12,7 @@ import LoadingLink from './LoadingLink'
 import LinksTab from './LinksTab'
 import CustomAlert from './CustomAlert'
 import { UserProfile } from '@/hooks/types'
+import Alert from './Alert'
 
 export default function TabsContainer({ currentTab }: { currentTab: string }) {
   const context = useContext(Context)
@@ -53,6 +54,7 @@ export default function TabsContainer({ currentTab }: { currentTab: string }) {
         )}
       </div>
       <CustomAlert />
+      <Alert />
     </div>
   )
 }
