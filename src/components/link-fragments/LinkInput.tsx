@@ -3,12 +3,13 @@ import {
   useRef,
   useEffect,
   useContext,
+  useMemo,
   ChangeEvent,
   FocusEvent,
   InvalidEvent,
 } from 'react'
 import { Context } from '@/hooks/context'
-import platforms from '@/data'
+import platforms, { Platform } from '@/data'
 import Image from 'next/image'
 
 interface LinkInputProps {
@@ -34,17 +35,38 @@ const LinkInput: React.FC<LinkInputProps> = ({
   const emptyMessageRef = useRef<HTMLParagraphElement>(null)
   const invalidUrlMessageRef = useRef<HTMLParagraphElement>(null)
 
-  const isValidUrl = (url: string, platform: string): boolean => {
-    const [, domain, usernameFormat] =
-      platforms.find((p) => p[0] === platform) || [];
-    if (!domain || !usernameFormat) {
+  const selectedPlatform = useMemo(
+    () => platforms.find((item) => item.name === platform),
+    [platform]
+  )
+
+  const isValidUrl = (url: string, selected?: Platform): boolean => {
+    if (!selected) {
       return false
     }
 
     try {
       const urlObj = new URL(url)
+
+      if (!['http:', 'https:'].includes(urlObj.protocol)) {
+        return false
+      }
+
+      const hostname = urlObj.hostname.toLowerCase().replace(/^www\./, '')
+      const pathName = urlObj.pathname.toLowerCase()
+
+      const hasMatchingDomain = selected.domains.some(
+        (domain) =>
+          hostname === domain ||
+          hostname.endsWith(`.${domain}`) ||
+          hostname === `www.${domain}`
+      )
+      const hasMatchingPath = selected.pathPrefixes.some((prefix) =>
+        pathName.startsWith(prefix)
+      )
+
       return (
-        urlObj.hostname.includes(domain) && urlObj.href.includes(usernameFormat)
+        hasMatchingDomain && hasMatchingPath
       )
     } catch (error) {
       return false
@@ -58,7 +80,7 @@ const LinkInput: React.FC<LinkInputProps> = ({
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     const isEmpty = e.target.validity.valueMissing
-    const isValidLink = isValidUrl(url, platform)
+    const isValidLink = isValidUrl(url, selectedPlatform)
 
     if (isEmpty) {
       if (emptyMessageRef.current)
@@ -124,7 +146,9 @@ const LinkInput: React.FC<LinkInputProps> = ({
           onChange={handleChange}
           onBlur={handleBlur}
           onInvalid={handleInvalid}
-          placeholder="e.g. https://www.github.com/johnappleseed"
+          placeholder={
+            selectedPlatform?.placeholder || 'e.g. https://github.com/johnappleseed'
+          }
           pattern="https://.*"
           ref={inputRef}
           required

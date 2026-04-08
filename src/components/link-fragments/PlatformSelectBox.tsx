@@ -56,7 +56,7 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({
 
   const allPlatforms = useMemo(() => {
     return platforms.map((platform, i) => {
-      const platformIcon = platform[0]
+      const platformIcon = platform.name
         .toLowerCase()
         .replace(' ', '')
         .replace('.', '')
@@ -64,8 +64,8 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({
       return (
         <div
           className={`platformMask popup_option text-dl-black-gray py-3 font-instrument text-base font-normal leading-[150%] flex items-center gap-3 cursor-pointer hover:text-dl-purple ${i == platforms.length - 1 ? '' : 'border-b border-b-dl-dark-gray'}`}
-          data-option={platform[0]}
-          key={platform[0]}
+          data-option={platform.name}
+          key={platform.name}
         >
           <span
             className="w-4 h-4 mask-size-[16px_16px] -webkit-mask-size-[16px_16px] mask-repeat-no-repeat -webkit-mask-repeat-no-repeat bg-dl-dark-gray"
@@ -74,7 +74,7 @@ const PlaformSelectBox: FC<PlatformSelectBoxProps> = ({
               maskImage: `url('/icons/select-icons/icon-${platformIcon}.svg')`,
             }}
           ></span>
-          {platform[0]}
+          {platform.name}
         </div>
       )
     })
