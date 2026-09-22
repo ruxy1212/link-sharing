@@ -203,6 +203,33 @@ body {
   box-shadow: -5px -5px 0 5px rgb(var(--dl-white));
 }
 
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dl-light-purple-neutral);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dl-purple);
+  border: 2px solid var(--dl-light-purple-neutral);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dl-mid-purple);
+}
+
+.tiny-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tiny-scrollbar-descendants::-webkit-scrollbar,
+.tiny-scrollbar-descendants *::-webkit-scrollbar {
+    width: 6px;
+}
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;

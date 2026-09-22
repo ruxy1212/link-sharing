@@ -36,11 +36,11 @@ export default function LandingPage() {
   
     updateHeight();
     window.addEventListener("resize", updateHeight);
-    document.body.classList.add("no-scrollbar");
+    document.body.classList.add("tiny-scrollbar");
   
     return () => {
       window.removeEventListener("resize", updateHeight);
-      document.body.classList.remove("no-scrollbar");
+      document.body.classList.remove("tiny-scrollbar");
     };
   }, []);
 
@@ -216,7 +216,7 @@ export default function LandingPage() {
           </span>
         )}
         <LogoScene onLoaded={() => setIsLoading(false)} />
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
           <motion.div
             className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-dl-red bg-opacity-20 blur-3xl"
             animate={{
@@ -265,7 +265,7 @@ export default function LandingPage() {
           borderTopRightRadius: bodyBorderRadius,
           transformOrigin: "top center"
         }}
-        className="relative min-h-screen bg-dl-background mx-auto shadow-xl z-20 overflow-hidden -mt-6"
+        className="relative min-h-screen bg-dl-background mx-auto shadow-xl z-20 overflow-hidden -mt-14"
       >
         <section className="py-20 px-6 md:px-12 select-none">
           <div className="max-w-7xl mx-auto">
