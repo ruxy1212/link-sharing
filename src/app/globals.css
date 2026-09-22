@@ -209,17 +209,17 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--dl-light-purple-neutral);
+  background: rgb(var(--dl-light-purple-neutral));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--dl-purple);
-  border: 2px solid var(--dl-light-purple-neutral);
+  background: rgb(var(--dl-purple));
+  border: 2px solid rgb(var(--dl-light-purple-neutral));
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--dl-mid-purple);
+  background: rgb(var(--dl-mid-purple));
 }
 
 .tiny-scrollbar::-webkit-scrollbar {
